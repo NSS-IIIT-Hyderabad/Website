@@ -1,2 +1,2 @@
 # Website
-A Website for NSS-IIITH
+A Website for NSS IIITH
