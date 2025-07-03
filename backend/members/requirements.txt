@@ -1,0 +1,8 @@
+pymongo
+strawberry-graphql[cli]
+strawberry-graphql[fastapi]
+strawberry-graphql[artwork]
+strawberry-graphql[strawberry]
+fastapi
+uvicorn
+pydantic
