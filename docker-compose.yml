@@ -1,0 +1,7 @@
+services:
+  members:
+    build:
+      context: ./backend/members
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
