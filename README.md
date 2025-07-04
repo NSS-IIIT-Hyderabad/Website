@@ -32,33 +32,37 @@ To start the application, follow these steps:
    
    **For Development (Default):**
    ```bash
-   docker-compose -f docker-compose.dev.yml up --build
+   docker-compose -f docker-compose.yml up --build
+   OR
+   docker compose up --build
    ```
    
    **For Production:**
    ```bash
    docker-compose -f docker-compose.yml up --build
+   OR
+   docker compose -f docker-compose.yml up --build
    ```
 
 4. **Access the Application:**
    
    **Development Mode:**
-   - Frontend: `http://localhost:3000`
-   - Backend GraphQL: `http://localhost:8000/graphql`
-   - Backend Health Check: `http://localhost:8000/health`
+   - Frontend: `http://localhost`
+   - Backend GraphQL: `http://localhost/api/graphql`
+   - Backend Health Check: `http://localhost/api/health`
    
    **Production Mode:**
    - Frontend: `http://localhost`
-   - Backend GraphQL: `http://localhost/graphql`
-   - Backend Health Check: `http://localhost/health`
+   - Backend GraphQL: `http://localhost/api/graphql`
+   - Backend Health Check: `http://localhost/api/health`
 
 ## Commands
 
 ### Development Mode (Recommended for local development)
-- **Start Services:** `docker-compose -f docker-compose.dev.yml up -d`
-- **Stop Services:** `docker-compose -f docker-compose.dev.yml down`
-- **View Logs:** `docker-compose -f docker-compose.dev.yml logs -f {service-name}`
-- **Check Status:** `docker-compose -f docker-compose.dev.yml ps`
+- **Start Services:** `docker-compose up -d`
+- **Stop Services:** `docker-compose down`
+- **View Logs:** `docker-compose logs -f {service-name}`
+- **Check Status:** `docker-compose ps || docker ps`
 
 ### Production Mode (For production deployment)
 - **Start Services:** `docker-compose up -d`
