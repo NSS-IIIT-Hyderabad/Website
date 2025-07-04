@@ -1,0 +1,40 @@
+type Member {
+  name: String!
+  email: String!
+  phone: String
+  memberType: MemberTypeEnum!
+  status: MemberStatusEnum!
+}
+
+input MemberInput {
+  name: String!
+  email: String!
+  phone: String = null
+  memberType: MemberTypeEnum!
+  status: MemberStatusEnum!
+}
+
+enum MemberStatusEnum {
+  ACTIVE
+  INACTIVE
+  PENDING
+}
+
+enum MemberTypeEnum {
+  ADMIN
+  TECH
+  DESIGN
+  CONTENT
+  LOGISTICS
+  COORDINATOR
+  VOLUNTEER
+}
+
+type Mutation {
+  addMember(member: MemberInput!): Boolean!
+  changeMember(member: MemberInput!): Boolean!
+}
+
+type Query {
+  viewMembers(name: String!): [Member!]!
+}

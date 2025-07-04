@@ -1,0 +1,21 @@
+2025/07/03 23:16:44 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:16:45 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:16:46 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:16:46 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:16:47 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:16:49 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:16:53 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:17:00 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:17:13 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:17:39 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:18:30 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:49 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:50 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:50 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:52 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:53 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:55 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:19:58 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:20:05 [emerg] 1#1: host not found in upstream "backend-1:8000" in /etc/nginx/nginx.conf:63
+2025/07/03 23:21:48 [warn] 21#21: *3 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.20.0.1, server: localhost, request: "GET /favicon.ico?favicon.929e214e.ico HTTP/1.1", upstream: "http://172.20.0.5:3000/favicon.ico?favicon.929e214e.ico", host: "localhost", referrer: "http://localhost/"
+2025/07/03 23:44:51 [warn] 21#21: *84 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 172.20.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", upstream: "http://172.20.0.5:3000/favicon.ico", host: "localhost", referrer: "http://localhost/api/docs"
