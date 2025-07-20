@@ -1,0 +1,35 @@
+input EventInput {
+  name: String!
+  startTime: String!
+  endTime: String!
+  location: String!
+  description: String = null
+}
+
+type EventType {
+  name: String!
+  startTime: String!
+  endTime: String!
+  location: String!
+  description: String
+  eventHead: Member
+}
+
+type Member {
+  name: String!
+  email: String!
+}
+
+input MemberInput {
+  name: String!
+  email: String!
+}
+
+type Mutation {
+  addEvent(event: EventInput!, head: MemberInput = null): Boolean!
+  changeEvent(event: EventInput!, head: MemberInput = null): Boolean!
+}
+
+type Query {
+  viewEvents(name: String = null, startTime: String = null, endTime: String = null): [EventType!]!
+}

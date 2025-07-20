@@ -1,23 +1,26 @@
 type Member {
   name: String!
   email: String!
-  phone: String
-  memberType: MemberTypeEnum!
+  rollNumber: String
+  team: MemberTypeEnum!
+  isHead: Boolean!
   status: MemberStatusEnum!
+  createdAt: String
+  updatedAt: String
 }
 
 input MemberInput {
   name: String!
   email: String!
-  phone: String = null
-  memberType: MemberTypeEnum!
+  rollNumber: String = null
+  team: MemberTypeEnum!
+  isHead: Boolean! = false
   status: MemberStatusEnum!
 }
 
 enum MemberStatusEnum {
   ACTIVE
   INACTIVE
-  PENDING
 }
 
 enum MemberTypeEnum {
@@ -36,5 +39,5 @@ type Mutation {
 }
 
 type Query {
-  viewMembers(name: String!): [Member!]!
+  viewMembers(name: String! = "", team: [MemberTypeEnum!]!): [Member!]!
 }

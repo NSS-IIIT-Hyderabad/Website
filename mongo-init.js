@@ -25,8 +25,8 @@ db.members.insertOne({
   name: "Dileepkumar Adari",
   email: "dileepkumar.adari@students.iiit.ac.in",
   rollNumber: "2022101007",
-  role: "admin",
-  isActive: true,
+  team: "admin",
+  status: "active",
   createdAt: new Date(),
   updatedAt: new Date()
 });
