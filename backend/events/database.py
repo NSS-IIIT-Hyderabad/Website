@@ -10,5 +10,5 @@ client = MongoClient(MONGODB_URI)
 
 # get database
 db = client[MONGO_DB]
-nss_db = db["members"]
+nss_db = db["events"]
 
