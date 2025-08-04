@@ -1,4 +1,4 @@
-from model import *
+from backend.model_events import *
 from database import nss_db
 import strawberry
 import datetime

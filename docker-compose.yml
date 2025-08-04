@@ -17,42 +17,24 @@ services:
       - app-network
 
   # Backend API Service (Single instance for development)
-  backend-members:
+  backend:
     build:
-      context: ./backend/members
+      context: ./backend
       dockerfile: Dockerfile.dev
-    container_name: nss-backend-members-dev
+    container_name: nss-backend-dev
     restart: unless-stopped
     environment:
-      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
+      - MONGO_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
       - API_ENV=development
       - API_PORT=8000
     depends_on:
       - mongodb
     volumes:
-      - ./backend/members:/app
+      - ./backend:/app
       - /app/venv
     networks:
       - app-network
   
-  backend-events:
-    build:
-      context: ./backend/events
-      dockerfile: Dockerfile.dev
-    container_name: nss-backend-events-dev
-    restart: unless-stopped
-    environment:
-      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
-      - API_ENV=development
-      - API_PORT=8000
-    depends_on:
-      - mongodb
-    volumes:
-      - ./backend/events:/app
-      - /app/venv
-    networks:
-      - app-network
-
   # Frontend Service (Single instance for development)
   frontend:
     build:
@@ -64,8 +46,7 @@ services:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8000
     depends_on:
-      - backend-members
-      - backend-events
+      - backend
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -87,8 +68,7 @@ services:
       - ./nginx/logs:/var/log/nginx
     depends_on:
       - frontend
-      - backend-members
-      - backend-events
+      - backend
     networks:
       - app-network
 

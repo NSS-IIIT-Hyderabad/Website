@@ -1,4 +1,2 @@
-nss/
 */__pycache__/
-members/venv/
-events/venv/
+venv/

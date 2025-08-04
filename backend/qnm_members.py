@@ -1,8 +1,9 @@
-from model import *
+from backend.model_members import *
 from database import nss_db
 import strawberry
 import datetime
 import pytz
+from qnm_events import queries, mutations
 
 ist = pytz.timezone("Asia/Kolkata")
 time=datetime.datetime.now(ist)
@@ -34,5 +35,5 @@ def viewMembers(name: str = "", team: list[MemberTypeEnum] = None) -> list[Membe
         members = list(nss_db.find({}))
     return members or []
 
-queries=[viewMembers]
-mutations=[addMember, changeMember]
+queries+=[viewMembers]
+mutations+=[addMember, changeMember]
