@@ -1,14 +1,24 @@
-import strawberry
+# db.py
 from pymongo import MongoClient
-from os import getenv
+import os
 
-MONGO_URL = getenv("MONGO_URL", default="mongodb://localhost:27017/")
-MONGO_DB = getenv("MONGO_DB", default="default")
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017/")
+MONGO_DB = os.getenv("MONGO_DB", "default")
 
-# instantiate mongo client
-client = MongoClient(MONGO_URL)
-# get database
-nss_db = client[MONGO_DB]
-membersdb = nss_db["members"]
-eventsdb = nss_db["events"]
+client = None
+db = None
 
+def get_database():
+    global client, db
+    if client is None:
+        client = MongoClient(MONGO_URL)
+        db = client[MONGO_DB]
+    return db
+
+def close_connection():
+    global client, db
+    if client:
+        client.close()
+        client = None
+    if db:
+        db = None

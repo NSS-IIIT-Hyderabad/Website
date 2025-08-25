@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from qnm_members import queries, mutations
+from database import get_database, close_connection
 import os
 import time
 import psutil
@@ -39,8 +40,18 @@ app.add_middleware(
 
 # GraphQL router
 schema = strawberry.Schema(query=Query, mutation=Mutation)
-gqlr = GraphQLRouter(schema, graphiql=True)
+gqlr = GraphQLRouter(schema, graphql_ide='graphiql')
 app.include_router(gqlr, prefix="/graphql")
+
+@app.on_event("startup")
+async def startup_event():
+    # Initialize DB at startup
+    get_database()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    # Clean up DB connection
+    close_connection()
 
 # Health check endpoints
 @app.get("/health")
