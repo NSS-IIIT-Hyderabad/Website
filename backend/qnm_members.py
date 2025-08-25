@@ -1,4 +1,4 @@
-from backend.model_members import *
+from model_members import *
 from database import nss_db
 import strawberry
 import datetime

@@ -8,7 +8,7 @@ MONGO_DB = getenv("MONGO_DB", default="default")
 # instantiate mongo client
 client = MongoClient(MONGO_URL)
 # get database
-db = client[MONGO_DB]
-membersdb = db["members"]
-eventsdb = db["events"]
+nss_db = client[MONGO_DB]
+membersdb = nss_db["members"]
+eventsdb = nss_db["events"]
 

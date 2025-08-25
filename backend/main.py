@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import strawberry
 from strawberry.fastapi import GraphQLRouter
-from backend.qnm_members import queries, mutations
+from qnm_members import queries, mutations
 import os
 import time
 import psutil
