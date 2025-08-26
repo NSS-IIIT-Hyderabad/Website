@@ -1,6 +1,6 @@
 from model_events import *
 from model_members import MemberInput
-from database import nss_db
+from database import db
 import strawberry
 import datetime
 import pytz
@@ -17,7 +17,7 @@ def addEvent(event: EventInput, head: MemberInput | None = None) -> bool:
         head_data = head.model_dump()
         event_data["eventHead"] = head_data
     
-    nss_db.insert_one(event_data)
+    db["events"].insert_one(event_data)
     return True
 
 @strawberry.mutation
@@ -29,7 +29,7 @@ def changeEvent(event: EventInput, head:MemberInput | None = None) -> bool:
         head_data = head.model_dump()
         event_data["eventHead"] = head_data
     
-    result = nss_db.update_one(
+    result = db["events"].update_one(
         {"name": event.name},
         {"$set": event_data}
     )
@@ -38,11 +38,11 @@ def changeEvent(event: EventInput, head:MemberInput | None = None) -> bool:
 @strawberry.field
 def viewEvents(name: str | None = None, startTime:str | None = None, endTime:str | None = None)  -> list[EventType]:
     if name:
-        events = nss_db.find({"name": name})
+        events = db["events"].find({"name": name})
     elif startTime and endTime:
-        events = nss_db.find({"startTime": {"$gte": startTime}, "endTime": {"$lte": endTime}})
+        events = db["events"].find({"startTime": {"$gte": startTime}, "endTime": {"$lte": endTime}})
     else:
-        events = nss_db.find({})
+        events = db["events"].find({})
     events = list(events)
     if not events:
         return []

@@ -1,5 +1,5 @@
 from model_members import *
-from database import nss_db
+from database import db
 import strawberry
 import datetime
 import pytz
@@ -12,14 +12,14 @@ time=datetime.datetime.now(ist)
 def addMember(member: MemberInput) -> bool:
     member_data = member.model_dump()
     member_data["createdAt"] = member_data["updatedAt"] = time.strftime("%Y-%m-%d %H:%M:%S")
-    nss_db.insert_one(member_data)
+    db["members"].insert_one(member_data)
     return True
 
 @strawberry.mutation
 def changeMember(member: MemberInput) -> bool:
     member_data = member.model_dump()
     member_data["updatedAt"] = time.strftime("%Y-%m-%d %H:%M:%S")
-    nss_db.update_one(
+    db["members"].update_one(
         {"rollNumber": member.rollNumber},
         {"$set": member_data}
     )
@@ -28,11 +28,11 @@ def changeMember(member: MemberInput) -> bool:
 @strawberry.field
 def viewMembers(name: str = "", team: list[MemberTypeEnum] = None) -> list[Member]:
     if name:
-        members = list(nss_db.find({"name": name}))
+        members = list(db["members"].find({"name": name}))
     elif team:
-        members = list(nss_db.find({"team": {"$in": team}}))
+        members = list(db["members"].find({"team": {"$in": team}}))
     else:
-        members = list(nss_db.find({}))
+        members = list(db["members"].find({}))
     return members or []
 
 queries+=[viewMembers]

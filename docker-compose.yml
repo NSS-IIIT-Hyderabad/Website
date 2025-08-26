@@ -24,7 +24,7 @@ services:
     container_name: nss-backend-dev
     restart: unless-stopped
     environment:
-      - MONGO_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
+      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
       - API_ENV=development
       - API_PORT=8000
     depends_on:
