@@ -24,7 +24,7 @@ services:
     container_name: nss-backend-dev
     restart: unless-stopped
     environment:
-      - MONGO_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
+      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
       - API_ENV=development
       - API_PORT=8000
     depends_on:
@@ -73,16 +73,16 @@ services:
       - app-network
 
   # Redis for session management and caching
-  redis:
-    image: redis:7-alpine
-    container_name: nss-redis-dev
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - app-network
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: nss-redis-dev
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - app-network
 
 volumes:
   mongodb_data:
