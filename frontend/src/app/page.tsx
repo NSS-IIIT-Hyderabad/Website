@@ -3,9 +3,9 @@ import Navbar from "@/utils/Navbar";
 import Carousel from "@/utils/Carousel";
 
 const images = [
-  "carosel-imgs/1.jpeg",
-  "carosel-imgs/2.jpg",
-  "carosel-imgs/3.jpg"
+  "/carosel-imgs/1.jpeg",
+  "/carosel-imgs/2.jpg",
+  "/carosel-imgs/3.jpg"
 ];
 
 export default function Home() {
@@ -28,12 +28,15 @@ export default function Home() {
       <Navbar />
       <div
         style={{
-          margin: "0.5rem auto",
-          padding: "0.7rem",
-          maxWidth: "98vw",
-          borderRadius: "1rem",
-          background: "#FAEBE8", // changed from "#fff"
-          boxShadow: "0 2px 12px 0 rgba(0,0,0,0.04)",
+          margin: 0,
+      padding: 0,
+      boxSizing: "border-box",
+      width: "100vw",
+      minHeight: "100vh",
+      overflowX: "hidden",
+      top: 0,
+      left: 0,
+      background: "#faf7f7ff"
         }}
       >
         <Carousel images={images} interval={3000} />

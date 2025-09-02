@@ -97,7 +97,7 @@ export default async function MembersPage() {
       email: "rithik.palla@students.iiit.ac.in",
       name: "Rithik Reddy Palla",
       photoUrl: "",
-      team: "Coordinator",
+      team: "Tech",
       rollNumber: "2024102005",
       status: "active" as "active",
       from: "2022",
