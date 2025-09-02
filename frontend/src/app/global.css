@@ -1,0 +1,54 @@
+/* For Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+
+/* Hide thumb by default */
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 8px;
+  opacity: 0;
+  transition: background 0.2s, opacity 0.3s;
+}
+
+/* Show thumb when .scrolling class is on body */
+body.scrolling ::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* Hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.30);
+}
+
+/* Click effect (darker) */
+::-webkit-scrollbar-thumb:active {
+  background: rgba(0,0,0,0.45);
+}
+
+/* Track matches bg */
+::-webkit-scrollbar-track {
+  background: #FAEBE8; /* Match your bg color */
+}
+
+/* For Firefox */
+html, body, * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) #FAEBE8;
+}
+
+/* Hide scrollbar unless scrolling (for overlay effect) */
+body, html {
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+/* Optional: Hide scrollbar unless scrolling (for horizontal containers) */
+.scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) #FAEBE8;
+}
