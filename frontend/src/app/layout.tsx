@@ -1,3 +1,4 @@
+//@ts-ignore
 import type { Metadata } from "next";
 import "@/app/global.css";
 import React from "react";
@@ -16,6 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <style>{`
+          /* Hide scrollbars for all elements */
+          html, body, * {
+            scrollbar-width: none !important; /* Firefox */
+            -ms-overflow-style: none !important; /* IE 10+ */
+          }
+          ::-webkit-scrollbar {
+            display: none !important; /* Chrome, Safari, Opera */
+          }
+        `}</style>
         {/* Google Fonts: Roboto */}
         <link
           href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"

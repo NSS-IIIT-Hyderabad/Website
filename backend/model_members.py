@@ -9,7 +9,6 @@ class MemberTypeEnum(str, Enum):
     DESIGN = "design"
     CONTENT = "content"
     LOGISTICS = "logistics"
-    COORDINATOR = "coordinator"
     VOLUNTEER = "volunteer"
 
 @strawberry.enum
@@ -23,16 +22,25 @@ class MemberModel(BaseModel):
     email: str
     rollNumber: str | None = None
     team: MemberTypeEnum
-    isHead: bool = False
     status: MemberStatusEnum
-    createdAt: str | None = None
-    updatedAt: str | None = None
+    start: str | None = None
+    end: str | None = None
+    photoUrl: str | None = None
 
 
 @strawberry.experimental.pydantic.type(model=MemberModel, all_fields=True)
 class Member:
     pass
 
-@strawberry.experimental.pydantic.input(model=MemberModel,fields=["name", "email", "rollNumber", "team","isHead", "status"])
+@strawberry.experimental.pydantic.input(model=MemberModel, fields=[
+    "name",
+    "email",
+    "rollNumber",
+    "team",
+    "status",
+    "start",
+    "end",
+    "photoUrl"
+])
 class MemberInput:
     pass

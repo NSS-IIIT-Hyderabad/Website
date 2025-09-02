@@ -10,9 +10,7 @@ time=datetime.datetime.now(ist)
 
 @strawberry.mutation
 def addEvent(event: EventInput, head: MemberInput | None = None) -> bool:
-    event_data = event.model_dump()
-    event_data["createdAt"] = event_data["updatedAt"] = time.strftime("%Y-%m-%d %H:%M:%S")
-    
+    event_data = event.model_dump()    
     if head:
         head_data = head.model_dump()
         event_data["eventHead"] = head_data
@@ -23,8 +21,6 @@ def addEvent(event: EventInput, head: MemberInput | None = None) -> bool:
 @strawberry.mutation
 def changeEvent(event: EventInput, head:MemberInput | None = None) -> bool:
     event_data = event.model_dump()
-    event_data["updatedAt"] = time.strftime("%Y-%m-%d %H:%M:%S")
-    
     if head:
         head_data = head.model_dump()
         event_data["eventHead"] = head_data

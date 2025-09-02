@@ -3,7 +3,7 @@ import Navbar from "@/utils/Navbar";
 import Carousel from "@/utils/Carousel";
 
 const images = [
-  "carosel-imgs/0.jpg",
+  "carosel-imgs/1.jpeg",
   "carosel-imgs/2.jpg",
   "carosel-imgs/3.jpg"
 ];
