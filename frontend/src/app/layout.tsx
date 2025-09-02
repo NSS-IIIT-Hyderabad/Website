@@ -1,3 +1,4 @@
+//@ts-ignore
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +13,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <head>
+        <style>{`
+          /* Hide scrollbars for all elements */
+          html, body, * {
+            scrollbar-width: none !important; /* Firefox */
+            -ms-overflow-style: none !important; /* IE 10+ */
+          }
+          ::-webkit-scrollbar {
+            display: none !important; /* Chrome, Safari, Opera */
+          }
+        `}</style>
+      </head>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          overflowX: "hidden"
+        }}
+      >
         {children}
       </body>
     </html>
