@@ -1,23 +1,54 @@
 import React from "react";
-import Navbar from "@components/home/Navbar";
-import Slideshow from "@components/home/Slideshow";
-import AboutUs from "@components/home/AboutUs";
-import FlagshipEvents from "@components/home/Navbar";
-import Testimonials from "@components/home/Navbar";
-import VolunteerReg from "@components/home/Navbar";
-import Footer from "@components/home/Footer";
+import Navbar from "@/utils/Navbar";
+import Carousel from "@/utils/Carousel";
+
+const images = [
+  "carosel-imgs/0.jpg",
+  "carosel-imgs/2.jpg",
+  "carosel-imgs/3.jpg"
+];
 
 export default function Home() {
   return (
-    <div>
-      <h1>Welcome to the NSS application!</h1>
-      <Navbar></Navbar>
-      <Slideshow></Slideshow>
-      <AboutUs></AboutUs>
-      <FlagshipEvents></FlagshipEvents>
-      <Testimonials></Testimonials>
-      <VolunteerReg></VolunteerReg>
-      <Footer></Footer>
+    <div
+      style={{
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
+        width: "100vw",
+        minHeight: "100vh",
+        overflowY: "auto",
+        overflowX: "hidden",
+        position: "relative",
+        top: 0,
+        left: 0,
+        background: "#FAEBE8"
+      }}
+    >
+      <Navbar />
+      <div
+        style={{
+          margin: "0.5rem auto",
+          padding: "0.7rem",
+          maxWidth: "98vw",
+          borderRadius: "1rem",
+          background: "#FAEBE8", // changed from "#fff"
+          boxShadow: "0 2px 12px 0 rgba(0,0,0,0.04)",
+        }}
+      >
+        <Carousel images={images} interval={3000} />
+      </div>
+      <h1 style={{ color: "#0eb33fff", padding: "2rem", textAlign: "center" }}>
+        Welcome to the NSS application!
+      </h1>
+      {/* Add printable data for scroll */}
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem" }}>
+        {[...Array(20)].map((_, i) => (
+          <p key={i} style={{ fontSize: "1.1rem", margin: "1.2rem 0" }}>
+            This is sample content line #{i + 1}. Scroll down to see more content and test the horizontal padding and scrollbar symmetry.
+          </p>
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
-import Carousel from "@/utils/Carousel";
 import Navbar from "@/utils/Navbar";
+import Carousel from "@/utils/Carousel";
+
 
 const images = [
   "carosel-imgs/0.jpg",
@@ -13,11 +14,15 @@ export default function EventsPage() {
     <div
       style={{
         margin: 0,
-        padding: "0 1.5rem", // <-- add horizontal padding to parent
+        padding: 0,
         boxSizing: "border-box",
-        width: "100%",
+        width: "100vw",
         minHeight: "100vh",
+        overflowY: "auto",
         overflowX: "hidden",
+        position: "relative",
+        top: 0,
+        left: 0,
         background: "#FAEBE8"
       }}
     >
@@ -26,18 +31,25 @@ export default function EventsPage() {
         style={{
           margin: "0.5rem auto",
           padding: "0.7rem",
-          width: "100%",
-          maxWidth: 1500, // <-- use px, matches Members page
+          maxWidth: "98vw",
           borderRadius: "1rem",
-          background: "#fff",
+          background: "#FAEBE8",
           boxShadow: "0 2px 12px 0 rgba(0,0,0,0.04)",
         }}
       >
         <Carousel images={images} interval={3000} />
       </div>
-      <div style={{ position: "relative", zIndex: 2 }}>
-        <h1 style={{ color: '#050101ff', padding: '2rem' }}>Events</h1>
-        {/* <Calendar /> */}
+      <h1 style={{ color: "#0eb33fff", padding: "2rem", textAlign: "center" }}>
+        Events
+      </h1>
+      {/* Add printable data for scroll or event content here */}
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem" }}>
+        {/* Example content */}
+        {[...Array(10)].map((_, i) => (
+          <p key={i} style={{ fontSize: "1.1rem", margin: "1.2rem 0" }}>
+            This is sample event content line #{i + 1}. Scroll down to see more content and test the horizontal padding and scrollbar symmetry.
+          </p>
+        ))}
       </div>
     </div>
   );

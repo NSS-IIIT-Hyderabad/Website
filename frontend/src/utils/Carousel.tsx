@@ -35,7 +35,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 3000, children }
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "transparent", // <-- FIXED
+        background: "rgba(250, 235, 232, 1)", // <-- updated to rgba
       }}
     >
       <img
@@ -47,9 +47,10 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 3000, children }
           objectFit: "cover",
           transition: "opacity 0.5s cubic-bezier(0.4,0,0.2,1)",
           opacity: transitioning ? 0.5 : 1,
-          borderRadius: "0 0 2rem 2rem", // CURVE at the bottom
-          boxShadow: "0 8px 32px 0 rgba(255, 255, 255, 1)",
+          borderRadius: "0 0 2rem 2rem",
+          boxShadow: "0 8px 32px 0 rgba(250, 235, 232, 1)", // <-- updated to rgba
           display: "block",
+          background: "rgba(250, 235, 232, 1)", // <-- updated to rgba
         }}
       />
       {/* Overlay content (e.g., Navbar) */}

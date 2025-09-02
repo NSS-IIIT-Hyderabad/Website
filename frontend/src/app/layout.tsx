@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import "@/app/global.css";
+import React from "react";
+import ScrollThumbEffect from "./Scrollbar";
 
 export const metadata: Metadata = {
   title: "NSS IIIT-H",
@@ -12,7 +15,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <head>
+        {/* Google Fonts: Roboto */}
+        <link
+          href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body style={{ margin: 0, padding: 0, overflowX: "hidden", fontFamily: "'Roboto', Arial, sans-serif" }}>
+        <ScrollThumbEffect />
         {children}
       </body>
     </html>
