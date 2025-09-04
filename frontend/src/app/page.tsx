@@ -1,6 +1,9 @@
 import React from "react";
 import Navbar from "@/utils/Navbar";
 import Carousel from "@/utils/Carousel";
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+
 
 const images = [
   "/carosel-imgs/1.jpeg",
@@ -25,7 +28,7 @@ export default function Home() {
         background: "#FAEBE8"
       }}
     >
-      <Navbar />
+      <Header />
       <div
         style={{
           margin: 0,
@@ -52,6 +55,7 @@ export default function Home() {
           </p>
         ))}
       </div>
+      <Footer/>
     </div>
   );
 }
