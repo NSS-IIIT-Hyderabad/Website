@@ -44,3 +44,5 @@ export const testimonials: Testimonial[] = [
       "I loved how well-structured everything was. I could focus on my work without worrying about logistics.",
   },
 ];
+//  instead of this data later we will fetch data from backend and also that part of code will be in folder GraphQL_Q&M
+// for events members and testimonials etc

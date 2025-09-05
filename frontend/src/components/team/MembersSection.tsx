@@ -86,13 +86,13 @@ export default function MembersSection({ members }: { members: Member[] }) {
 
   return (
     <div style={{
-      maxWidth: 1600,              // enlarged width
+      maxWidth: 1600,
       margin: "0 auto",
       padding: "2.5rem 1rem",
-      background: "#f9f6f4",
+      background: "none",
       minHeight: "100vh",
-      borderRadius: 36,            // more curve
-      boxShadow: "0 4px 32px 0 rgba(0,0,0,0.04)", // optional, for separation
+      borderRadius: 0,
+      boxShadow: "none",
     }}>
       {/* Top Row: Members title and View All */}
       <div style={{

@@ -150,7 +150,7 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate }) => {
             <div
               key={idx}
               style={{
-                background: "#fff",
+                background: "#e0b4a877",
                 borderRadius: "16px",
                 boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
                 overflow: "hidden",
