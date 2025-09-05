@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: nss-backend-dev
     restart: unless-stopped
+    ports:
+      - "8000:8000"
     environment:
       - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
       - API_ENV=development
@@ -42,6 +44,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: nss-frontend-dev
     restart: unless-stopped
+    ports:
+      - "3000:3000"
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8000
@@ -58,9 +62,6 @@ services:
     image: nginx:alpine
     container_name: nss-nginx-dev
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
       - ./nginx/nginx-dev.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
