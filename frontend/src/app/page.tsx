@@ -1,8 +1,9 @@
 import React from "react";
+import Footer from '@/utils/Footer';
 import Navbar from "@/utils/Navbar";
 import Carousel from "@/utils/Carousel";
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
+import Testimonials from "@/components/home/Testimonials";
+// import Header from '@/components/Header/Header';
 
 
 const images = [
@@ -28,7 +29,7 @@ export default function Home() {
         background: "#FAEBE8"
       }}
     >
-      <Header />
+  <Navbar />
       <div
         style={{
           margin: 0,
@@ -47,6 +48,10 @@ export default function Home() {
       <h1 style={{ color: "#0eb33fff", padding: "2rem", textAlign: "center" }}>
         Welcome to the NSS application!
       </h1>
+      {/* Testimonials section */}
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem" }}>
+        <Testimonials />
+      </div>
       {/* Add printable data for scroll */}
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem" }}>
         {[...Array(20)].map((_, i) => (

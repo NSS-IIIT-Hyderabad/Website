@@ -87,12 +87,17 @@ const Testimonials = () => {
                   background: "#FEF8E0",
                 }}
               >
-                <div
+                <img
+                  src="/favicon.ico"
+                  alt="avatar"
                   style={{
                     width: isActive ? "140px" : "110px",
                     height: isActive ? "140px" : "110px",
                     borderRadius: "50%",
-                    background: "gray",
+                    objectFit: "cover",
+                    boxShadow: isActive
+                      ? "0 2px 12px rgba(0,0,0,0.18)"
+                      : "0 1px 4px rgba(0,0,0,0.10)",
                     transition: "all 0.4s ease-in-out",
                   }}
                 />

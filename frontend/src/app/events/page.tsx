@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import Carousel from "@/utils/Carosel";
+import Carousel from "@/utils/Carousel";
+import Footer from "@/utils/Footer";
 import Navbar from "@/utils/Navbar";
 import Calendar from "@/components/events/Calendar";
 import EventGrid from "@/components/events/EventGrid";
@@ -88,7 +89,10 @@ function formatDateIndian(dateStr: string) {
 }
 
 export default function EventsPage() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  React.useEffect(() => {
+    setSelectedDate(new Date());
+  }, []);
 
   // Helper to get events for a given date
   function getEventsForDate(date: Date) {
@@ -100,7 +104,7 @@ export default function EventsPage() {
   }
 
   // Show today's events initially, or selected date's events
-  const eventsToShow = getEventsForDate(selectedDate);
+  const eventsToShow = selectedDate ? getEventsForDate(selectedDate) : [];
 
   return (
     <div style={{
@@ -112,20 +116,22 @@ export default function EventsPage() {
       overflowX: "hidden",
       top: 0,
       left: 0,
-      background: "#faf7f7ff"
+      background: "#FAEBE8"
     }}>
       <div style={{ position: "relative", zIndex: 1 }}>
-        <Carousel images={images} interval={3000} pageTitle="NSS EVENTS">
+        <Carousel images={images} interval={3000}>
           <Navbar />
         </Carousel>
       </div>
       <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start", gap: "2rem", padding: "2rem" }}>
         <div style={{ flex: "0 0 400px" }}>
-          <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+          {selectedDate && <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />}
         </div>
         <div style={{ flex: "0 0 350px", background: "#222", color: "#fff", borderRadius: "18px", minHeight: "320px", padding: "2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }}>
-          <h2 style={{ marginBottom: "1rem" }}>{formatDateIndian(selectedDate.toISOString())}</h2>
-          {eventsToShow.length === 0 ? (
+          <h2 style={{ marginBottom: "1rem" }}>{selectedDate ? formatDateIndian(selectedDate.toISOString()) : ""}</h2>
+          {!selectedDate ? (
+            <div style={{ color: "#bbb", fontSize: "1.1rem", textAlign: "center" }}>Loading...</div>
+          ) : eventsToShow.length === 0 ? (
             <div style={{ color: "#bbb", fontSize: "1.1rem", textAlign: "center" }}>No events on this date.</div>
           ) : (
             eventsToShow.map((event, idx) => (
@@ -141,8 +147,9 @@ export default function EventsPage() {
         </div>
       </div>
       <div style={{ width: "100%", marginTop: "2rem" }}>
-        <EventGrid selectedDate={selectedDate} />
+        {selectedDate && <EventGrid selectedDate={selectedDate} />}
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,28 +1,28 @@
 import React from "react";
 import MembersSection from "@/components/team/MembersSection";
 // import { getMembersFromDB } from "@/graphql_Q&M/getMembers";
+import Footer from "@/utils/Footer";
 import Navbar from "@/utils/Navbar";
 
-
 export default async function MembersPage() {
-  // let members = [];
-  // try {
-  //   const rawMembers = await getMembersFromDB();
-  //   members = rawMembers.map((doc: any) => ({
-  //     id: doc._id?.toString() ?? "",
-  //     email: doc.email ?? "",
-  //     name: doc.name ?? "",
-  //     photoUrl: doc.photoUrl ?? "",
-  //     team: doc.team ?? "",
-  //     rollNumber: doc.rollNumber ?? "",
-  //     status: doc.status === "active" ? "active" : "inactive" as "active" | "inactive",
-  //     from: doc.from ?? "",
-  //     to: doc.to ?? "",
-  //   }));
-  // } catch (error) {
-  //   console.error("Error fetching members:", error);
-  //   members = [];
-  // }
+//   let members = [];
+//   try {
+//     const rawMembers = await getMembersFromDB();
+//     members = rawMembers.map((doc: any) => ({
+//       id: doc._id?.toString() ?? "",
+//       email: doc.email ?? "",
+//       name: doc.name ?? "",
+//       photoUrl: doc.photoUrl ?? "",
+//       team: doc.team ?? "",
+//       rollNumber: doc.rollNumber ?? "",
+//       status: doc.status === "active" ? "active" : "inactive" as "active" | "inactive",
+//       from: doc.from ?? "",
+//       to: doc.to ?? "",
+//     }));
+//   } catch (error) {
+//     console.error("Error fetching members:", error);
+//     members = [];
+//   }
 
   // Mock data for now
   const members = [
@@ -106,19 +106,22 @@ export default async function MembersPage() {
   ];
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: "72px",
-        boxSizing: "border-box",
-        width: "100%",
-        minHeight: "100vh",
-        overflowX: "hidden",
-        background: "#FAEBE8"
-      }}
-    >
-      <Navbar /> {/* Less transparent */}
-      <MembersSection members={members} />
-    </div>
+    <>
+      <div
+        style={{
+          margin: 0,
+          padding: "72px",
+          boxSizing: "border-box",
+          width: "100%",
+          minHeight: "100vh",
+          overflowX: "hidden",
+          background: "#FAEBE8"
+        }}
+      >
+        <Navbar /> {/* Less transparent */}
+        <MembersSection members={members} />
+      </div>
+      <Footer />
+    </>
   );
 }
