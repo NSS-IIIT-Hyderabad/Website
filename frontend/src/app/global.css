@@ -1,3 +1,6 @@
+/* Import Playfair Display font */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&display=swap');
+
 /* For Chrome, Edge, Safari */
 ::-webkit-scrollbar {
   width: 8px;
