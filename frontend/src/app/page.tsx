@@ -3,6 +3,9 @@ import Footer from '@/utils/Footer';
 import Navbar from "@/utils/Navbar";
 import Carousel from "@/utils/Carousel";
 import Testimonials from "@/components/home/Testimonials";
+import AboutUs from "@/components/home/AboutUs";
+import FlagshipEvents from "@/components/home/FlagshipEvents";
+import VolunteerReg from "@/components/home/VolunteerReg";
 // import Header from '@/components/Header/Header';
 
 
@@ -44,6 +47,8 @@ export default function Home() {
         }}
       >
         <Carousel images={images} interval={3000} />
+        <AboutUs />
+        <FlagshipEvents />
       </div>
       <h1 style={{ color: "#0eb33fff", padding: "2rem", textAlign: "center" }}>
         Welcome to the NSS application!
@@ -60,6 +65,7 @@ export default function Home() {
           </p>
         ))}
       </div>
+      <VolunteerReg />
       <Footer/>
     </div>
   );
