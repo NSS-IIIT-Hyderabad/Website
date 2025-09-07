@@ -9,7 +9,6 @@ import { testimonials, Testimonial } from "@/data/testimonials"; // ✅ alias im
 
 const Testimonials = () => {
   const [current, setCurrent] = useState(0);
-
   return (
     <section
       style={{
@@ -22,10 +21,13 @@ const Testimonials = () => {
       <h2
         style={{
           textAlign: "center",
-          marginBottom: "2rem",
-          color: "#6095E3",
-          fontSize: "2rem",
-          fontWeight: "bold",
+          fontWeight: "400",
+          letterSpacing: "0.5px",
+          color: "#729bf2",
+          fontSize: "3rem",
+          marginBottom: "3rem",
+          // fontWeight: "bold",
+          fontFamily: "Playfair Display, Georgia, serif"
         }}
       >
         Testimonials
