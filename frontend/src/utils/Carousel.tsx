@@ -30,7 +30,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 3000, children }
       style={{
         position: "relative",
         width: "100%",
-        height: "75vh",
+        height: "80vh",
         overflow: "hidden",
         display: "flex",
         alignItems: "center",
@@ -65,13 +65,13 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 3000, children }
             style={{
               display: "inline-block",
               width: "10px",
-              height: "10px"  ,
+              height: "10px",
               borderRadius: "50%",
               background: idx === current ? "#fff" : "#888", // <-- FIXED
               margin: "0 4px",
               cursor: "pointer",
               transition: "background 0.3s",
-              border: "1px solid #333"
+              // border: "1px solid #333"
             }}
             onClick={() => setCurrent(idx)}
           />
