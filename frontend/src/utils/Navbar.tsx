@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 
 const ACTIVE_BG = "#E90000"; // Airtel Red
 const NSS_BLUE = "#1e3a8a"; // NSS Blue theme
@@ -15,10 +16,11 @@ const navItems = [
 ];
 
 const Navbar = () => {
-    const [activeItem, setActiveItem] = useState("/");
+    const router = useRouter();
+    const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    
+
     // Floating particles animation data
     const particles = Array.from({ length: 8 }, (_, i) => ({
         id: i,
@@ -122,11 +124,14 @@ const Navbar = () => {
     };
 
     const handleNavItemClick = (href: string, e: React.MouseEvent<HTMLElement>) => {
-        setActiveItem(href);
         createRipple(e);
+        
         if (isMobileMenuOpen) {
             setIsMobileMenuOpen(false);
         }
+        
+        // Let Next.js Link handle the navigation naturally
+        // The activeItem will be updated automatically via pathname
     };
 
     const isMobile = windowWidth <= 1000;
@@ -390,8 +395,8 @@ const Navbar = () => {
                 {/* Desktop Navigation Items */}
                 <div className="desktop-nav">
                     {navItems.map((item) => {
-                        const isActive = item.href === activeItem;
-                        
+                        // Highlight if pathname matches or is a subpage (except for Home)
+                        const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
                         if (item.label === "Contact Us") {
                             return (
                                 <a
@@ -430,7 +435,6 @@ const Navbar = () => {
                                 </a>
                             );
                         }
-
                         return (
                             <Link 
                                 key={item.label + item.href}
@@ -490,8 +494,7 @@ const Navbar = () => {
             {/* Mobile Menu */}
             <div className="mobile-menu">
                 {navItems.map((item, index) => {
-                    const isActive = item.href === activeItem;
-                    
+                    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
                     if (item.label === "Contact Us") {
                         return (
                             <a
@@ -519,7 +522,6 @@ const Navbar = () => {
                             </a>
                         );
                     }
-
                     return (
                         <Link 
                             key={item.label + item.href}
