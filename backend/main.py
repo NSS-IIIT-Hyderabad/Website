@@ -28,10 +28,9 @@ app = FastAPI(
 )
 
 
-SECRET_KEY = "auth-dev-secret-key"
 SECURE_COOKIES = getenv("SECURE_COOKIES", "False").lower() in ("true", "1", "t")
-CAS_SERVER_URL = "https://login.iiit.ac.in/cas/"
-SERVICE_URL = "http://localhost:8000/login"
+CAS_SERVER_URL = getenv("CAS_SERVER_URL", "https://login.iiit.ac.in/cas/")
+SERVICE_URL = getenv("SERVICE_URL", "http://localhost:8000/login")
 cas_client_nss = CASClient(
     version=3,
     server_url=CAS_SERVER_URL,
@@ -53,11 +52,18 @@ async def login_redirect(request: Request, path: str = None):
         return RedirectResponse(url=cas_login_url)
     
     user, attributes, pgtiou = cas_client_nss.verify_ticket(ticket)
-    payload = {"uid": attributes["uid"]}
+    frontend_url = "http://localhost:3000/"
 
-    # Redirect to frontend with uid as query param
-    frontend_url = f"http://localhost:3000/?uid={payload['uid']}"
-    return RedirectResponse(url=frontend_url)
+    response = RedirectResponse(url=frontend_url)
+    # Set cookie with uid
+    response.set_cookie(
+        key="uid",
+        value=attributes["uid"],
+        httponly=False,  # Prevent JS access if you want
+        secure=False,   # Set to True if using HTTPS
+        samesite="lax"
+    )
+    return response
 
 # Prometheus metrics
 REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])
