@@ -9,10 +9,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DEVELOPMENT=1
 
 # Install system dependencies
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    curl \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gcc \
+        libldap2-dev \
+        libsasl2-dev \
+        libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /backend

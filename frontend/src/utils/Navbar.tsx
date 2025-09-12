@@ -11,21 +11,20 @@ const navItems = [
     { label: "Events", href: "/events" },
     { label: "FAQs", href: "/faqs" },
     { label: "Members", href: "/members" },
-    { label: "Contact Us", href: "/contact" }, 
-    { label: "Login", href: "/login" }
+    { label: "Contact Us", href: "/contact" }
 ];
 
 const Navbar = () => {
     const router = useRouter();
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [windowWidth, setWindowWidth] = useState(1200); // Always start with desktop assumption
+    const [windowWidth, setWindowWidth] = useState(1200);
     const [scrolled, setScrolled] = useState(false);
-    const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
-    const [showInitialAnimation, setShowInitialAnimation] = useState(false); // Control initial animation
-    const hasAnimatedRef = useRef(false); // Track if animation has already run
+    const [isMounted, setIsMounted] = useState(false);
+    const [showInitialAnimation, setShowInitialAnimation] = useState(false);
+    const hasAnimatedRef = useRef(false);
+    const [uid, setUid] = useState<string | null>(null);
 
-    // Floating particles animation data
     const particles = Array.from({ length: 8 }, (_, i) => ({
         id: i,
         delay: i * 0.5,
@@ -45,11 +44,9 @@ const Navbar = () => {
         const button = e.currentTarget;
         const rect = button.getBoundingClientRect();
         const ripple = document.createElement('div');
-        
         const size = Math.max(rect.width, rect.height);
         const x = e.clientX - rect.left - size / 2;
         const y = e.clientY - rect.top - size / 2;
-        
         ripple.style.cssText = `
             position: absolute;
             left: ${x}px;
@@ -62,7 +59,6 @@ const Navbar = () => {
             transform: scale(0);
             animation: ripple 0.6s ease-out;
         `;
-        
         button.appendChild(ripple);
         setTimeout(() => ripple.remove(), 600);
     };
@@ -74,13 +70,9 @@ const Navbar = () => {
 
     const handleNavItemClick = (href: string, e: React.MouseEvent<HTMLElement>) => {
         createRipple(e);
-        
         if (isMobileMenuOpen) {
             setIsMobileMenuOpen(false);
         }
-        
-        // Let Next.js Link handle the navigation naturally
-        // The activeItem will be updated automatically via pathname
     };
     const isMobile = windowWidth <= 1000;
 
@@ -92,37 +84,29 @@ const Navbar = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Prevent body scroll when mobile menu is open
     useEffect(() => {
         if (isMobileMenuOpen) {
-            // Disable body scroll
             document.body.style.overflow = 'hidden';
             document.body.style.paddingRight = 'var(--scrollbar-width, 0px)';
         } else {
-            // Re-enable body scroll
             document.body.style.overflow = 'unset';
             document.body.style.paddingRight = '0px';
         }
-
-        // Cleanup on unmount
         return () => {
             document.body.style.overflow = 'unset';
             document.body.style.paddingRight = '0px';
         };
     }, [isMobileMenuOpen]);
 
-    // Handle mounting and initial window width
     useEffect(() => {
         setIsMounted(true);
         setWindowWidth(window.innerWidth);
-        // Only run animation on first mount (true page load)
         if (!hasAnimatedRef.current) {
             setShowInitialAnimation(true);
             hasAnimatedRef.current = true;
-            // Remove animation after it finishes and force a re-render
             setTimeout(() => {
                 setShowInitialAnimation(false);
-            }, 700); // Animation duration
+            }, 700);
         } else {
             setShowInitialAnimation(false);
         }
@@ -130,11 +114,15 @@ const Navbar = () => {
 
     useEffect(() => {
         if (!isMounted) return;
-        
         const handleResize = () => setWindowWidth(window.innerWidth);
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, [isMounted]);
+
+    useEffect(() => {
+        const match = document.cookie.match(/(?:^|; )uid=([^;]*)/);
+        setUid(match ? decodeURIComponent(match[1]) : null);
+    }, []);
 
     // Show loading state for first render to prevent hydration mismatch
     if (!isMounted) {
@@ -282,6 +270,53 @@ const Navbar = () => {
                             </Link>
                         );
                     })}
+                    {/* Login/Profile Button */}
+                    {!uid ? (
+                        <button
+                            onClick={() => window.location.replace("http://localhost:8000/login")}
+                            style={{
+                                padding: "0.5rem 1.2rem",
+                                borderRadius: "12px",
+                                background: NSS_BLUE,
+                                color: "#fff",
+                                fontWeight: 600,
+                                border: "none",
+                                cursor: "pointer",
+                                marginLeft: "0.5rem"
+                            }}
+                        >
+                            Login
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => window.location.replace(`http://localhost:3000/me/profile/?uid=${uid}`)}
+                            style={{
+                                padding: "0.3rem",
+                                borderRadius: "50%",
+                                background: "#fff",
+                                border: `2px solid ${NSS_BLUE}`,
+                                cursor: "pointer",
+                                width: 40,
+                                height: 40,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginLeft: "0.5rem"
+                            }}
+                            title="Go to profile"
+                        >
+                            <img
+                                src="/favicon.ico"
+                                alt="Profile"
+                                style={{
+                                    width: "28px",
+                                    height: "28px",
+                                    borderRadius: "50%",
+                                    objectFit: "cover"
+                                }}
+                            />
+                        </button>
+                    )}
                 </div>
             </nav>
         );
@@ -520,7 +555,6 @@ const Navbar = () => {
                     WebkitBackdropFilter: "blur(10px)",
                     boxSizing: "border-box",
                     transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                    // borderBottom removed
                     boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.3)" : "none",
                 }}
             >
@@ -603,7 +637,6 @@ const Navbar = () => {
                 {/* Desktop Navigation Items */}
                 <div className="desktop-nav">
                     {navItems.map((item) => {
-                        // Highlight if pathname matches or is a subpage (except for Home)
                         const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
                         if (item.label === "Contact Us") {
                             return (
@@ -686,175 +719,272 @@ const Navbar = () => {
                             </Link>
                         );
                     })}
+                    {/* Login/Profile Button */}
+                    {!uid ? (
+                        <button
+                            onClick={() => window.location.replace("http://localhost:8000/login")}
+                            style={{
+                                padding: "0.5rem 1.2rem",
+                                borderRadius: "12px",
+                                background: NSS_BLUE,
+                                color: "#fff",
+                                fontWeight: 600,
+                                border: "none",
+                                cursor: "pointer",
+                                marginLeft: "0.5rem"
+                            }}
+                        >
+                            Login
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => window.location.replace(`http://localhost:3000/me/profile/?uid=${uid}`)}
+                            style={{
+                                padding: "0.3rem",
+                                borderRadius: "50%",
+                                background: "#fff",
+                                border: `2px solid ${NSS_BLUE}`,
+                                cursor: "pointer",
+                                width: 40,
+                                height: 40,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginLeft: "0.5rem"
+                            }}
+                            title="Go to profile"
+                        >
+                            <img
+                                src="/favicon.ico"
+                                alt="Profile"
+                                style={{
+                                    width: "28px",
+                                    height: "28px",
+                                    borderRadius: "50%",
+                                    objectFit: "cover"
+                                }}
+                            />
+                        </button>
+                    )}
                 </div>
 
-                {/* Hamburger Menu Button */}
-                <div 
-                    className={`hamburger-menu ${isMobileMenuOpen ? 'open' : ''}`}
-                    onClick={toggleMobileMenu}
-                >
-                    <div className="hamburger-line"></div>
-                    <div className="hamburger-line"></div>
-                    <div className="hamburger-line"></div>
-                </div>
+                {/* Hamburger Menu Button - always show on mobile */}
+                {isMobile && (
+                    <div 
+                        className={`hamburger-menu ${isMobileMenuOpen ? 'open' : ''}`}
+                        onClick={toggleMobileMenu}
+                    >
+                        <div className="hamburger-line"></div>
+                        <div className="hamburger-line"></div>
+                        <div className="hamburger-line"></div>
+                    </div>
+                )}
             </nav>
 
             {/* Mobile Menu */}
-            <div className="mobile-menu" style={{ display: isMobile ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-                {/* Close Button */}
-                <button 
-                    className="mobile-close-btn"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-label="Close menu"
-                    title="Close Menu"
-                />
-                {/* Menu Header */}
-                <div style={{
-                    opacity: isMobileMenuOpen ? '1' : '0',
-                    transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(-10px)',
-                    transition: 'all 0.3s ease',
-                    transitionDelay: '0.1s',
-                    marginBottom: '2rem',
-                    paddingTop: '2rem',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                    paddingBottom: '1rem',
-                    width: '100%',
-                    textAlign: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}>
-                    <h3 style={{
-                        color: '#fff',
-                        fontSize: '1.3rem',
-                        fontWeight: 'bold',
-                        margin: 0,
-                        textAlign: 'center',
-                        letterSpacing: '1px',
-                        fontFamily: 'Merriweather, Georgia, serif'
-                    }}>
-                        NAVIGATION
-                    </h3>
-                </div>
-                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                {navItems.map((item, index) => {
-                    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-                    if (item.label === "Contact Us") {
-                        return (
-                            <a
-                                key={item.label}
-                                href="#footer"
-                                className="mobile-nav-item"
+            {isMobileMenuOpen && (
+                <div className="mobile-menu" style={{ display: isMobile ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
+                    {/* Top section: Login/Profile button or favicon */}
+                    <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
+                        {!uid ? (
+                            <button
+                                onClick={() => window.location.replace("http://localhost:8000/login")}
                                 style={{
-                                    '--delay': index,
-                                    color: "#fff",
-                                    textDecoration: "none",
-                                    fontWeight: "600",
-                                    padding: "1rem 0",
+                                    padding: "0.7rem 2rem",
                                     borderRadius: "12px",
-                                    fontSize: "1.1rem",
-                                    letterSpacing: "0.5px",
-                                    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-                                    transition: "all 0.3s ease",
-                                    display: "block",
+                                    background: NSS_BLUE,
+                                    color: "#fff",
+                                    fontWeight: 600,
+                                    border: "none",
                                     cursor: "pointer",
-                                    position: "relative",
-                                    textAlign: 'center',
-                                    width: '100%',
-                                } as React.CSSProperties}
-                                onClick={handleContactClick}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                                    e.currentTarget.style.transform = "translateX(-5px)";
-                                    e.currentTarget.style.paddingLeft = "1rem";
-                                    e.currentTarget.style.borderRadius = "8px";
-                                    e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.background = "transparent";
-                                    e.currentTarget.style.transform = "translateX(0)";
-                                    e.currentTarget.style.paddingLeft = "0";
-                                    e.currentTarget.style.borderRadius = "12px";
-                                    e.currentTarget.style.boxShadow = "none";
+                                    fontSize: "1.1rem",
+                                    boxShadow: "0 2px 8px rgba(30,58,138,0.15)"
                                 }}
                             >
-                                <span style={{ position: "relative", zIndex: 1 }}>
-                                    {item.label}
-                                </span>
+                                Login
+                            </button>
+                        ) : (
+                            <a
+                                href={`http://localhost:3000/me/profile/?uid=${uid}`}
+                                style={{
+                                    width: "48px",
+                                    height: "48px",
+                                    borderRadius: "50%",
+                                    overflow: "hidden",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    boxShadow: "0 2px 8px rgba(30,58,138,0.15)",
+                                    background: "white"
+                                }}
+                                title="Go to profile"
+                            >
+                                <img
+                                    src="/favicon.ico"
+                                    alt="Profile"
+                                    style={{
+                                        width: "40px",
+                                        height: "40px",
+                                        borderRadius: "50%",
+                                        objectFit: "cover"
+                                    }}
+                                />
                             </a>
-                        );
-                    }
-                    return (
-                        <Link 
-                            key={item.label + item.href}
-                            href={item.href}
-                            className="mobile-nav-item"
-                            style={{
-                                '--delay': index,
-                                color: isActive ? ACTIVE_BG : "#fff",
-                                textDecoration: "none",
-                                fontWeight: isActive ? "700" : "600",
-                                padding: "1rem 0",
-                                borderRadius: "12px",
-                                fontSize: "1.1rem",
-                                letterSpacing: "0.5px",
-                                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-                                transition: "all 0.3s ease",
-                                display: "block",
-                                cursor: "pointer",
-                                position: "relative",
-                                background: isActive ? "rgba(233, 0, 0, 0.1)" : "transparent",
-                                textAlign: 'center',
-                                width: '100%',
-                            } as React.CSSProperties}
-                            onClick={(e) => handleNavItemClick(item.href, e)}
-                            onMouseEnter={(e) => {
-                                if (!isActive) {
-                                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                                    e.currentTarget.style.transform = "translateX(-5px)";
-                                    e.currentTarget.style.paddingLeft = "1rem";
-                                    e.currentTarget.style.borderRadius = "8px";
-                                    e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
-                                } else {
-                                    e.currentTarget.style.background = "rgba(233, 0, 0, 0.2)";
-                                    e.currentTarget.style.transform = "translateX(-5px) scale(1.02)";
-                                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(233, 0, 0, 0.3)";
-                                }
-                            }}
-                            onMouseLeave={(e) => {
-                                if (!isActive) {
-                                    e.currentTarget.style.background = "transparent";
-                                    e.currentTarget.style.transform = "translateX(0)";
-                                    e.currentTarget.style.paddingLeft = "0";
-                                    e.currentTarget.style.borderRadius = "12px";
-                                    e.currentTarget.style.boxShadow = "none";
-                                } else {
-                                    e.currentTarget.style.background = "rgba(233, 0, 0, 0.1)";
-                                    e.currentTarget.style.transform = "translateX(0)";
-                                    e.currentTarget.style.boxShadow = "none";
-                                }
-                            }}
-                        >
-                            <span style={{ position: "relative", zIndex: 1 }}>
-                                {item.label}
-                                {isActive && (
-                                    <span style={{
-                                        position: "absolute",
-                                        right: "-10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                        fontSize: "0.8rem",
-                                        color: ACTIVE_BG
-                                    }}>
-                                        ●
+                        )}
+                    </div>
+                    <button 
+                        className="mobile-close-btn"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        aria-label="Close menu"
+                        title="Close Menu"
+                    />
+                    <div style={{
+                        opacity: isMobileMenuOpen ? '1' : '0',
+                        transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(-10px)',
+                        transition: 'all 0.3s ease',
+                        transitionDelay: '0.1s',
+                        marginBottom: '2rem',
+                        paddingTop: '2rem',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        paddingBottom: '1rem',
+                        width: '100%',
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}>
+                        <h3 style={{
+                            color: '#fff',
+                            fontSize: '1.3rem',
+                            fontWeight: 'bold',
+                            margin: 0,
+                            textAlign: 'center',
+                            letterSpacing: '1px',
+                            fontFamily: 'Merriweather, Georgia, serif'
+                        }}>
+                            NAVIGATION
+                        </h3>
+                    </div>
+                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        {navItems.map((item, index) => {
+                            const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+                            if (item.label === "Contact Us") {
+                                return (
+                                    <a
+                                        key={item.label}
+                                        href="#footer"
+                                        className="mobile-nav-item"
+                                        style={{
+                                            '--delay': index,
+                                            color: "#fff",
+                                            textDecoration: "none",
+                                            fontWeight: "600",
+                                            padding: "1rem 0",
+                                            borderRadius: "12px",
+                                            fontSize: "1.1rem",
+                                            letterSpacing: "0.5px",
+                                            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                                            transition: "all 0.3s ease",
+                                            display: "block",
+                                            cursor: "pointer",
+                                            position: "relative",
+                                            textAlign: 'center',
+                                            width: '100%',
+                                        } as React.CSSProperties}
+                                        onClick={handleContactClick}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+                                            e.currentTarget.style.transform = "translateX(-5px)";
+                                            e.currentTarget.style.paddingLeft = "1rem";
+                                            e.currentTarget.style.borderRadius = "8px";
+                                            e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = "transparent";
+                                            e.currentTarget.style.transform = "translateX(0)";
+                                            e.currentTarget.style.paddingLeft = "0";
+                                            e.currentTarget.style.borderRadius = "12px";
+                                            e.currentTarget.style.boxShadow = "none";
+                                        }}
+                                    >
+                                        <span style={{ position: "relative", zIndex: 1 }}>
+                                            {item.label}
+                                        </span>
+                                    </a>
+                                );
+                            }
+                            return (
+                                <Link 
+                                    key={item.label + item.href}
+                                    href={item.href}
+                                    className="mobile-nav-item"
+                                    style={{
+                                        '--delay': index,
+                                        color: isActive ? ACTIVE_BG : "#fff",
+                                        textDecoration: "none",
+                                        fontWeight: isActive ? "700" : "600",
+                                        padding: "1rem 0",
+                                        borderRadius: "12px",
+                                        fontSize: "1.1rem",
+                                        letterSpacing: "0.5px",
+                                        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                                        transition: "all 0.3s ease",
+                                        display: "block",
+                                        cursor: "pointer",
+                                        position: "relative",
+                                        background: isActive ? "rgba(233, 0, 0, 0.1)" : "transparent",
+                                        textAlign: 'center',
+                                        width: '100%',
+                                    } as React.CSSProperties}
+                                    onClick={(e) => handleNavItemClick(item.href, e)}
+                                    onMouseEnter={(e) => {
+                                        if (!isActive) {
+                                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+                                            e.currentTarget.style.transform = "translateX(-5px)";
+                                            e.currentTarget.style.paddingLeft = "1rem";
+                                            e.currentTarget.style.borderRadius = "8px";
+                                            e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                                        } else {
+                                            e.currentTarget.style.background = "rgba(233, 0, 0, 0.2)";
+                                            e.currentTarget.style.transform = "translateX(-5px) scale(1.02)";
+                                            e.currentTarget.style.boxShadow = "0 6px 20px rgba(233, 0, 0, 0.3)";
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!isActive) {
+                                            e.currentTarget.style.background = "transparent";
+                                            e.currentTarget.style.transform = "translateX(0)";
+                                            e.currentTarget.style.paddingLeft = "0";
+                                            e.currentTarget.style.borderRadius = "12px";
+                                            e.currentTarget.style.boxShadow = "none";
+                                        } else {
+                                            e.currentTarget.style.background = "rgba(233, 0, 0, 0.1)";
+                                            e.currentTarget.style.transform = "translateX(0)";
+                                            e.currentTarget.style.boxShadow = "none";
+                                        }
+                                    }}
+                                >
+                                    <span style={{ position: "relative", zIndex: 1 }}>
+                                        {item.label}
+                                        {isActive && (
+                                            <span style={{
+                                                position: "absolute",
+                                                right: "-10px",
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                                fontSize: "0.8rem",
+                                                color: ACTIVE_BG
+                                            }}>
+                                                ●
+                                            </span>
+                                        )}
                                     </span>
-                                )}
-                            </span>
-                        </Link>
-                    );
-                })}
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };
