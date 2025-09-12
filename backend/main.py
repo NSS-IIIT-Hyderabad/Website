@@ -1,33 +1,67 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from qnm_members import queries, mutations
 from database import get_database, close_connection
-import os
+from os import getenv
 import time
 import psutil
 from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
 from fastapi.responses import Response
+from urllib.parse import quote_plus
+from fastapi import Request
+from fastapi.responses import RedirectResponse
+from cas import CASClient
 
 from strawberry.tools import create_type
 Query = create_type("Query", queries)
 Mutation = create_type("Mutation", mutations)
 
-# Prometheus metrics
-REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])
-REQUEST_DURATION = Histogram('http_request_duration_seconds', 'HTTP request duration')
-
-# Create FastAPI app
 app = FastAPI(
     title="NSS IIITH API",
     description="GraphQL API for NSS IIITH Website",
     version="1.0.0",
-    docs_url="/docs",            # This stays
-    openapi_url="/openapi.json", # This stays
-    root_path="/api"                 # <--- THIS IS CRUCIAL!
+    docs_url="/docs",
+    openapi_url="/openapi.json",
+    root_path="/api"
 )
+
+
+SECRET_KEY = "auth-dev-secret-key"
+SECURE_COOKIES = getenv("SECURE_COOKIES", "False").lower() in ("true", "1", "t")
+CAS_SERVER_URL = "https://login.iiit.ac.in/cas/"
+SERVICE_URL = "http://localhost:8000/login"
+cas_client_nss = CASClient(
+    version=3,
+    server_url=CAS_SERVER_URL,
+    service_url=None
+)
+
+REDIRECT_URL = getenv("REDIRECT_URL", "/")
+JWT_SECRET = getenv("JWT_SECRET", "jwt-secret-very-very-secret")
+service_url_formatted = "%s?next=%s"
+
+@app.get("/login")
+@app.get("/login/")
+async def login_redirect(request: Request, path: str = None):
+    next_url = path or REDIRECT_URL
+    cas_client_nss.service_url = service_url_formatted % (SERVICE_URL, quote_plus(next_url))
+    ticket = request.query_params.get("ticket")
+    if not ticket:
+        cas_login_url = cas_client_nss.get_login_url()
+        return RedirectResponse(url=cas_login_url)
+    
+    user, attributes, pgtiou = cas_client_nss.verify_ticket(ticket)
+    payload = {"uid": attributes["uid"]}
+
+    # Redirect to frontend with uid as query param
+    frontend_url = f"http://localhost:3000/?uid={payload['uid']}"
+    return RedirectResponse(url=frontend_url)
+
+# Prometheus metrics
+REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])
+REQUEST_DURATION = Histogram('http_request_duration_seconds', 'HTTP request duration')
 
 # CORS middleware
 app.add_middleware(

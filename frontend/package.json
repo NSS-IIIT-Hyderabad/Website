@@ -14,7 +14,8 @@
     "next": "15.3.4",
     "@apollo/client": "^3.8.0",
     "graphql": "^16.7.1",
-    "swiper": "^11.1.0"
+    "swiper": "^11.1.0",
+    "cookies-next": "^2.1.0"
   },
   "devDependencies": {
     "typescript": "^5",
