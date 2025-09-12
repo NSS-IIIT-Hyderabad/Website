@@ -69,7 +69,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
         }} />
         <span style={{
           fontWeight: 700,
-          fontSize: 24,
+          fontSize: "clamp(18px, 4vw, 24px)", // Responsive section title
           letterSpacing: 1,
           color: "#222"
         }}>{children}</span>
@@ -85,15 +85,19 @@ export default function MembersSection({ members }: { members: Member[] }) {
   }
 
   return (
-    <div style={{
-      maxWidth: 1600,
-      margin: "0 auto",
-      padding: "2.5rem 1rem",
-      background: "none",
-      minHeight: "100vh",
-      borderRadius: 0,
-      boxShadow: "none",
-    }}>
+    <div
+      style={{
+        width: "100%",
+        maxWidth: "100vw",
+        margin: 0,
+        padding: "clamp(0.5rem, 2vw, 1.5rem)", // Responsive padding, less gap from wall
+        background: "none",
+        minHeight: "100vh",
+        borderRadius: 0,
+        boxShadow: "none",
+        boxSizing: "border-box",
+      }}
+    >
       {/* Top Row: Members title and View All */}
       <div style={{
         display: "flex",
@@ -103,7 +107,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
       }}>
         <span style={{
           fontWeight: 700,
-          fontSize: 28,
+          fontSize: "clamp(20px, 5vw, 28px)", // Responsive font size
           letterSpacing: 1,
           color: "#222"
         }}>Members</span>
@@ -114,7 +118,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
             border: "none",
             color: "#E90000",
             fontWeight: 600,
-            fontSize: 16,
+            fontSize: "clamp(14px, 3vw, 16px)", // Responsive button text
             cursor: "pointer",
             textDecoration: "underline",
             padding: "0.3rem 1rem"
@@ -125,14 +129,18 @@ export default function MembersSection({ members }: { members: Member[] }) {
       </div>
 
       {/* Search Bar */}
-      <div style={{
-        marginBottom: 32,
-        display: "flex",
-        alignItems: "center",
-        gap: 16, // <-- gap between input and button
-        maxWidth: 600,
-        width: "100%",
-      }}>
+      <div
+        style={{
+          marginBottom: 32,
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          width: "100%",
+          maxWidth: "600px", // Limit max width of search bar container
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -142,8 +150,8 @@ export default function MembersSection({ members }: { members: Member[] }) {
             border: `2px solid ${
               searchActive ? "#E90000" : searchHover ? "#222" : "#bbb"
             }`,
-            padding: "0 1rem",
-            height: 52,
+            padding: "0 clamp(0.5rem, 2vw, 1rem)", // Responsive padding
+            height: "clamp(44px, 10vw, 52px)", // Responsive height
             flex: 1,
             transition: "border 0.2s",
           }}
@@ -168,7 +176,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
             style={{
               border: "none",
               outline: "none",
-              fontSize: 16,
+              fontSize: "clamp(14px, 3vw, 16px)", // Responsive input font size
               background: "transparent",
               flex: 1,
               height: "100%",
@@ -178,7 +186,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
         <button
           type="button"
           style={{
-            height: 52,
+            height: "clamp(44px, 10vw, 52px)", // Responsive button height
             borderRadius: 12,
             border: "2px solid #E90000", // no border --> "none"
             // If you want a red border instead, use: border: "2px solid #E90000",
@@ -189,8 +197,8 @@ export default function MembersSection({ members }: { members: Member[] }) {
               : "#E90000",
             color: "#fff",
             fontWeight: 600,
-            fontSize: 16, 
-            padding: "0 2rem",
+            fontSize: "clamp(14px, 3vw, 16px)", // Responsive button font size
+            padding: "0 clamp(1rem, 4vw, 2rem)", // Responsive button padding
             cursor: "pointer",
             boxShadow: searchBtnHover
               ? "0 4px 16px rgba(233,0,0,0.12)"
@@ -217,13 +225,18 @@ export default function MembersSection({ members }: { members: Member[] }) {
       )}
       {Object.entries(presentGroups).map(([team, group]) => (
         <div key={team} style={{ marginBottom: 32 }}>
-          <div style={{ fontWeight: 600, fontSize: 17, margin: "12px 0 20px 0" }}>{team}</div>
+          <div style={{ fontWeight: 600, fontSize: "clamp(15px, 3.5vw, 17px)", margin: "12px 0 20px 0" }}>{team}</div>
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "2.5rem",
+              gridTemplateColumns: `
+                repeat(auto-fit, minmax(180px, 1fr))
+              `, // Responsive grid: auto-fit with minimum card width
+              gap: "clamp(2rem, 5vw, 3rem) clamp(1rem, 3vw, 2.5rem)", // Responsive gaps
               justifyItems: "center",
+              maxWidth: "100%",
+              // Media query-like behavior with container queries would be ideal,
+              // but we'll use CSS Grid's auto-fit for now
             }}
           >
             {(showAll ? group : group.slice(0, MAX_CARDS)).map(member => (
@@ -242,13 +255,16 @@ export default function MembersSection({ members }: { members: Member[] }) {
         .sort((a, b) => Number(b[0]) - Number(a[0])) // Descending by year
         .map(([year, group]) => (
           <div key={year} style={{ marginBottom: 32 }}>
-            <div style={{ fontWeight: 600, fontSize: 17, margin: "12px 0 20px 0" }}>{year}</div>
+            <div style={{ fontWeight: 600, fontSize: "clamp(15px, 3.5vw, 17px)", margin: "12px 0 20px 0" }}>{year}</div>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "2.5rem",
+                gridTemplateColumns: `
+                  repeat(auto-fit, minmax(180px, 1fr))
+                `, // Responsive grid: auto-fit with minimum card width
+                gap: "clamp(2rem, 5vw, 3rem) clamp(1rem, 3vw, 2.5rem)", // Responsive gaps
                 justifyItems: "center",
+                maxWidth: "100%",
               }}
             >
               {(showAll ? group : group.slice(0, MAX_CARDS)).map(member => (

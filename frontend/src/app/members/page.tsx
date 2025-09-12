@@ -110,7 +110,9 @@ export default async function MembersPage() {
       <div
         style={{
           margin: 0,
-          padding: "72px",
+          paddingTop: "calc(64px + 2vw)",
+          paddingRight: "clamp(0.5rem, 2vw, 2rem)",
+          paddingLeft: "clamp(0.25rem, 1vw, 1rem)", // Add small left padding
           boxSizing: "border-box",
           width: "100%",
           minHeight: "100vh",
@@ -118,7 +120,7 @@ export default async function MembersPage() {
           background: "#FAEBE8"
         }}
       >
-        <Navbar /> {/* Less transparent */}
+        <Navbar />
         <MembersSection members={members} />
       </div>
       <Footer />

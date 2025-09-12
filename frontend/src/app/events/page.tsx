@@ -118,12 +118,12 @@ export default function EventsPage() {
       left: 0,
       background: "#FAEBE8"
     }}>
-      <div style={{ position: "relative", zIndex: 1 }}>
+      <div style={{ position: "relative", zIndex: 2 }}>
         <Carousel images={images} interval={3000}>
-          <Navbar />
         </Carousel>
+          <Navbar />
       </div>
-      <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start", gap: "2rem", padding: "2rem" }}>
+      <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start", gap: "2rem", padding: "2rem" }}>
         <div style={{ flex: "0 0 400px" }}>
           {selectedDate && <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />}
         </div>
