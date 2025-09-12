@@ -39,10 +39,6 @@ export default function Home() {
           padding: 0,
           boxSizing: "border-box",
           width: "100vw",
-          minHeight: "100vh",
-          overflowX: "hidden",
-          top: 0,
-          left: 0,
           background: "#faf7f7ff"
         }}
       >
