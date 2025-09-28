@@ -8,7 +8,6 @@ import FlagshipEvents from "@/components/home/FlagshipEvents";
 import VolunteerReg from "@/components/home/VolunteerReg";
 // import Header from '@/components/Header/Header';
 
-
 const images = [
   "/carosel-imgs/1.jpeg",
   "/carosel-imgs/2.jpg",
