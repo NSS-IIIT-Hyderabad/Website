@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 const carouselImages = [
-  "/carosel-imgs/1.jpeg",
-  "/carosel-imgs/2.jpg",
-  "/carosel-imgs/3.jpg"
+  "/carousel_images/1.jpeg",
+  "/carousel_images/2.jpg",
+  "/carousel_images/3.jpg"
 ];
 
 const sampleEvents = [
@@ -95,8 +95,9 @@ interface EventGridProps {
 
 const EventGrid: React.FC<EventGridProps> = ({ selectedDate }) => {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all"); // all, ongoing, upcoming, past
 
-
+  // Function to determine event status
   function getEventStatus(event: any) {
     const today = new Date();
     const start = new Date(event.startTime);
@@ -108,78 +109,63 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate }) => {
   }
 
 
+
+
+
   // Use sample data
   const events = sampleEvents;
-  // Filter by search
-  const filteredEvents = events.filter((event: any) =>
-    event.name.toLowerCase().includes(search.toLowerCase())
-  );
-  // Filter by selected date (show events that start or end on selected date)
-  const selectedDateStr = selectedDate.toISOString().slice(0, 10);
-  const eventsOnSelectedDate = filteredEvents.filter((event: any) => {
-    const start = event.startTime.slice(0, 10);
-    const end = event.endTime.slice(0, 10);
-    return selectedDateStr >= start && selectedDateStr <= end;
+    // Filter events based on search query and status filter
+  const filteredEvents = events.filter((event: any) => {
+    const matchesSearch = event.name.toLowerCase().includes(search.toLowerCase()) ||
+      event.description.toLowerCase().includes(search.toLowerCase()) ||
+      event.location.toLowerCase().includes(search.toLowerCase());
+    
+    if (filter === "all") return matchesSearch;
+    return matchesSearch && getEventStatus(event) === filter;
   });
 
-  const ongoingEvents = filteredEvents.filter((e: any) => getEventStatus(e) === "ongoing");
-  const upcomingEvents = filteredEvents.filter((e: any) => getEventStatus(e) === "upcoming");
-  const pastEvents = filteredEvents.filter((e: any) => getEventStatus(e) === "past");
 
-  const renderSection = (title: string, events: any[], columns: number = 3) => (
-    <div style={{ width: "100%", marginBottom: "2rem" }}>
-      <h2 style={{ fontWeight: 600, fontSize: "1.3rem", margin: "2rem 0 1rem 0", color: "#222" }}>{title}</h2>
-      <div style={{
-        borderBottom: "1px solid #eee",
-        marginBottom: "1.5rem"
-      }}></div>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        gap: "2rem",
-        justifyContent: "center",
-        alignItems: "stretch",
-        width: "100%",
-        boxSizing: "border-box",
-        overflowX: "hidden"
-      }}>
-        {events.length === 0 ? (
-          <div style={{ gridColumn: "1/-1", textAlign: "center", color: "#888", fontSize: "1.2rem" }}>No events found.</div>
-        ) : (
-          events.map((event: any, idx: number) => (
-            <div
-              key={idx}
-              style={{
-                background: "#fff", //#e0b4a877
-                borderRadius: "16px",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                padding: "1.5rem 1rem",
-                transition: "transform 0.3s, box-shadow 0.3s",
-                cursor: "pointer"
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLDivElement).style.transform = "scale(1.04)";
-                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(124,58,237,0.18)";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLDivElement).style.transform = "scale(1)";
-                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.08)";
-              }}
-            >
-              {event.image && (
-                <img src={event.image} alt={event.name} style={{ width: "100%", maxWidth: 420, height: "220px", objectFit: "cover", borderRadius: "12px", marginBottom: "1rem", transition: "transform 0.3s" }} />
-              )}
-              <h3 style={{ margin: "1rem 0 0.5rem 0", fontSize: "1.2rem", color: "#222", textAlign: "center" }}>{event.name}</h3>
-              <div style={{ color: "#7c3aed", fontWeight: 500, marginBottom: "0.5rem" }}>{formatDateIndian(event.startTime)} - {formatDateIndian(event.endTime)}</div>
-              <p style={{ color: "#444", fontSize: "1rem", textAlign: "center" }}>{event.description}</p>
-              <div style={{ color: "#888", fontSize: "0.9rem", marginTop: "0.5rem" }}>{event.location}</div>
-            </div>
-          ))
-        )}
+  const renderEventCard = (event: any, idx: number) => (
+    <div
+      key={idx}
+      className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group"
+    >
+      {event.image && (
+        <div className="relative overflow-hidden">
+          <img 
+            src={event.image} 
+            alt={event.name} 
+            className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+      )}
+      <div className="p-6">
+        <h3 className="font-merriweather text-xl font-bold text-blue-800 mb-3 group-hover:text-blue-900 transition-colors duration-300">
+          {event.name}
+        </h3>
+        
+        <div className="flex items-center gap-2 text-orange-600 font-medium mb-3">
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+          </svg>
+          <span className="text-sm">
+            {formatDateIndian(event.startTime)} - {formatDateIndian(event.endTime)}
+          </span>
+        </div>
+        
+        <div className="flex items-center gap-2 text-green-600 font-medium mb-4">
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+          </svg>
+          <span className="text-sm">{event.location}</span>
+        </div>
+        
+        <p className="text-gray-600 text-sm leading-relaxed mb-4">{event.description}</p>
+        
+        <button className="w-full bg-blue-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-900 transition-all duration-300 transform hover:scale-105">
+          View Details
+        </button>
       </div>
     </div>
   );
@@ -187,44 +173,74 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate }) => {
 
 
   return (
-    <div style={{
-      width: "100%",
-      marginTop: "2rem",
-      paddingLeft: "5vw",
-      paddingRight: "5vw",
-      boxSizing: "border-box",
-      overflowX: "hidden"
-    }}>
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          style={{
-            padding: "0.75rem 1rem",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-            fontSize: "1rem",
-            width: "320px",
-            marginRight: "1rem"
-          }}
-        />
-        <button style={{
-          padding: "0.75rem 1.5rem",
-          borderRadius: "8px",
-          background: "#7c3aed",
-          color: "#fff",
-          border: "none",
-          fontWeight: 600,
-          fontSize: "1rem",
-          cursor: "pointer"
-        }}>Search</button>
+    <div className="w-full">
+      {/* Search Bar */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 max-w-md mx-auto">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            placeholder="Search events by name..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-all duration-300 text-gray-700 bg-white shadow-sm"
+          />
+          <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <button className="px-6 py-3 bg-blue-800 hover:bg-blue-900 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+          Search
+        </button>
       </div>
-      {/* Only render the sections, not the selected date box here */}
-      {renderSection("Ongoing Events", ongoingEvents)}
-      {renderSection("Upcoming Events", upcomingEvents)}
-      {renderSection("Past Events", pastEvents)}
+      
+      {/* Filter Buttons */}
+      <div className="flex flex-wrap justify-center gap-3 mb-12">
+        {[
+          { key: "all", label: "All Events" },
+          { key: "ongoing", label: "Present" },
+          { key: "upcoming", label: "Upcoming" },
+          { key: "past", label: "Past" }
+        ].map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => setFilter(key)}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl ${
+              filter === key
+                ? "bg-blue-800 text-white hover:bg-blue-900"
+                : "bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-500 hover:text-blue-700"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      
+      {/* Results Count */}
+      {filteredEvents.length > 0 && (
+        <div className="text-center mb-8">
+          <p className="text-gray-600">
+            Showing <span className="font-semibold text-blue-800">{filteredEvents.length}</span> 
+            {filter === "all" ? " events" : ` ${filter} events`}
+            {search && ` matching "${search}"`}
+          </p>
+        </div>
+      )}
+      
+      {/* All Events Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {filteredEvents.length === 0 ? (
+          <div className="col-span-full text-center py-16">
+            <div className="text-6xl mb-4">📅</div>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">No events found</h3>
+            <p className="text-gray-500">
+              {search ? `No events match "${search}"` : `No ${filter === "all" ? "" : filter + " "}events available`}
+              {(search || filter !== "all") && " - try adjusting your filters"}
+            </p>
+          </div>
+        ) : (
+          filteredEvents.map((event, idx) => renderEventCard(event, idx))
+        )}
+      </div>
     </div>
   );
 };

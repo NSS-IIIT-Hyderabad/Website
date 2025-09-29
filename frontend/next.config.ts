@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   experimental: {
     // optimizeCss is deprecated in Next.js 15+
+    turbo: {
+      resolveAlias: {
+        // Ensure proper CSS handling with Turbopack
+      }
+    }
   },
   compress: true,
   generateEtags: true,
@@ -27,7 +32,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  devIndicators: false
+  devIndicators: false,
+  // Ensure CSS is processed correctly
+  webpack: (config: any, { dev, isServer }: { dev: boolean; isServer: boolean }) => {
+    if (!dev && !isServer) {
+      // Optimize CSS in production
+      config.optimization = {
+        ...config.optimization,
+        sideEffects: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

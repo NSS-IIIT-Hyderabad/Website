@@ -5,141 +5,97 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-import { testimonials, Testimonial } from "@/data/testimonials"; // ✅ alias import
+import { testimonials, Testimonial } from "@/data/testimonials";
 
 const Testimonials = () => {
   const [current, setCurrent] = useState(0);
+  
   return (
-    <section
-      style={{
-        padding: "4rem 2rem",
-        width: "66%",
-        margin: "0 auto",
-        background: "#FAEBE8",
-      }}
-    >
-      <h2
-        style={{
-          textAlign: "center",
-          fontWeight: "400",
-          letterSpacing: "0.5px",
-          color: "#729bf2",
-          fontSize: "3rem",
-          marginBottom: "3rem",
-          // fontWeight: "bold",
-          fontFamily: "Playfair Display, Georgia, serif"
-        }}
-      >
-        Testimonials
-      </h2>
+    <section className="w-full min-h-[calc(100vh-5rem)] h-auto flex flex-col justify-center py-4 sm:py-6 lg:py-8">
+      <div className="text-center mb-4 sm:mb-6 lg:mb-8 px-4">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-800 mb-2 sm:mb-3 lg:mb-4">
+          Voices of Change
+        </h2>
+        <p className="text-sm sm:text-base md:text-lg text-gray-700 max-w-xl lg:max-w-2xl mx-auto mb-2 sm:mb-3 lg:mb-4">
+          Stories from volunteers making a real difference.
+        </p>
+        <div className="w-16 sm:w-20 lg:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-orange-500 via-blue-800 to-green-600 mx-auto rounded-full"></div>
+      </div>
 
-      <Swiper
-        modules={[Autoplay]}
-        loop={true}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
-        slidesPerView={"auto"}
-        centeredSlides
-        onSlideChange={(swiper) => setCurrent(swiper.realIndex)} // track current
-        style={{ overflow: "visible" }}
-      >
+      <div className="flex-1 flex items-center justify-center px-2 sm:px-2 py-3 sm:py-4 lg:py-6">
+        <Swiper
+          modules={[Autoplay]}
+          loop={true}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          slidesPerView={1}
+          spaceBetween={8}
+          centeredSlides
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 24,
+            },
+          }}
+          onSlideChange={(swiper) => setCurrent(swiper.realIndex)}
+          className="w-full h-[24rem] sm:h-[28rem] lg:h-[36rem] max-w-full px-2 sm:px-0"
+        >
         {testimonials.map((t: Testimonial, index: number) => {
           const isActive = index === current;
-          const isNext = index === (current + 1) % testimonials.length; // card to the right
-          const isPrev =
-            index === (current - 1 + testimonials.length) % testimonials.length; // card to the left
-
-          let transform = "scale(0.9)";
-          if (isActive) {
-            transform = "scale(1)";
-          } else if (isNext) {
-            transform = "translateX(60px) scale(0.9)"; // push right
-          } else if (isPrev) {
-            transform = "translateX(-60px) scale(0.9)"; // push left
-          }
+          const isNext = index === (current + 1) % testimonials.length;
+          const isPrev = index === (current - 1 + testimonials.length) % testimonials.length;
+          const isVisible = isActive || isNext || isPrev;
 
           return (
             <SwiperSlide
               key={index}
-              style={{
-                background: "white",
-                borderRadius: "16px",
-                boxShadow: isActive
-                  ? "0 6px 16px rgba(0,0,0,0.2)"
-                  : "0 2px 8px rgba(0,0,0,0.1)",
-                width: isActive ? "600px" : "500px",
-                minHeight: "320px",
-                display: "flex",
-                flexDirection: "row",
-                overflow: "hidden",
-                position: "relative",
-                transform,
-                opacity: isActive ? 1 : 0.7,
-                zIndex: isActive ? 2 : 1,
-                transition: "all 0.6s ease-in-out",
-              }}
+              className={`transition-all duration-500 ease-in-out p-1 sm:p-2 lg:p-3 ${
+                !isVisible ? 'opacity-0 pointer-events-none' : ''
+              }`}
             >
-              {/* Left side: avatar + background block */}
-              <div
-                style={{
-                  flex: "5 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  position: "relative",
-                  background: "#FEF8E0",
-                }}
-              >
-                <img
-                  src="/favicon.ico"
-                  alt="avatar"
-                  style={{
-                    width: isActive ? "140px" : "110px",
-                    height: isActive ? "140px" : "110px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    boxShadow: isActive
-                      ? "0 2px 12px rgba(0,0,0,0.18)"
-                      : "0 1px 4px rgba(0,0,0,0.10)",
-                    transition: "all 0.4s ease-in-out",
-                  }}
-                />
-              </div>
+              <div className={`bg-white rounded-lg sm:rounded-xl lg:rounded-2xl h-[20rem] sm:h-[26rem] lg:h-[30rem] flex flex-col overflow-hidden relative transition-all duration-500 border-2 ${
+                isActive 
+                  ? 'shadow-lg sm:shadow-xl lg:shadow-2xl opacity-100 scale-102 sm:scale-103 lg:scale-105 border-blue-300 z-10' 
+                  : 'shadow-md lg:shadow-lg opacity-60 scale-98 sm:scale-97 lg:scale-95 border-gray-200 z-0'
+              }`}>
+                <div className="flex-shrink-0 h-24 sm:h-32 lg:h-40 flex items-center justify-center bg-gradient-to-br from-blue-50 to-orange-50 rounded-t-xl lg:rounded-t-2xl">
+                  <img
+                    src="/favicon.ico"
+                    alt="avatar"
+                    className={`rounded-full object-cover transition-all duration-500 border-2 sm:border-3 lg:border-4 border-white shadow-md lg:shadow-lg ${
+                      isActive 
+                        ? 'w-16 h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28' 
+                        : 'w-12 h-12 sm:w-16 sm:h-16 lg:w-24 lg:h-24'
+                    }`}
+                  />
+                </div>
 
-              {/* Right side: text */}
-              <div
-                style={{
-                  flex: "7 0 0",
-                  padding: "2rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <h3
-                  style={{
-                    margin: 0,
-                    fontSize: "1.2rem",
-                    fontWeight: "600",
-                  }}
-                >
-                  {t.name} – {t.title}
-                </h3>
-                <p
-                  style={{
-                    marginTop: "1rem",
-                    fontSize: "1.15rem",
-                    color: "#000",
-                    lineHeight: 1.6,
-                    textAlign: "left",
-                  }}
-                >
-                  “{t.quote}”
-                </p>
+                <div className="flex-1 p-4 sm:p-6 lg:p-10 flex flex-col justify-center text-center">
+                  <h3 className={`font-bold text-blue-800 mb-2 sm:mb-3 lg:mb-4 ${
+                    isActive ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg lg:text-xl'
+                  }`}>
+                    {t.name}
+                  </h3>
+                  <p className={`text-gray-600 mb-2 sm:mb-4 lg:mb-6 font-medium ${
+                    isActive ? 'text-sm sm:text-base lg:text-lg' : 'text-xs sm:text-sm lg:text-base'
+                  }`}>
+                    {t.title}
+                  </p>
+                  <p className={`text-gray-700 leading-relaxed italic ${
+                    isActive ? 'text-sm sm:text-lg lg:text-xl line-clamp-3 sm:line-clamp-6 lg:line-clamp-8' : 'text-xs sm:text-base lg:text-lg line-clamp-2 sm:line-clamp-4 lg:line-clamp-6'
+                  }`}>
+                    "{t.quote}"
+                  </p>
+                </div>
               </div>
             </SwiperSlide>
           );
         })}
-      </Swiper>
+        </Swiper>
+      </div>
     </section>
   );
 };

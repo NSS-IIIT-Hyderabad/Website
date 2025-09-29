@@ -1,6 +1,6 @@
-// Fixed MemberCard.tsx
 "use client";
 import React, { useState } from "react";
+import { CheckCircle, XCircle, Linkedin, Mail } from "lucide-react";
 
 type Member = {
   email: string;
@@ -8,7 +8,6 @@ type Member = {
   photoUrl: string;
   team: string;
   rollNumber: string;
-  status: "active" | "inactive";
   from: string;
   to: string;
 };
@@ -28,95 +27,116 @@ export default function MemberCard({ member }: { member: Member }) {
 
   const handleImageError = () => setImageError(true);
 
-  // Social icons
-  const linkedInUrl = `https://www.linkedin.com/in/${member.rollNumber}`; // You may want to change this logic
+  // Social links
+  const linkedInUrl = `https://www.linkedin.com/in/${member.rollNumber}`;
   const emailUrl = `mailto:${member.email}`;
+
+  // Team colors based on Indian flag theme
+  const getTeamGradient = () => {
+    switch (member.team.toLowerCase()) {
+      case 'tech':
+        return 'from-green-500 to-blue-600';
+      case 'design':
+        return 'from-orange-500 to-red-500';
+      default:
+        return 'from-purple-500 to-pink-500';
+    }
+  };
+
+  const getStatusBadge = () => {
+    const isActive = !member.to || member.to.toLowerCase() === 'present';
+    if (isActive) {
+      return 'bg-green-100 text-green-800 border border-green-200';
+    }
+    return 'bg-gray-100 text-gray-600 border border-gray-200';
+  };
 
   return (
     <div
-      style={{
-        perspective: 1200,
-        width: "100%",
-        maxWidth: 220,
-        minWidth: 180, // Minimum width for very small screens
-        height: "auto",
-        aspectRatio: "220/260", // Maintain proportions
-        margin: "10px auto 32px auto", // Center on smaller screens
-        display: "block",
-        position: "relative", // Add position relative to help with positioning
-      }}
+      className="w-full max-w-[280px] min-w-[220px] h-auto aspect-[280/320] mx-auto my-4 relative group"
+      style={{ perspective: 1200 }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <div
+        className={`relative w-full h-full transition-all duration-700 ease-out rounded-3xl cursor-pointer ${
+          hover 
+            ? 'shadow-2xl shadow-blue-200/50' 
+            : 'shadow-lg shadow-gray-200/50'
+        }`}
         style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          transition: "transform 1.2s cubic-bezier(.4,2,.3,1)",
           transformStyle: "preserve-3d",
-          borderRadius: 24,
-          boxShadow: hover
-            ? "0 8px 24px rgba(0,0,0,0.18)"
-            : "0 2px 12px rgba(0,0,0,0.07)",
-          transform: hover ? "rotateY(180deg) translateX(0)" : "none", // Removed scale and fixed horizontal position
-          cursor: "pointer",
-          transformOrigin: "center center", // ensure symmetrical flip
-          left: 0, // Keep position fixed during flip
+          transform: hover ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
       >
         {/* Front Side */}
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backfaceVisibility: "hidden",
-            background: "#fff",
-            borderRadius: 24,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: 20,
-            textAlign: "center",
-            justifyContent: "center",
-          }}
+          className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white to-gray-50 rounded-3xl flex flex-col items-center p-6 text-center justify-between border-2 border-gray-100 hover:border-blue-200 transition-all duration-300"
+          style={{ backfaceVisibility: "hidden" }}
         >
-          <div
+          {/* Indian Flag Border */}
+          <div 
+            className="absolute top-0 left-0 w-full h-1 rounded-t-lg"
             style={{
-              width: "clamp(120px, 70%, 160px)", // Responsive image size
-              height: "clamp(120px, 70%, 160px)",
-              borderRadius: "50%",
-              overflow: "hidden",
-              marginBottom: 12,
-              border: "3px solid #f3f3f3", // Slightly thinner border on smaller screens
-              background: "#eee",
-              alignSelf: "center",
+              background: "linear-gradient(to right, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%)"
             }}
-          >
-            <img
-              src={getImageSrc()}
-              alt={member.name}
+          />
+          
+          {/* Profile Section */}
+          <div className="flex flex-col items-center">
+            <div
+              className="relative mb-4"
               style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
+                width: 120,
+                height: 120,
+                borderRadius: "50%",
+                overflow: "hidden",
+                border: "4px solid transparent",
+                background: `linear-gradient(white, white) padding-box, linear-gradient(135deg, #FF9933, #138808) border-box`,
+                padding: 2,
               }}
-              onError={handleImageError}
-            />
+            >
+              <div className="w-full h-full rounded-full overflow-hidden bg-gray-100">
+                <img
+                  src={getImageSrc()}
+                  alt={member.name}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  onError={handleImageError}
+                />
+              </div>
+              
+              {/* Status Indicator */}
+              <div 
+                className={`absolute -top-1 -right-1 w-6 h-6 rounded-full border-3 border-white ${
+                  (!member.to || member.to.toLowerCase() === 'present')
+                    ? 'bg-green-500 animate-pulse' 
+                    : 'bg-gray-400'
+                }`}
+              />
+            </div>
+            
+            <h3 className="text-xl font-bold text-gray-800 mb-2 leading-tight">
+              {member.name}
+            </h3>
+            
+            {/* Team Badge */}
+            <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r ${getTeamGradient()} text-white mb-3 shadow-lg`}>
+              {member.team}
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-            <h3 style={{ fontWeight: 700, fontSize: "clamp(14px, 4vw, 18px)", color: "#222", margin: 0 }}>{member.name}</h3>
-            {member.status === "inactive" && (
-              <div style={{ color: "#555", fontSize: "clamp(12px, 3vw, 14px)" }}>{member.team}</div>
-            )}
-            <div style={{ color: "#666", fontSize: "clamp(10px, 2.5vw, 12px)" }}>
-              {member.status === "active"
-                ? <span>{member.from} - present</span>
-                : <span>{member.from} - {member.to}</span>
+          
+          {/* Duration Info */}
+          <div className="w-full">
+            <div className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium ${getStatusBadge()} w-full justify-center`}>
+              <span className="mr-2">
+                {(!member.to || member.to.toLowerCase() === 'present') ? 
+                  <CheckCircle className="w-4 h-4 text-green-600 inline" /> : 
+                  <XCircle className="w-4 h-4 text-red-600 inline" />
+                }
+              </span>
+              {(!member.to || member.to.toLowerCase() === 'present')
+                ? `${member.from} - Present`
+                : `${member.from} - ${member.to}`
               }
             </div>
           </div>
@@ -124,65 +144,59 @@ export default function MemberCard({ member }: { member: Member }) {
 
         {/* Back Side */}
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backfaceVisibility: "hidden",
-            background: "#fff",
-            borderRadius: 24,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 20,
-            textAlign: "center",
-            transform: "rotateY(180deg)",
-          }}
+          className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-800 via-blue-700 to-slate-800 rounded-3xl flex flex-col items-center justify-center p-6 text-center text-white border-2 border-blue-200"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
+          {/* Dark overlay for better text visibility */}
+          <div className="absolute inset-0 bg-black/40 rounded-3xl" />
+          
+          {/* Blurred Background Image */}
           <div
-            style={{
-              width: "clamp(120px, 70%, 160px)", // Responsive image size
-              height: "clamp(120px, 70%, 160px)",
-              borderRadius: "50%",
-              overflow: "hidden",
-              marginBottom: 12,
-              border: "3px solid #f3f3f3", // Slightly thinner border on smaller screens
-              background: "#eee",
-              filter: "blur(6px)",
-              position: "relative",
-              alignSelf: "center",
-            }}
+            className="absolute top-0 left-0 w-full h-full rounded-3xl overflow-hidden opacity-10"
           >
             <img
               src={getImageSrc()}
-              alt={member.name}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-              onError={handleImageError}
+              alt=""
+              className="w-full h-full object-cover blur-lg brightness-[0.2]"
             />
           </div>
-          <div style={{ display: "flex", flexDirection: "row", gap: 18, justifyContent: "center" }}>
-            {/* LinkedIn Icon */}
-            <a href={linkedInUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#0077b5" }}>
-              <svg width="clamp(24px, 6vw, 28px)" height="clamp(24px, 6vw, 28px)" viewBox="0 0 32 32" fill="none">
-                <rect width="32" height="32" rx="8" fill="#0077b5" />
-                <path d="M10.667 13.333h2.666v8h-2.666v-8zm1.333-4a1.333 1.333 0 110 2.667 1.333 1.333 0 010-2.667zm3.333 4h2.56v1.093h.037c.357-.677 1.23-1.393 2.533-1.393 2.707 0 3.2 1.787 3.2 4.107v4.193h-2.667v-3.733c0-.893-.017-2.04-1.24-2.04-1.24 0-1.427.967-1.427 1.967v3.806h-2.667v-8z" fill="#fff" />
-              </svg>
-            </a>
-            {/* Email Icon */}
-            <a href={emailUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#E90000" }}>
-              <svg width="clamp(24px, 6vw, 28px)" height="clamp(24px, 6vw, 28px)" viewBox="0 0 32 32" fill="none">
-                <rect width="32" height="32" rx="8" fill="#E90000" />
-                <path d="M8 12.667V20c0 .733.6 1.333 1.333 1.333h13.334A1.333 1.333 0 0024 20v-7.333a1.333 1.333 0 00-1.333-1.334H9.333A1.333 1.333 0 008 12.667zm2.133-.667l5.2 4.133a1.333 1.333 0 001.6 0l5.2-4.133" fill="#fff" />
-              </svg>
-            </a>
+          
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold mb-2 text-white drop-shadow-lg">
+                {member.name}
+              </h3>
+              <p className="text-white/90 text-lg font-medium">
+                Connect with me
+              </p>
+            </div>
+            
+            {/* Social Links */}
+            <div className="flex gap-6">
+              <a 
+                href={linkedInUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-sm rounded-full border-2 border-white hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
+              >
+                <Linkedin className="w-7 h-7 text-blue-700" />
+              </a>
+              
+              <a 
+                href={emailUrl}
+                className="flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-sm rounded-full border-2 border-white hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
+              >
+                <Mail className="w-7 h-7 text-blue-700" />
+              </a>
+            </div>
+            
+            {/* Roll Number */}
+            <div className="mt-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full border border-white shadow-lg">
+              <span className="text-slate-700 text-sm font-medium">
+                {member.rollNumber}
+              </span>
+            </div>
           </div>
         </div>
       </div>

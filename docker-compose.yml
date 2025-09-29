@@ -62,6 +62,8 @@ services:
     image: nginx:alpine
     container_name: nss-nginx-dev
     restart: unless-stopped
+    ports:
+      - "80:80"
     volumes:
       - ./nginx/nginx-dev.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro

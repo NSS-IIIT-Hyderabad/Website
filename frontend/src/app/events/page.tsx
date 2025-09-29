@@ -1,9 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Carousel from "@/utils/Carousel";
-import Footer from "@/utils/Footer";
-import Navbar from "@/utils/Navbar";
-import Calendar from "@/components/events/Calendar";
+import { Calendar as CalendarIcon, BarChart3, Users } from "lucide-react";
 import EventGrid from "@/components/events/EventGrid";
 
 // Sample events (same as EventGrid)
@@ -74,82 +71,78 @@ const sampleEvents = [
 ];
 
 
-const images = [
-  "/carosel-imgs/1.jpeg",
-  "/carosel-imgs/2.jpg",
-  "/carosel-imgs/3.jpg"
-];
 
-function formatDateIndian(dateStr: string) {
-  const d = new Date(dateStr);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
-}
+
 
 export default function EventsPage() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  React.useEffect(() => {
-    setSelectedDate(new Date());
-  }, []);
-
-  // Helper to get events for a given date
-  function getEventsForDate(date: Date) {
-    const dateStr = date.toISOString().slice(0, 10);
-    return sampleEvents.filter(event => {
-      const start = event.startTime.slice(0, 10);
-      return dateStr === start;
-    });
-  }
-
-  // Show today's events initially, or selected date's events
-  const eventsToShow = selectedDate ? getEventsForDate(selectedDate) : [];
 
   return (
-    <div style={{
-      margin: 0,
-      padding: 0,
-      boxSizing: "border-box",
-      width: "100vw",
-      minHeight: "100vh",
-      overflowX: "hidden",
-      top: 0,
-      left: 0,
-      background: "#FAEBE8"
-    }}>
-      <div style={{ position: "relative", zIndex: 2 }}>
-        <Carousel images={images} interval={3000}>
-        </Carousel>
-          <Navbar />
-      </div>
-      <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-start", gap: "2rem", padding: "2rem" }}>
-        <div style={{ flex: "0 0 400px" }}>
-          {selectedDate && <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />}
+    <div className="w-full min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">
+      {/* Compact Header Section */}
+      <section className="relative bg-gradient-to-r from-orange-400 via-blue-400 to-green-400 text-white py-16">
+        <div className="container mx-auto px-6 lg:px-8 text-center">
+          <h1 className="font-playfair text-3xl md:text-5xl font-bold mb-4 leading-tight">
+            NSS Events &
+            <span className="bg-gradient-to-r from-orange-300 to-green-300 bg-clip-text text-transparent"> Activities</span>
+          </h1>
+          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+            Join us in making a difference through community service
+          </p>
         </div>
-        <div style={{ flex: "0 0 350px", background: "#222", color: "#fff", borderRadius: "18px", minHeight: "320px", padding: "2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start" }}>
-          <h2 style={{ marginBottom: "1rem" }}>{selectedDate ? formatDateIndian(selectedDate.toISOString()) : ""}</h2>
-          {!selectedDate ? (
-            <div style={{ color: "#bbb", fontSize: "1.1rem", textAlign: "center" }}>Loading...</div>
-          ) : eventsToShow.length === 0 ? (
-            <div style={{ color: "#bbb", fontSize: "1.1rem", textAlign: "center" }}>No events on this date.</div>
-          ) : (
-            eventsToShow.map((event, idx) => (
-              <div key={idx} style={{ marginBottom: "1.5rem", width: "100%", textAlign: "center" }}>
-                <div style={{ fontWeight: 700, fontSize: "1.2rem", marginBottom: "0.5rem" }}>{event.name}</div>
-                <div style={{ color: "#7c3aed", fontWeight: 500, marginBottom: "0.5rem" }}>
-                  {formatDateIndian(event.startTime)} - {formatDateIndian(event.endTime)}
-                </div>
-                <div style={{ color: "#fff", fontSize: "1rem" }}>{event.location}</div>
+      </section>
+      
+      {/* Events Dashboard */}
+      <section className="py-20 bg-gradient-to-b from-orange-50 via-white to-green-50">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-800 px-6 py-3 rounded-full text-sm font-medium mb-6">
+              <BarChart3 className="w-4 h-4" />
+              Community Events Overview
+            </div>
+            <h2 className="font-playfair text-3xl md:text-5xl font-bold text-blue-800 mb-6">
+              Our Impact
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              See the incredible impact we're making together through community service and volunteer engagement.
+            </p>
+          </div>
+          
+          {/* Event Statistics - Responsive Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 text-center">
+              <div className="flex items-center justify-center mb-4">
+                <BarChart3 className="w-8 h-8 text-orange-200" />
               </div>
-            ))
-          )}
+              <h4 className="text-3xl font-bold text-orange-200 mb-2">{sampleEvents.length}</h4>
+              <p className="text-white/90 font-medium">Total Events</p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 text-center">
+              <div className="flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-blue-200" />
+              </div>
+              <h4 className="text-3xl font-bold text-blue-200 mb-2">500+</h4>
+              <p className="text-white/90 font-medium">Volunteers Engaged</p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-600 to-green-700 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 text-center">
+              <div className="flex items-center justify-center mb-4">
+                <CalendarIcon className="w-8 h-8 text-green-200" />
+              </div>
+              <h4 className="text-3xl font-bold text-green-200 mb-2">50+</h4>
+              <p className="text-white/90 font-medium">Communities Served</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div style={{ width: "100%", marginTop: "2rem" }}>
-        {selectedDate && <EventGrid selectedDate={selectedDate} />}
-      </div>
-      <Footer />
+      </section>
+      
+      {/* All Events Grid */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 lg:px-8">
+
+          <EventGrid selectedDate={new Date()} />
+        </div>
+      </section>
     </div>
   );
 }

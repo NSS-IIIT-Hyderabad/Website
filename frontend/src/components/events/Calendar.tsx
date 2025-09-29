@@ -64,46 +64,76 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate }) =>
   };
 
   return (
-    <div style={{ background: "#222", color: "#fff", padding: "2rem", borderRadius: "12px", maxWidth: 400, margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-        <button onClick={prevMonth} style={{ background: "#ff2d2d", color: "#fff", border: "none", borderRadius: 4, padding: "0.3rem 1rem", cursor: "pointer" }}>&lt;</button>
-        <span style={{ fontSize: "1.2rem", fontWeight: 500 }}>
+    <div className="bg-gradient-to-br from-slate-100 to-slate-200 text-gray-800 p-6 rounded-xl shadow-sm max-w-sm mx-auto border border-gray-200">
+      <div className="flex justify-between items-center mb-6">
+        <button 
+          onClick={prevMonth} 
+          className="bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg p-2 cursor-pointer transition-all duration-300 hover:scale-110"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </button>
+        <span className="text-lg font-merriweather font-bold text-center px-4 text-blue-800">
           {months[currentMonth]} {currentYear}
         </span>
-        <button onClick={nextMonth} style={{ background: "#ff2d2d", color: "#fff", border: "none", borderRadius: 4, padding: "0.3rem 1rem", cursor: "pointer" }}>&gt;</button>
+        <button 
+          onClick={nextMonth} 
+          className="bg-blue-600 hover:bg-blue-700 text-white border-none rounded-lg p-2 cursor-pointer transition-all duration-300 hover:scale-110"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+          </svg>
+        </button>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "0.5rem" }}>
+      <div className="grid grid-cols-7 gap-2">
         {daysOfWeek.map(day => (
-          <div key={day} style={{ fontWeight: 600, textAlign: "center" }}>{day}</div>
+          <div key={day} className="text-center font-semibold text-gray-600 p-2 text-sm">
+            {day}
+          </div>
         ))}
         {Array(firstDay).fill(null).map((_, idx) => (
-          <div key={"empty-" + idx}></div>
+          <div key={"empty-" + idx} className="p-2"></div>
         ))}
         {Array(daysInMonth).fill(null).map((_, idx) => {
           const day = idx + 1;
           const isToday = day === today.date && currentMonth === today.month && currentYear === today.year;
           const isSelected = day === selectedDate.getDate() && currentMonth === selectedDate.getMonth() && currentYear === selectedDate.getFullYear();
-          let bg = "#333";
-          if (isSelected) bg = "#ff2d2d";
-          else if (isToday) bg = "#0074D9";
+          
+          let classes = "text-center p-2 rounded-lg cursor-pointer transition-all duration-300 font-medium ";
+          
+          if (isSelected) {
+            classes += "bg-blue-600 text-white shadow-md transform scale-105 border-2 border-blue-400";
+          } else if (isToday) {
+            classes += "bg-green-500 text-white shadow-sm hover:bg-green-600";
+          } else {
+            classes += "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:scale-105 border border-gray-200";
+          }
+          
           return (
             <div
               key={idx}
               onClick={() => handleDateClick(day)}
-              style={{
-                textAlign: "center",
-                padding: "0.5rem 0",
-                borderRadius: 4,
-                background: bg,
-                cursor: "pointer",
-                color: isSelected ? "#fff" : isToday ? "#fff" : "#fff",
-                border: isSelected ? "2px solid #ff2d2d" : isToday ? "2px solid #0074D9" : "none"
-              }}
+              className={classes}
             >
               {day}
             </div>
           );
         })}
+      </div>
+      
+      {/* Calendar Legend */}
+      <div className="mt-4 pt-4 border-t border-gray-300">
+        <div className="flex justify-center gap-4 text-xs">
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+            <span className="text-gray-600">Today</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+            <span className="text-gray-600">Selected</span>
+          </div>
+        </div>
       </div>
     </div>
   );
