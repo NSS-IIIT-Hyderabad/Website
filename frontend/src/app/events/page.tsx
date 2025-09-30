@@ -79,6 +79,7 @@ const images = [
   "/carosel-imgs/2.jpg",
   "/carosel-imgs/3.jpg"
 ];
+const heading = "NSS EVENTS";
 
 function formatDateIndian(dateStr: string) {
   const d = new Date(dateStr);
@@ -119,7 +120,7 @@ export default function EventsPage() {
       background: "#FAEBE8"
     }}>
       <div style={{ position: "relative", zIndex: 2 }}>
-        <Carousel images={images} interval={3000}>
+        <Carousel images={images} interval={3000} heading={heading}>
         </Carousel>
           <Navbar />
       </div>

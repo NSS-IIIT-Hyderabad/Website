@@ -5,15 +5,17 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-import { testimonials, Testimonial } from "@/data/testimonials"; // ✅ alias import
+import { testimonials, Testimonial } from "@/data/testimonials";
 
 const Testimonials = () => {
   const [current, setCurrent] = useState(0);
+
   return (
     <section
       style={{
-        padding: "4rem 2rem",
-        width: "66%",
+        padding: "3rem 1rem",
+        width: "100%",
+        maxWidth: "1100px",
         margin: "0 auto",
         background: "#FAEBE8",
       }}
@@ -24,10 +26,9 @@ const Testimonials = () => {
           fontWeight: "400",
           letterSpacing: "0.5px",
           color: "#729bf2",
-          fontSize: "3rem",
-          marginBottom: "3rem",
-          // fontWeight: "bold",
-          fontFamily: "Playfair Display, Georgia, serif"
+          fontSize: "2.2rem",
+          marginBottom: "2rem",
+          fontFamily: "Playfair Display, Georgia, serif",
         }}
       >
         Testimonials
@@ -39,22 +40,22 @@ const Testimonials = () => {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         slidesPerView={"auto"}
         centeredSlides
-        onSlideChange={(swiper) => setCurrent(swiper.realIndex)} // track current
+        onSlideChange={(swiper) => setCurrent(swiper.realIndex)}
         style={{ overflow: "visible" }}
       >
         {testimonials.map((t: Testimonial, index: number) => {
           const isActive = index === current;
-          const isNext = index === (current + 1) % testimonials.length; // card to the right
+          const isNext = index === (current + 1) % testimonials.length;
           const isPrev =
-            index === (current - 1 + testimonials.length) % testimonials.length; // card to the left
+            index === (current - 1 + testimonials.length) % testimonials.length;
 
           let transform = "scale(0.9)";
           if (isActive) {
             transform = "scale(1)";
           } else if (isNext) {
-            transform = "translateX(60px) scale(0.9)"; // push right
+            transform = "translateX(40px) scale(0.9)";
           } else if (isPrev) {
-            transform = "translateX(-60px) scale(0.9)"; // push left
+            transform = "translateX(-40px) scale(0.9)";
           }
 
           return (
@@ -66,8 +67,9 @@ const Testimonials = () => {
                 boxShadow: isActive
                   ? "0 6px 16px rgba(0,0,0,0.2)"
                   : "0 2px 8px rgba(0,0,0,0.1)",
-                width: isActive ? "600px" : "500px",
-                minHeight: "320px",
+                width: isActive ? "90%" : "80%",
+                maxWidth: "600px",
+                minHeight: "280px",
                 display: "flex",
                 flexDirection: "row",
                 overflow: "hidden",
@@ -78,14 +80,13 @@ const Testimonials = () => {
                 transition: "all 0.6s ease-in-out",
               }}
             >
-              {/* Left side: avatar + background block */}
+              {/* Left side: avatar */}
               <div
                 style={{
-                  flex: "5 0 0",
+                  flex: "4 0 0",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  position: "relative",
                   background: "#FEF8E0",
                 }}
               >
@@ -93,8 +94,8 @@ const Testimonials = () => {
                   src="/favicon.ico"
                   alt="avatar"
                   style={{
-                    width: isActive ? "140px" : "110px",
-                    height: isActive ? "140px" : "110px",
+                    width: isActive ? "100px" : "80px",
+                    height: isActive ? "100px" : "80px",
                     borderRadius: "50%",
                     objectFit: "cover",
                     boxShadow: isActive
@@ -108,8 +109,8 @@ const Testimonials = () => {
               {/* Right side: text */}
               <div
                 style={{
-                  flex: "7 0 0",
-                  padding: "2rem",
+                  flex: "6 0 0",
+                  padding: "1.5rem",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -118,7 +119,7 @@ const Testimonials = () => {
                 <h3
                   style={{
                     margin: 0,
-                    fontSize: "1.2rem",
+                    fontSize: "1rem",
                     fontWeight: "600",
                   }}
                 >
@@ -126,10 +127,9 @@ const Testimonials = () => {
                 </h3>
                 <p
                   style={{
-                    marginTop: "1rem",
-                    fontSize: "1.15rem",
-                    color: "#000",
-                    lineHeight: 1.6,
+                    marginTop: "0.8rem",
+                    fontSize: "1rem",
+                    lineHeight: 1.5,
                     textAlign: "left",
                   }}
                 >
@@ -140,6 +140,40 @@ const Testimonials = () => {
           );
         })}
       </Swiper>
+
+      {/* Mobile-specific styles */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          section {
+            padding: 2rem 1rem;
+          }
+          h2 {
+            font-size: 1.8rem !important;
+            margin-bottom: 1.5rem;
+          }
+          .swiper-slide {
+            flex-direction: column !important;
+            width: 95% !important;
+            min-height: auto !important;
+          }
+          .swiper-slide img {
+            width: 80px !important;
+            height: 80px !important;
+            margin-top: 1rem;
+          }
+          .swiper-slide div:last-child {
+            padding: 1rem !important;
+            text-align: center;
+          }
+          .swiper-slide h3 {
+            font-size: 1rem !important;
+          }
+          .swiper-slide p {
+            font-size: 0.95rem !important;
+            text-align: center !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

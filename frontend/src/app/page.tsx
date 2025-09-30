@@ -1,4 +1,5 @@
 import React from "react";
+import Faq from "@/components/faq/Faq";
 import Footer from '@/utils/Footer';
 import Navbar from "@/utils/Navbar";
 import Carousel from "@/utils/Carousel";
@@ -14,6 +15,8 @@ const images = [
   "/carosel-imgs/2.jpg",
   "/carosel-imgs/3.jpg"
 ];
+
+const heading = "";
 
 export default function Home() {
   return (
@@ -42,7 +45,7 @@ export default function Home() {
           background: "#faf7f7ff"
         }}
       >
-        <Carousel images={images} interval={3000} />
+        <Carousel images={images} interval={3000} heading={heading}/>
       </div>
       <AboutUs />
       <FlagshipEvents />

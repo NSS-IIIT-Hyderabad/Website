@@ -1,6 +1,7 @@
 const routes = {
     "/members": ["public"],
-    "/events": ["public"]
+    "/events": ["public"],
+    "/faqs": ["public"],
 };
 
 const redirects = {
