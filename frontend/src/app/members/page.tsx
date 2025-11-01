@@ -1,6 +1,7 @@
 import React from "react";
 import { Monitor, Palette, Users, Star, Mail, Sparkles, Phone } from "lucide-react";
 import MembersSection from "@/components/team/MembersSection";
+import members from "@/components/team/Data";
 import { getMembersFromDB } from "@/graphql_Q&M/getMembers";
 // import { getMembersFromDB } from "@/graphql_Q&M/getMembers";
 
@@ -23,87 +24,6 @@ export default async function MembersPage() {
 //     console.error("Error fetching members:", error);
 //     members = [];
 //   }
-
-  // Mock data for now
-  const members = [
-    {
-      id: "1",
-      email: "chanda.kumar@students.iiit.ac.in",
-      name: "Akshay Chanda",
-      photoUrl: "hi",
-      team: "Tech",
-      rollNumber: "2024102014",
-      status: "active" as "active",
-      from: "2021",
-      to: "2025",
-    },
-    {
-      id: "2",
-      email: "jane@example.com",
-      name: "Jane Smith",
-      photoUrl: "hi",
-      team: "Design",
-      rollNumber: "2020002",
-      status: "inactive" as "inactive",
-      from: "2020",
-      to: "2024",
-    },
-    {
-      id: "3",
-      email: "john@example.com",
-      name: "John Doe",
-      photoUrl: "",
-      team: "Design",
-      rollNumber: "2020003",
-      status: "active" as "active",
-      from: "2020",
-      to: "2024",
-    },
-    {
-      id: "4",
-      email: "emma@example.com",
-      name: "Emma Watson",
-      photoUrl: "",
-      team: "Tech",
-      rollNumber: "2021002",
-      status: "active" as "active",
-      from: "2021",
-      to: "2025",
-    },
-    {
-      id: "5",
-      email: "li@example.com",
-      name: "Li Wei",
-      photoUrl: "hi",
-      team: "Design",
-      rollNumber: "2020004",
-      status: "inactive" as "inactive",
-      from: "2020",
-      to: "2024",
-    },
-    {
-      id: "6",
-      email: "maria@example.com",
-      name: "Maria Garcia",
-      photoUrl: "",
-      team: "Tech",
-      rollNumber: "2021003",
-      status: "active" as "active",
-      from: "2021",
-      to: "2025",
-    },
-    {
-      id: "7",
-      email: "rithik.palla@students.iiit.ac.in",
-      name: "Rithik Reddy Palla",
-      photoUrl: "",
-      team: "Tech",
-      rollNumber: "2024102005",
-      status: "active" as "active",
-      from: "2022",
-      to: "2026",
-    }
-  ];
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">
