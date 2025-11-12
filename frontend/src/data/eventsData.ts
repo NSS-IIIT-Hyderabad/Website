@@ -21,7 +21,7 @@ const events: EventItem[] = [
     "audience": [
       "internal"
     ],
-    "event_profile": ""
+    "event_profile": "/carousel_images/yoga.jpg"
   },
   {
     "event_name": "Career Guidance at ZPHS, Gachibowli",
@@ -32,7 +32,7 @@ const events: EventItem[] = [
     "audience": [
       "ug2"
     ],
-    "event_profile": ""
+    "event_profile": "/carousel_images/teach1.jpg"
   },
   {
     "event_name": "Women's Day- Relay Rumble",
@@ -78,7 +78,7 @@ const events: EventItem[] = [
       "ug2",
       "ug3"
     ],
-    "event_profile": ""
+    "event_profile": "/carousel_images/orphan.jpg"
   },
   {
     "event_name": "Shramdaan",
@@ -93,7 +93,7 @@ const events: EventItem[] = [
       "ug4",
       "pg"
     ],
-    "event_profile": ""
+    "event_profile": "/carousel_images/shram.jpg"
   },
   {
     "event_name": "Blood donation camp",
@@ -132,7 +132,7 @@ const events: EventItem[] = [
     "audience": [
       "ug1"
     ],
-    "event_profile": ""
+    "event_profile": "/carousel_images/tree.jpg"
   }
 ];
 

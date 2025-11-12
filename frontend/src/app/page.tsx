@@ -10,9 +10,14 @@ import VolunteerReg from "@/components/home/VolunteerReg";
 
 const heroImages = [
   "/carousel_images/0.jpeg",
-  "/carousel_images/1.jpeg",
-  "/carousel_images/2.jpg",
-  "/carousel_images/3.jpg"
+  // "/carousel_images/1.jpeg",
+  // "/carousel_images/2.jpg",
+  "/carousel_images/shram.jpg",
+  "/carousel_images/orphan.jpg",
+  "/carousel_images/teach1.jpg",
+  "/carousel_images/teach2.jpg",
+
+  // "/carousel_images/3.jpg"
 ];
 
 export default function HomePage() {

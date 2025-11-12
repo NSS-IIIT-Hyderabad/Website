@@ -54,8 +54,9 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate, events: passedEvent
 
   const renderEventCard = (event: EventItem, idx: number) => {
     const slug = encodeURIComponent(event.event_name.replace(/\s+/g, "-").toLowerCase());
-    const posterUrl = event.event_profile && event.event_profile !== "No Poster URL" 
-      ? `/events_posters/${event.event_profile}` 
+    // event.event_profile may be a full path (starting with '/') or just a filename stored under /events_posters/
+    const posterUrl = event.event_profile && event.event_profile !== "No Poster URL"
+      ? (event.event_profile.startsWith('/') ? event.event_profile : `/events_posters/${event.event_profile}`)
       : "/favicon.ico";
     
     const status = getEventStatus(event);
