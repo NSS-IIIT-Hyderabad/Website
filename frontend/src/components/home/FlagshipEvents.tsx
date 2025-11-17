@@ -160,7 +160,7 @@ const FlagshipEvents = () => {
           <div className="indian-flag-border w-32 h-2 mx-auto mb-8 rounded-full" />
           
           <h1 className="text-4xl md:text-6xl text-blue-800 mb-6 font-bold">
-            <Flag className="inline w-12 h-12 mx-2 text-orange-500" /> Flagship Events <Flag className="inline w-12 h-12 mx-2 text-green-600" />
+            Flagship Events
           </h1>
           
           <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8">
@@ -185,7 +185,7 @@ const FlagshipEvents = () => {
         </div>
 
         {/* Statistics Overview */}
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 animate-slide-up">
+        {/* <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 animate-slide-up">
           <div className="modern-card text-center group hover:scale-105 transition-all duration-300 p-4 lg:p-6">
             <div className="text-4xl lg:text-5xl mb-4 group-hover:animate-bounce-gentle"><Award className="w-16 h-16 lg:w-20 lg:h-20 mx-auto text-orange-500" /></div>
             <h3 className="heading-secondary text-xl lg:text-2xl text-orange-600 mb-2">Certified</h3>
@@ -203,7 +203,7 @@ const FlagshipEvents = () => {
             <h3 className="heading-secondary text-xl lg:text-2xl text-green-600 mb-2">Impact</h3>
             <p className="text-sm lg:text-base text-gray-600">Measurable change in thousands of lives annually</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

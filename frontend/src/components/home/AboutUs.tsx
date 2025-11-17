@@ -39,7 +39,7 @@ const AboutUs = () => {
             </h2>
             
             {/* Mission Pillars */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-4 my-8">
               <div className="modern-card text-center group hover:scale-105 transition-all duration-300 hover:shadow-xl">
                 <div className="text-4xl mb-3 group-hover:animate-bounce-gentle"><Heart className="w-10 h-10 mx-auto text-red-500" /></div>
                 <h4 className="font-bold text-primary mb-2">Health & Wellness</h4>
@@ -66,7 +66,7 @@ const AboutUs = () => {
             </div>
               
             {/* Call to Action */}
-            <div className="bg-gradient-to-r from-indigo-900 via-blue-800 to-slate-800 text-white text-center p-8 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
+            {/* <div className="bg-gradient-to-r from-indigo-900 via-blue-800 to-slate-800 text-white text-center p-8 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
               <div className="text-5xl mb-4"><Flag className="w-12 h-12 mx-auto text-amber-300" /></div>
               <h3 className="text-2xl md:text-3xl mb-4 font-bold">Join the Movement</h3>
               <p className="text-lg md:text-xl text-slate-200 mb-6">
@@ -76,7 +76,7 @@ const AboutUs = () => {
                 <Sparkles className="w-5 h-5" />
                 <span>Become a Volunteer</span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -110,14 +110,14 @@ const AboutUs = () => {
             </div>
             
             <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="btn-base bg-white text-green-600 hover:bg-gray-100">
+              {/* <button className="btn-base bg-white text-green-600 hover:bg-gray-100">
                 <Rocket className="w-5 h-5" />
                 <span>Our Impact</span>
-              </button>
-              <button className="btn-base btn-outline border-white text-white hover:bg-white hover:text-green-600">
+              </button> */}
+              <a href="/about" className="btn-base btn-outline w-full border-white text-white hover:bg-white hover:text-green-600">
                 <BookOpen className="w-5 h-5" />
-                <span>Our Story</span>
-              </button>
+                <span>About Us</span>
+              </a>
             </div>
           </div>
         </div>

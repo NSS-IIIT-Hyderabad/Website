@@ -36,7 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#1e3a8a" />
+        <meta name="theme-color" content="#332a67" />
         {/* CSP for development - allows unsafe-eval for Next.js dev mode */}
         <meta 
           httpEquiv="Content-Security-Policy" 

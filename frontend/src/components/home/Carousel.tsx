@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { redirect } from "next/navigation";
 
 interface CarouselProps {
   images: string[];
@@ -76,21 +77,22 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-blue-100 font-light leading-relaxed max-w-4xl mx-auto">
+          <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-blue-100 font-bold leading-relaxed max-w-4xl mx-auto">
             Building tomorrow's leaders through today's service
           </p>
           
           <div className="text-lg md:text-xl mb-12 italic text-orange-200 max-w-3xl mx-auto">
-            <p className="mb-2">"न मे पार्थास्ति कर्तव्यं त्रिषु लोकेषु किंचन"</p>
-            <p className="text-base text-green-200 font-medium">Excellence in service, excellence in character</p>
+            {/* <p className="mb-2">"न मे पार्थास्ति कर्तव्यं त्रिषु लोकेषु किंचन"</p> */}
+            <p className="text-base text-green-200 font-medium">Not Me But You</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button className="group bg-gradient-to-r from-orange-500 to-green-600 text-white font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center gap-3">
+            <a href="https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM" target="_blank" rel="noopener noreferrer" className="group  text-white font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center gap-3 cursor-pointer" style={{ background: '#b95943ff' }}>
               <span>Join Our Mission</span>
               <div className="w-2 h-2 bg-white rounded-full group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105">
+            </a>
+            <button 
+            className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer" onClick={() => redirect('/events')} >
               Explore Events
             </button>
           </div>
@@ -100,7 +102,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
       {/* Navigation Arrows */}
       <button
         onClick={goToPrevious}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
+        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer"
         aria-label="Previous image"
       >
         <ChevronLeft className="w-6 h-6" />
@@ -108,7 +110,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
       
       <button
         onClick={goToNext}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
+        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer"
         aria-label="Next image"
       >
         <ChevronRight className="w-6 h-6" />

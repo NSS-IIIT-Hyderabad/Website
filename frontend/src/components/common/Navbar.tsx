@@ -39,13 +39,13 @@ export default function Navbar() {
     };
 
     const handleLogin = () => {
-        window.location.replace("http://localhost:8000/login");
+        window.location.replace("/login");
     };
 
     const handleProfile = () => {
         const uid = document.cookie.match(/(?:^|; )uid=([^;]*)/);
         if (uid) {
-            window.location.replace(`http://localhost:3000/me/profile/?uid=${decodeURIComponent(uid[1])}`);
+            window.location.replace(`/me/profile/?uid=${decodeURIComponent(uid[1])}`);
         }
     };
 
@@ -100,6 +100,9 @@ export default function Navbar() {
                                         <a
                                             key={item.label}
                                             href="#footer"
+                                            style={{
+                                                background: isActive ? '#332a67' : 'transparent',
+                                            }}
                                             onClick={handleContactClick}
                                             className="flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-700 hover:text-green-600 hover:bg-green-50"
                                         >
@@ -113,9 +116,12 @@ export default function Navbar() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
+                                        style={{
+                                            background: isActive ? '#332a67' : 'transparent',
+                                        }}
                                         className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                                             isActive
-                                                ? 'bg-blue-800 text-white shadow-lg'
+                                                ? 'text-white shadow-lg'
                                                 : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
                                         }`}
                                     >
@@ -132,7 +138,10 @@ export default function Navbar() {
                             {!userAuthenticated ? (
                                 <button
                                     onClick={handleLogin}
-                                    className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-blue-800 text-white rounded-lg font-medium hover:bg-blue-900 transition-all duration-200"
+                                    style={{
+                                        background: '#332a67',
+                                    }}
+                                    className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-blue-800 text-white rounded-lg font-medium hover:bg-blue-900 transition-all duration-200 cursor-pointer"
                                 >
                                     <Rocket className="w-4 h-4" />
                                     <span>Login</span>
@@ -140,7 +149,7 @@ export default function Navbar() {
                             ) : (
                                 <button
                                     onClick={handleProfile}
-                                    className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-800 p-0.5 hover:scale-105 transition-all duration-200"
+                                    className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-800 p-0.5 hover:scale-105 transition-all duration-200 cursor-pointer"
                                     title="Profile"
                                 >
                                     <img 

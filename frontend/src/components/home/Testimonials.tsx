@@ -61,30 +61,42 @@ const Testimonials = () => {
                   ? 'shadow-lg sm:shadow-xl lg:shadow-2xl opacity-100 scale-102 sm:scale-103 lg:scale-105 border-blue-300 z-10' 
                   : 'shadow-md lg:shadow-lg opacity-60 scale-98 sm:scale-97 lg:scale-95 border-gray-200 z-0'
               }`}>
-                <div className="flex-shrink-0 h-24 sm:h-32 lg:h-40 flex items-center justify-center bg-gradient-to-br from-blue-50 to-orange-50 rounded-t-xl lg:rounded-t-2xl">
-                  <img
-                    src="/favicon.ico"
-                    alt="avatar"
-                    className={`rounded-full object-cover transition-all duration-500 border-2 sm:border-3 lg:border-4 border-white shadow-md lg:shadow-lg ${
-                      isActive 
-                        ? 'w-16 h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28' 
-                        : 'w-12 h-12 sm:w-16 sm:h-16 lg:w-24 lg:h-24'
-                    }`}
-                  />
+                {/* Top area: avatar left, name & title right */}
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 p-4 md:p-6 lg:p-8 bg-gradient-to-br from-blue-50 to-orange-50">
+                  <div className="flex-shrink-0 flex items-center justify-center">
+                    <img
+                      src="/favicon.ico"
+                      alt="avatar"
+                      className={`rounded-full object-cover transition-all duration-500 border-2 md:border-3 lg:border-4 border-white shadow-md lg:shadow-lg ${
+                        isActive 
+                          ? 'w-16 h-16 md:w-20 md:h-20 lg:w-28 lg:h-28' 
+                          : 'w-12 h-12 md:w-16 md:h-16 lg:w-24 lg:h-24'
+                      }`}
+                    />
+                  </div>
+
+                  <div className="flex-1 text-center md:text-right">
+                    <h3 className={`font-bold text-blue-800 mb-1 ${
+                      isActive ? 'text-lg md:text-xl lg:text-2xl' : 'text-base md:text-lg lg:text-xl'
+                    }`}>
+                      {t.name}
+                    </h3>
+                    <p className={`text-gray-600 font-medium ${
+                      isActive ? 'text-sm md:text-base lg:text-lg' : 'text-xs md:text-sm lg:text-base'
+                    }`}>
+                      {t.title}
+                    </p>
+                    <p className={`text-gray-500 ${
+                      isActive ? 'text-sm md:text-base lg:text-lg' : 'text-xs md:text-sm lg:text-base'
+                    }`}>
+                      {t?.period}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex-1 p-4 sm:p-6 lg:p-10 flex flex-col justify-center text-center">
-                  <h3 className={`font-bold text-blue-800 mb-2 sm:mb-3 lg:mb-4 ${
-                    isActive ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg lg:text-xl'
-                  }`}>
-                    {t.name}
-                  </h3>
-                  <p className={`text-gray-600 mb-2 sm:mb-4 lg:mb-6 font-medium ${
-                    isActive ? 'text-sm sm:text-base lg:text-lg' : 'text-xs sm:text-sm lg:text-base'
-                  }`}>
-                    {t.title}
-                  </p>
-                  <p className={`text-gray-700 leading-relaxed italic ${
+                {/* Quote at the bottom */}
+                <div className="p-4 sm:p-6 lg:p-8 border-t bg-white">
+                  <p className={`text-gray-700 leading-relaxed italic text-left ${
                     isActive ? 'text-sm sm:text-lg lg:text-xl line-clamp-3 sm:line-clamp-6 lg:line-clamp-8' : 'text-xs sm:text-base lg:text-lg line-clamp-2 sm:line-clamp-4 lg:line-clamp-6'
                   }`}>
                     "{t.quote}"

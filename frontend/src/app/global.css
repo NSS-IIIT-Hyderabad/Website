@@ -8,7 +8,7 @@
 @layer base {
   :root {
     /* Primary Brand Colors - Consistent Design System */
-    --nss-primary: #1e40af;      /* blue-800 */
+    --nss-primary: #332a67;      /* blue-800 */
     --nss-secondary: #f97316;    /* orange-500 */
     --nss-accent: #16a34a;       /* green-600 */
     --saffron: #f97316;          /* orange-500 */
@@ -87,7 +87,7 @@
   }
   
   .btn-primary {
-    background: #1e40af;
+    background: var(--nss-primary);
     color: white;
   }
   
@@ -110,12 +110,12 @@
   
   .btn-outline {
     background: transparent;
-    color: #1e40af;
-    border: 2px solid #1e40af;
+    color: var(--nss-primary);
+    border: 2px solid var(--nss-primary);
   }
   
   .btn-outline:hover {
-    background: #1e40af;
+    background: var(--nss-primary);
     color: white;
   }
   
@@ -201,6 +201,10 @@
   .bg-secondary { background: var(--secondary); }
   .bg-accent { background: var(--accent); }
   .bg-surface { background: var(--bg-surface); }
+
+  .text-blue-800 {
+    color: #332a67;
+  }
   
   /* Animation Utilities */
   .animate-fade-in {
