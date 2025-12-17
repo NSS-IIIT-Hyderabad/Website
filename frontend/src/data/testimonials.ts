@@ -1,0 +1,53 @@
+// data/testimonials.ts
+
+export type Testimonial = {
+  name: string;
+  title: string;
+  period?: string;
+  quote: string;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    name: "Dileep Kumar Adari",
+    title: "Social Media Head",
+    period: "(2023 - 2025)",
+    quote:
+      "Being part of NSS helped me contribute to so many meaningful activities—from plantation drives to blood donation events. Seeing the impact our team created together was truly satisfying.",
+  },
+  {
+    name: "Sai Nikitha Obbineni",
+    title: "Coordinator",
+    period: "(2022 - 2024)",
+    quote:
+      "Whether it was visiting orphanages, interacting at old-age homes, or organising distributions, every experience with the team felt purposeful. I'm glad I got to play a part in all of it.",
+  },
+  {
+    name: "Srihari Bandarupalli",
+    title: "Coordinator",
+    period: "(2022 - 2024)",
+    quote:
+      "Working on campus cleaning drives, outreach events, and welfare activities showed me how small efforts add up. The teamwork and the real-world impact kept me motivated throughout.",
+  },
+  {
+    name: "Sri Rama Rathan Reddy Koluguri",
+    title: "Logistics Head",
+    period: "(2023 - 2025)",
+    quote:
+      "Handling logistics for events like plantation drives, shram daan, and community visits taught me a lot. Knowing our effort made someone's day better made all the work worth it.",
+  },
+  {
+    name: "Venkata Renu Jeevesh Madala",
+    title: "Coordinator",
+    period: "(2023 - 2025)",
+    quote:
+      "From coordinating blood donation drives to helping during outreach programs, I enjoyed every moment with the team. Contributing to causes that mattered gave me a genuine sense of fulfilment.",
+  },
+  {
+    name: "Aditya Pavani Penumalla",
+    title: "Design Head",
+    period: "(2022 - 2024)",
+    quote:
+      "Designing for NSS events be it plantation drives, awareness campaigns, or community service visits felt meaningful because I knew it supported real impact on ground.",
+  },
+];
