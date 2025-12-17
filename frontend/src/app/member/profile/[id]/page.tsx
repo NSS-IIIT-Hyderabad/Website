@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
 import { redirect, notFound } from 'next/navigation';
-import { Mail, Calendar, CheckCircle, XCircle, Linkedin, ArrowLeft, Users } from 'lucide-react';
+import { Mail, Calendar, CheckCircle, XCircle, ArrowLeft, Users } from 'lucide-react';
 
 type Props = {
   params: { id: string };
@@ -44,7 +44,6 @@ export default async function MemberProfile({ params }: Props) {
   const workHistory = Array.isArray(member.workHistory) ? member.workHistory : [];
   const currentWork = workHistory.find((w: any) => !w.end) || workHistory[workHistory.length - 1] || null;
   const isActive = workHistory.some((w: any) => !w.end);
-  const linkedInUrl = (member.linkedin && member.linkedin !== '-') ? member.linkedin : `https://www.linkedin.com/in/${member.rollNumber}`;
 
   // Friendly vars used by the UI (preserve UI without changing markup)
   const team = currentWork?.team || member.team || '';
@@ -68,9 +67,6 @@ export default async function MemberProfile({ params }: Props) {
     if (s === '-') return '/favicon.ico';
     return s;
   };
-
-  // Local toggle: disable LinkedIn buttons on member profile page while keeping markup
-  const SHOW_LINKEDIN = false;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -215,28 +211,6 @@ export default async function MemberProfile({ params }: Props) {
             <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-200">
               <h3 className="w-full text-lg font-semibold text-gray-700 mb-2">Connect</h3>
               
-              {SHOW_LINKEDIN ? (
-                <a 
-                  href={linkedInUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                >
-                  <Linkedin className="w-5 h-5" />
-                  <span className="font-medium">LinkedIn</span>
-                </a>
-              ) : (
-                <div
-                  role="button"
-                  aria-disabled="true"
-                  title="LinkedIn link temporarily disabled"
-                  className="flex items-center gap-2 px-6 py-3 bg-blue-200 text-white/80 rounded-xl cursor-not-allowed transition-all duration-200 shadow-none"
-                >
-                  <Linkedin className="w-5 h-5 text-gray-500" />
-                  <span className="font-medium text-gray-600">LinkedIn</span>
-                </div>
-              )}
-
               <a 
                 href={`mailto:${member.email}`}
                 className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"

@@ -39,7 +39,7 @@ export default async function MembersPage() {
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-12">
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF9933] via-white to-[#138808] mb-4 drop-shadow-lg tracking-tight leading-tight">
+        <h1 className="text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-white to-[#00B050] mb-4 drop-shadow-lg tracking-tight leading-tight">
             Our Team
         </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">

@@ -1,78 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from '@/components/common/Navbar';
-import Footer from '@/components/common/Footer';
 import { Mail, Phone, MapPin, Instagram, Linkedin, Facebook, Twitter, Send, MessageCircle, Rocket } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContactPage() {
-  // Generate floating particles only on client to avoid SSR hydration mismatches
-  const [isMounted, setIsMounted] = useState(false);
-  const [particles, setParticles] = useState<Array<{
-    left: string;
-    top: string;
-    size: number;
-    bg: string;
-    delay: string;
-    duration: string;
-  }>>([]);
-
-  useEffect(() => {
-    setIsMounted(true);
-    const count = 15;
-    const generated = Array.from({ length: count }, (_, i) => {
-      const size = 4 + Math.random() * 8;
-      return {
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        size,
-        bg: i % 3 === 0 ? '#FF9933' : i % 3 === 1 ? '#000080' : '#138808',
-        delay: `${(Math.random() * 5).toFixed(2)}s`,
-        duration: `${(8 + Math.random() * 12).toFixed(2)}s`,
-      };
-    });
-    setParticles(generated);
-  }, []);
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Animated Spectral Background with India Flag Colors */}
+      {/* Enhanced Background with Light Colors */}
       <div className="fixed inset-0 -z-10">
-        {/* Base gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-green-50"></div>
+        {/* Base gradient with subtle colors */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40"></div>
         
-        {/* Animated spectral orbs - different pattern than About page */}
-        <div className="absolute top-1/4 right-1/4 w-[700px] h-[700px] bg-gradient-to-br from-[#FF9933]/25 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-gradient-to-tl from-[#138808]/20 to-transparent rounded-full blur-3xl animate-pulse-slow delay-1000"></div>
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-white/40 via-[#FF9933]/10 to-transparent rounded-full blur-3xl animate-pulse-slow delay-2000"></div>
-        <div className="absolute bottom-0 right-0 w-[550px] h-[550px] bg-gradient-to-tl from-[#138808]/15 via-white/20 to-transparent rounded-full blur-3xl animate-pulse-slow delay-3000"></div>
-        
-        {/* Radial waves */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px]">
-          <div className="absolute inset-0 rounded-full border-2 border-[#FF9933]/20 animate-ping-slow"></div>
-          <div className="absolute inset-0 rounded-full border-2 border-[#138808]/20 animate-ping-slow delay-1000"></div>
-        </div>
-        
-        {/* Floating particles with different animation */}
-        {isMounted && (
-          <div className="absolute inset-0 opacity-20">
-            {particles.map((p, i) => (
-              <div
-                key={i}
-                className="absolute rounded-full animate-float-rotate"
-                style={{
-                  left: p.left,
-                  top: p.top,
-                  width: `${p.size}px`,
-                  height: `${p.size}px`,
-                  backgroundColor: p.bg,
-                  animationDelay: p.delay,
-                  animationDuration: p.duration,
-                }}
-              />
-            ))}
-          </div>
-        )}
+        {/* Soft colored orbs */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-purple-100/40 to-blue-100/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tl from-pink-100/30 to-purple-100/40 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-50/20 rounded-full blur-3xl"></div>
       </div>
 
       <Navbar />
@@ -81,19 +25,17 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-20">
-            <div className="inline-block mb-6 animate-bounce-slow">
-              <div className="p-6 bg-gradient-to-r from-[#FF9933] via-white to-[#138808] rounded-full shadow-2xl">
-                <MessageCircle className="w-16 h-16 text-blue-800" />
+            <div className="inline-block mb-6">
+              <div className="p-6 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full shadow-xl">
+                <MessageCircle className="w-16 h-16 text-white" />
               </div>
             </div>
             
-            <h1 className="text-6xl sm:text-7xl font-extrabold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF9933] via-blue-800 to-[#138808] animate-gradient-x">
-                Get In Touch
-              </span>
+            <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+              Get In Touch
             </h1>
             
-            <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-[#FF9933] via-white to-[#138808] rounded-full"></div>
+            <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full"></div>
             
             <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium">
               Have questions or want to collaborate? We'd love to hear from you!
@@ -102,20 +44,22 @@ export default function ContactPage() {
 
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
             {/* Contact Form */}
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#FF9933] via-blue-500 to-[#138808] rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-              <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-10 shadow-xl border border-gray-200">
-                <h2 className="text-3xl font-bold text-gray-800 mb-8">Are you interested in joining NSS?</h2>
-                
-                <form className="space-y-6">
-                  <Link
-                    href="/#join-nss"
-                    className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FF9933] to-[#138808] text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
-                  >
-                    <Rocket className="w-5 h-5" />
-                    <span>Join Us</span>
-                  </Link>
-                </form>
+            <div className="relative">
+              <div className="bg-white rounded-3xl p-10 shadow-lg border-2 border-purple-100 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/40 via-pink-50/30 to-blue-50/40 opacity-50"></div>
+                <div className="relative">
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8">Are you interested in joining NSS?</h2>
+                  
+                  <form className="space-y-6">
+                    <Link
+                      href="/#join-nss"
+                      className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-lg font-semibold rounded-xl shadow-md hover:shadow-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
+                    >
+                      <Rocket className="w-5 h-5" />
+                      <span>Join Us</span>
+                    </Link>
+                  </form>
+                </div>
               </div>
               {/* Large centered logo below the Join button */}
               <div className="mt-6">
@@ -140,10 +84,10 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="space-y-6">
               {/* Contact Cards */}
-              <div className="group relative overflow-hidden rounded-2xl bg-white/90 backdrop-blur-sm border-2 border-orange-200 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FF9933]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative p-8 flex items-start gap-4">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#FF9933] to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="rounded-2xl bg-white border-2 border-purple-100/50 hover:border-purple-200 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="p-8 flex items-start gap-4 relative">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
                     <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -156,10 +100,10 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="group relative overflow-hidden rounded-2xl bg-white/90 backdrop-blur-sm border-2 border-blue-200 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative p-8 flex items-start gap-4">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="rounded-2xl bg-white border-2 border-blue-100/50 hover:border-blue-200 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="p-8 flex items-start gap-4 relative">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
                     <Phone className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -184,10 +128,10 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="group relative overflow-hidden rounded-2xl bg-white/90 backdrop-blur-sm border-2 border-green-200 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#138808]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative p-8 flex items-start gap-4">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#138808] to-green-700 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="rounded-2xl bg-white border-2 border-pink-100/50 hover:border-pink-200 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="p-8 flex items-start gap-4 relative">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
                     <MapPin className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -272,8 +216,6 @@ export default function ContactPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
 
       <style jsx global>{`
         @keyframes gradient-x {

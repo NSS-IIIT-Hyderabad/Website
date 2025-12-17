@@ -60,11 +60,14 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate, events: passedEvent
       : "/favicon.ico";
     
     const status = getEventStatus(event);
+    
+    // Define status configuration for badge
     const statusConfig = {
-      ongoing: { label: "Ongoing", color: "bg-green-500", dotColor: "bg-green-400" },
-      upcoming: { label: "Upcoming", color: "bg-blue-500", dotColor: "bg-blue-400" },
-      past: { label: "Completed", color: "bg-gray-500", dotColor: "bg-gray-400" }
-    }[status] || { label: "Event", color: "bg-gray-500", dotColor: "bg-gray-400" };
+      ongoing: { color: 'bg-green-500', dotColor: 'bg-green-200', label: 'Ongoing' },
+      upcoming: { color: 'bg-purple-500', dotColor: 'bg-purple-200', label: 'Upcoming' },
+      past: { color: 'bg-gray-500', dotColor: 'bg-gray-200', label: 'Past' },
+      unknown: { color: 'bg-blue-500', dotColor: 'bg-blue-200', label: 'Event' }
+    }[status] || { color: 'bg-blue-500', dotColor: 'bg-blue-200', label: 'Event' };
       
     return (
       <Link href={`/events/${slug}`} key={idx} className="group block">
@@ -176,14 +179,14 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate, events: passedEvent
         </div>
       </div>
       
-      {/* Modern Filter Chips with Icons */}
+      {/* Modern Filter Chips */}
       <div className="flex flex-wrap justify-center gap-3 mb-12">
         {[
-          { key: "all", label: "All Events", icon: "📋", color: "blue" },
-          { key: "ongoing", label: "Ongoing", icon: "⚡", color: "green" },
-          { key: "upcoming", label: "Upcoming", icon: "🚀", color: "purple" },
-          { key: "past", label: "Past", icon: "✅", color: "gray" }
-        ].map(({ key, label, icon, color }) => (
+          { key: "all", label: "All Events", color: "blue" },
+          { key: "ongoing", label: "Ongoing", color: "green" },
+          { key: "upcoming", label: "Upcoming", color: "purple" },
+          { key: "past", label: "Past", color: "gray" }
+        ].map(({ key, label, color }) => (
           <button
             key={key}
             onClick={() => setFilter(key)}
@@ -198,7 +201,6 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate, events: passedEvent
                 : "bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
             }`}
           >
-            <span className="text-lg">{icon}</span>
             <span className="text-sm font-semibold">{label}</span>
             {filter === key && (
               <span className="ml-1 bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
@@ -235,7 +237,6 @@ const EventGrid: React.FC<EventGridProps> = ({ selectedDate, events: passedEvent
         {filteredEvents.length === 0 ? (
           <div className="col-span-full text-center py-20 animate-fade-in">
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-12 max-w-md mx-auto border border-gray-200">
-              <div className="text-7xl mb-6 animate-bounce">📅</div>
               <h3 className="text-2xl font-bold text-gray-700 mb-3">No events found</h3>
               <p className="text-gray-500 leading-relaxed">
                 {search ? (

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, XCircle, Linkedin, Mail } from "lucide-react";
+import { CheckCircle, XCircle, Mail } from "lucide-react";
 
 type Member = {
   id?: string;
@@ -24,7 +24,6 @@ export default function MemberCard({ member }: { member: Member }) {
     const s = String(val).trim();
     if (!s) return '';
     if (s.toLowerCase() === 'present') return 'Present';
-    // If value includes a month like YYYY-MM, return only YYYY
     if (s.includes('-')) return s.split('-')[0];
     return s;
   };
@@ -40,13 +39,8 @@ export default function MemberCard({ member }: { member: Member }) {
 
   const handleImageError = () => setImageError(true);
 
-  // Social links
-  const linkedInUrl = `https://www.linkedin.com/in/${member.rollNumber}`;
   const emailUrl = `mailto:${member.email}`;
-  // Toggle to disable LinkedIn buttons in the UI while keeping code intact for re-enable
-  const SHOW_LINKEDIN = false;
 
-  // Team colors based on Indian flag theme
   const getTeamGradient = () => {
     switch (member.team.toLowerCase()) {
       case 'tech':
@@ -75,16 +69,14 @@ export default function MemberCard({ member }: { member: Member }) {
 
   const handleClick = () => {
     const uid = getCookie('uid');
-    // If clicked member matches current user (uid), go to /me/profile, else to member/profile
     if (uid && (uid === member.rollNumber || uid === member.id || uid === member.email)) {
-      // current user -> go to /me/profile using rollNumber to keep existing behavior
       router.push(`/me/profile/${member.rollNumber}`);
     } else {
-      // navigate to member profile using email (preferred). Fallback to id or rollNumber.
       const preferred = member.email || member.id || member.rollNumber;
       router.push(`/member/profile/${encodeURIComponent(preferred)}`);
     }
   };
+  
   return (
     <div
       className="w-full max-w-[280px] min-w-[220px] h-auto aspect-[280/320] mx-auto my-4 relative group"
@@ -122,95 +114,91 @@ export default function MemberCard({ member }: { member: Member }) {
             <div
               className="relative mb-4"
               style={{
-                width: 120,
-                height: 120,
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: "4px solid transparent",
-                background: `linear-gradient(white, white) padding-box, linear-gradient(135deg, #FF9933, #138808) border-box`,
-                padding: 2,
+              width: 109, // Decreased by 5%
+              height: 109, // Decreased by 5%
+              borderRadius: "50%",
+              overflow: "hidden",
+              border: "4px solid transparent",
+              background: `linear-gradient(white, white) padding-box, linear-gradient(135deg, #FF9933, #138808) border-box`,
+              padding: 2,
               }}
             >
               <div className="w-full h-full rounded-full overflow-hidden bg-gray-100">
-                <img
-                  src={getImageSrc()}
-                  alt={member.name}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  onError={handleImageError}
-                />
+              <img
+                src={getImageSrc()}
+                alt={member.name}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                onError={handleImageError}
+              />
               </div>
               
               {/* Status Indicator */}
               <div 
-                className={`absolute -top-1 -right-1 w-6 h-6 rounded-full border-3 border-white ${
-                  (!member.to || member.to.toLowerCase() === 'present')
-                    ? 'bg-green-500 animate-pulse' 
-                    : 'bg-gray-400'
-                }`}
+              className={`absolute -top-1 -right-1 w-6 h-6 rounded-full border-3 border-white z-20 ${
+                (!member.to || member.to.toLowerCase() === 'present')
+                ? 'bg-green-500 animate-pulse' 
+                : 'bg-gray-400'
+              }`}
               />
+            </div>
+            
+            {/* Team Badge - Top Right with high z-index */}
+            <div className={`absolute top-2 right-2 inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r ${getTeamGradient()} text-white shadow-lg border-2 border-white z-50`}>
+              {member.team}
             </div>
             
             <h3 className="text-xl font-bold text-gray-800 mb-2 leading-tight">
               {member.name}
             </h3>
-            
-            {/* Team Badge */}
-            <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r ${getTeamGradient()} text-white mb-3 shadow-lg`}>
-              {member.team}
-            </div>
           </div>
           
-          {/* Duration Info */}
-          <div className="w-full">
-            <div className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium ${getStatusBadge()} w-full justify-center`}>
+          {/* Duration Info - Positioned on card outline */}
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-40">
+            <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${getStatusBadge()} shadow-xl`}>
               <span className="mr-2">
-                {(!member.to || (typeof member.to === 'string' && member.to.toLowerCase() === 'present')) ? 
-                    <CheckCircle className="w-4 h-4 text-green-600 inline" /> : 
-                    <XCircle className="w-4 h-4 text-red-600 inline" />
-                  }
+              {(!member.to || (typeof member.to === 'string' && member.to.toLowerCase() === 'present')) ? 
+                <CheckCircle className="w-4 h-4 text-green-600 inline" /> : 
+                <XCircle className="w-4 h-4 text-red-600 inline" />
+                }
               </span>
-                {(() => {
-                  // Compute overall duration from first role start to last role end
-                  const wh = member.workHistory || [];
-                  if (!Array.isArray(wh) || wh.length === 0) {
-                    // Fall back to current 'from' and 'to'
-                    return (!member.to || (typeof member.to === 'string' && member.to.toLowerCase() === 'present'))
-                      ? `${formatYear(member.from)} - Present`
-                      : `${formatYear(member.from)} - ${formatYear(member.to)}`;
-                  }
+              <span className="truncate">
+              {(() => {
+                const wh = member.workHistory || [];
+                if (!Array.isArray(wh) || wh.length === 0) {
+                return (!member.to || (typeof member.to === 'string' && member.to.toLowerCase() === 'present'))
+                  ? `${formatYear(member.from)} - Present`
+                  : `${formatYear(member.from)} - ${formatYear(member.to)}`;
+                }
 
-                  // Collect valid start and end dates
-                  const starts = wh.map(w => w.start).filter(Boolean) as string[];
-                  const ends = wh.map(w => w.end).filter(Boolean) as string[]; // end may be null for present
+                const starts = wh.map(w => w.start).filter(Boolean) as string[];
+                const ends = wh.map(w => w.end).filter(Boolean) as string[];
 
-                  // Determine earliest start
-                  let earliestStart = starts.length ? starts[0] : member.from;
-                  for (const s of starts) {
-                    try {
-                      if (new Date(s) < new Date(earliestStart)) earliestStart = s;
-                    } catch (e) {
-                      // ignore invalid dates
-                    }
-                  }
+                let earliestStart = starts.length ? starts[0] : member.from;
+                for (const s of starts) {
+                try {
+                  if (new Date(s) < new Date(earliestStart)) earliestStart = s;
+                } catch (e) {
+                  // ignore invalid dates
+                }
+                }
 
-                  // If any entry has no end -> Present
-                  const hasPresent = wh.some(w => !w.end);
-                  if (hasPresent) return `${formatYear(earliestStart)} - Present`;
+                const hasPresent = wh.some(w => !w.end);
+                if (hasPresent) return `${formatYear(earliestStart)} - Present`;
 
-                  // Otherwise pick latest end
-                  let latestEnd = ends.length ? ends[0] : member.to;
-                  for (const e of ends) {
-                    try {
-                      if (new Date(e) > new Date(latestEnd)) latestEnd = e;
-                    } catch (err) {
-                      // ignore
-                    }
-                  }
+                let latestEnd = ends.length ? ends[0] : member.to;
+                for (const e of ends) {
+                try {
+                  if (new Date(e) > new Date(latestEnd)) latestEnd = e;
+                } catch (err) {
+                  // ignore
+                }
+                }
 
-                  return `${formatYear(earliestStart)} - ${formatYear(latestEnd)}`;
-                })()}
+                return `${formatYear(earliestStart)} - ${formatYear(latestEnd)}`;
+              })()}
+              </span>
             </div>
-          </div>
+            </div>
         </div>
 
         {/* Back Side */}
@@ -233,51 +221,32 @@ export default function MemberCard({ member }: { member: Member }) {
           </div>
           
           {/* Content */}
-          <div className="relative z-10 flex flex-col items-center">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold mb-2 text-white drop-shadow-lg">
+          <div className="relative z-10 flex flex-col items-center justify-center h-full">
+            <div className="mb-4">
+              <h3 className="text-2xl font-bold mb-4 text-white drop-shadow-lg">
                 {member.name}
               </h3>
-              <p className="text-white/90 text-lg font-medium">
+              
+              {/* Roll Number and Email Icon Side by Side */}
+              <div className="flex gap-2 items-center justify-center mb-4">
+                <div className="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full border border-white shadow-lg">
+                  <span className="text-slate-700 text-sm font-semibold">
+                    {member.rollNumber}
+                  </span>
+                </div>
+                
+                <a 
+                  href={emailUrl}
+                  className="flex items-center justify-center w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full border border-white hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
+                  title={member.email}
+                >
+                  <Mail className="w-5 h-5 text-blue-700" />
+                </a>
+              </div>
+              
+              <p className="text-white/90 text-sm font-medium">
                 Connect with me
               </p>
-            </div>
-            
-            {/* Social Links */}
-            <div className="flex gap-6">
-              {SHOW_LINKEDIN ? (
-                <a 
-                  href={linkedInUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-sm rounded-full border-2 border-white hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
-                >
-                  <Linkedin className="w-7 h-7 text-blue-700" />
-                </a>
-              ) : (
-                <div
-                  role="button"
-                  aria-disabled="true"
-                  title="LinkedIn link temporarily disabled"
-                  className="flex items-center justify-center w-14 h-14 bg-white/60 backdrop-blur-sm rounded-full border-2 border-white text-gray-400 cursor-not-allowed transition-all duration-300 shadow-none"
-                >
-                  <Linkedin className="w-7 h-7" />
-                </div>
-              )}
-              
-              <a 
-                href={emailUrl}
-                className="flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-sm rounded-full border-2 border-white hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
-              >
-                <Mail className="w-7 h-7 text-blue-700" />
-              </a>
-            </div>
-            
-            {/* Roll Number */}
-            <div className="mt-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full border border-white shadow-lg">
-              <span className="text-slate-700 text-sm font-medium">
-                {member.rollNumber}
-              </span>
             </div>
           </div>
         </div>
