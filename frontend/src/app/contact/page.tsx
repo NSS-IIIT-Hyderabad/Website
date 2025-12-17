@@ -7,53 +7,48 @@ import Link from 'next/link';
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Enhanced Background with Light Colors */}
+    <div className="min-h-screen relative overflow-hidden bg-gray-50">
+      {/* Clean Professional Background */}
       <div className="fixed inset-0 -z-10">
-        {/* Base gradient with subtle colors */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/40"></div>
-        
-        {/* Soft colored orbs */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-purple-100/40 to-blue-100/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tl from-pink-100/30 to-purple-100/40 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-50/20 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 bg-white"></div>
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-50 rounded-full blur-3xl opacity-30"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100 rounded-full blur-3xl opacity-20"></div>
       </div>
 
       <Navbar />
 
       <main className="relative z-10 px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-7xl mx-auto">
-          {/* Hero Section */}
-          <div className="text-center mb-20">
-            <div className="inline-block mb-6">
-              <div className="p-6 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full shadow-xl">
-                <MessageCircle className="w-16 h-16 text-white" />
+            {/* Hero Section */}
+            <div className="text-center mb-20">
+              <div className="inline-block mb-6 animate-float-rotate">
+              <div className="p-6 bg-gradient-to-r from-blue-700 to-purple-700 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <MessageCircle className="w-16 h-16 text-white animate-pulse-slow" />
               </div>
+              </div>
+              
+              <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 bg-clip-text text-transparent animate-gradient-x">
+              About NSS IIIT-H
+              </h1>
+              
+              <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-900 via-purple-700 to-indigo-900 rounded-full"></div>
+              
+              <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed animate-bounce-slow">
+              Empowering students to create meaningful change through service, leadership, and community engagement
+              </p>
             </div>
-            
-            <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-              Get In Touch
-            </h1>
-            
-            <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full"></div>
-            
-            <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium">
-              Have questions or want to collaborate? We'd love to hear from you!
-            </p>
-          </div>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
             {/* Contact Form */}
             <div className="relative">
-              <div className="bg-white rounded-3xl p-10 shadow-lg border-2 border-purple-100 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/40 via-pink-50/30 to-blue-50/40 opacity-50"></div>
-                <div className="relative">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8">Are you interested in joining NSS?</h2>
+              <div className="bg-white rounded-2xl p-10 shadow-md border border-blue-200">
+                <div>
+                  <h2 className="text-3xl font-bold text-blue-900 mb-8">Are you interested in joining NSS?</h2>
                   
                   <form className="space-y-6">
                     <Link
                       href="/#join-nss"
-                      className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-lg font-semibold rounded-xl shadow-md hover:shadow-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
+                      className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-blue-800 hover:bg-blue-900 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
                     >
                       <Rocket className="w-5 h-5" />
                       <span>Join Us</span>
@@ -84,10 +79,10 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="space-y-6">
               {/* Contact Cards */}
-              <div className="rounded-2xl bg-white border-2 border-purple-100/50 hover:border-purple-200 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="rounded-2xl bg-white border-2 border-blue-200/50 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="p-8 flex items-start gap-4 relative">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-700 to-blue-900 rounded-xl flex items-center justify-center shadow-md">
                     <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -100,10 +95,9 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-white border-2 border-blue-100/50 hover:border-blue-200 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="p-8 flex items-start gap-4 relative">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+              <div className="rounded-xl bg-white border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300">
+                <div className="p-8 flex items-start gap-4">
+                  <div className="flex-shrink-0 w-14 h-14 bg-blue-700 rounded-lg flex items-center justify-center shadow-sm">
                     <Phone className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -128,10 +122,9 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-white border-2 border-pink-100/50 hover:border-pink-200 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="p-8 flex items-start gap-4 relative">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
+              <div className="rounded-xl bg-white border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300">
+                <div className="p-8 flex items-start gap-4">
+                  <div className="flex-shrink-0 w-14 h-14 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
                     <MapPin className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -148,15 +141,15 @@ export default function ContactPage() {
               </div>
 
               {/* Social Media */}
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#FF9933] via-blue-800 to-[#138808] p-8 shadow-xl">
+              <div className="relative overflow-hidden rounded-xl bg-blue-900 p-8 shadow-lg">
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
                 <div className="relative">
                   <h3 className="text-2xl font-bold text-white mb-6">Follow Us On Social Media</h3>
                   <div className="flex flex-wrap gap-4">
                     {[
-                      { icon: Instagram, label: "Instagram", href: "https://instagram.com/nss.iiith", color: "from-pink-500 to-purple-600" },
-                      { icon: Facebook, label: "Facebook", href: "https://facebook.com/nss.iiith", color: "from-blue-600 to-blue-800" },
-                      { icon: Twitter, label: "Twitter", href: "https://twitter.com/nss_iiith", color: "from-sky-400 to-blue-600" },
+                      { icon: Instagram, label: "Instagram", href: "https://instagram.com/nss.iiith", color: "from-blue-600 to-blue-800" },
+                      { icon: Facebook, label: "Facebook", href: "https://facebook.com/nss.iiith", color: "from-blue-700 to-blue-900" },
+                      { icon: Twitter, label: "Twitter", href: "https://twitter.com/nss_iiith", color: "from-blue-600 to-blue-800" },
                       { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/nss-iiith", color: "from-blue-700 to-blue-900" },
                     ].map((social, index) => (
                       <a
@@ -177,9 +170,8 @@ export default function ContactPage() {
           </div>
 
           {/* Map Section */}
-          <div className="relative group mb-20">
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#FF9933] via-blue-500 to-[#138808] rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-            <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-4 shadow-xl border border-gray-200 overflow-hidden">
+          <div className="relative mb-20">
+            <div className="bg-white rounded-2xl p-4 shadow-md border border-blue-200 overflow-hidden">
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <iframe
                   src="https://www.google.com/maps?q=17.447249876210552,78.3487203338203&z=17&output=embed"
@@ -197,9 +189,9 @@ export default function ContactPage() {
 
           {/* CTA Section */}
           <div className="text-center">
-            <div className="inline-block p-1 bg-gradient-to-r from-[#FF9933] via-white to-[#138808] rounded-3xl shadow-2xl">
-              <div className="bg-white rounded-3xl px-12 py-10">
-                <h2 className="text-4xl font-bold text-gray-800 mb-4">
+            <div className="bg-white rounded-2xl px-12 py-10 shadow-md border border-blue-200">
+              <div>
+                <h2 className="text-4xl font-bold text-blue-900 mb-4">
                   Join Our Community
                 </h2>
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -207,7 +199,7 @@ export default function ContactPage() {
                 </p>
                 <a
                   href="/about"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FF9933] to-[#138808] text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-blue-800 hover:bg-blue-900 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <span>Learn More About Us</span>
                 </a>
