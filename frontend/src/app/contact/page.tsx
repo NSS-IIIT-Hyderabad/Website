@@ -23,18 +23,20 @@ export default function ContactPage() {
             <div className="text-center mb-20">
               <div className="inline-block mb-6 animate-float-rotate">
               <div className="p-6 bg-gradient-to-r from-blue-700 to-purple-700 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                <MessageCircle className="w-16 h-16 text-white animate-pulse-slow" />
+              <MessageCircle className="w-16 h-16 text-white animate-pulse-slow" />
               </div>
               </div>
               
-              <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 bg-clip-text text-transparent animate-gradient-x">
-              About NSS IIIT-H
+              <h1 className="text-6xl sm:text-7xl font-extrabold mb-6">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700 animate-gradient-x">
+                Get In Touch
+              </span>
               </h1>
               
-              <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-900 via-purple-700 to-indigo-900 rounded-full"></div>
+              <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-[#FF9933] via-white to-[#138808] rounded-full"></div>
               
-              <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed animate-bounce-slow">
-              Empowering students to create meaningful change through service, leadership, and community engagement
+              <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium">
+              Have questions or want to collaborate? We'd love to hear from you!
               </p>
             </div>
 

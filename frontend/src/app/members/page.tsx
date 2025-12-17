@@ -39,10 +39,25 @@ export default async function MembersPage() {
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-12">
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-white to-[#00B050] mb-4 drop-shadow-lg tracking-tight leading-tight">
-            Our Team
-        </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+<h1 className="text-6xl sm:text-7xl font-extrabold
+text-transparent bg-clip-text
+bg-gradient-to-r
+from-[#D84300]
+via-[#F0F0F0]
+to-[#0A5A2C]
+mb-4 tracking-tight leading-tight
+[ -webkit-text-stroke:1.5px_#000000 ]
+drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]">
+    Our Team
+</h1>
+
+
+
+
+
+
+
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Meet the dedicated volunteers and alumni who make NSS a force for positive change
           </p>
         </div>

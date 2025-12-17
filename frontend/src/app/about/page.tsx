@@ -20,12 +20,6 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto">
             {/* Hero Section */}
             <div className="text-center mb-20">
-            <div className="inline-block mb-6 animate-float">
-              <div className="p-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <Heart className="w-16 h-16 text-white animate-pulse" />
-              </div>
-            </div>
-            
             <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-900 via-purple-800 to-indigo-900 bg-clip-text text-transparent animate-gradient-x">
               About NSS IIIT-H
             </h1>
