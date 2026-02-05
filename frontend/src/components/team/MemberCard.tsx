@@ -1,7 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, XCircle, Mail } from "lucide-react";
+import { CheckCircle, XCircle, Linkedin, Mail } from "lucide-react";
 
 type Member = {
   id?: string;
@@ -12,205 +13,158 @@ type Member = {
   rollNumber: string;
   from: string;
   to: string;
-  workHistory?: Array<{ role?: string; team?: string; start?: string; end?: string | null }>;
+  workHistory?: Array<{ start?: string; end?: string | null }>;
 };
 
 export default function MemberCard({ member }: { member: Member }) {
   const [imageError, setImageError] = useState(false);
   const [hover, setHover] = useState(false);
+  const router = useRouter();
+
+  /* ---------- helpers ---------- */
 
   const formatYear = (val?: string) => {
-    if (!val) return '';
-    const s = String(val).trim();
-    if (!s) return '';
-    if (s.toLowerCase() === 'present') return 'Present';
-    if (s.includes('-')) return s.split('-')[0];
-    return s;
+    if (!val) return "";
+    if (val.toLowerCase() === "present") return "Present";
+    return val.includes("-") ? val.split("-")[0] : val;
   };
 
-  const getFallbackImage = () => "/favicon.ico";
-  const getImageSrc = (): string => {
-    if (imageError) return getFallbackImage();
-    if (!member.photoUrl || member.photoUrl.trim() === "" || member.photoUrl === "hi" || member.photoUrl === "-") {
-      return getFallbackImage();
-    }
-    return member.photoUrl;
-  };
+  const getImageSrc = () =>
+    imageError || !member.photoUrl || ["", "-", "hi"].includes(member.photoUrl)
+      ? "/favicon.ico"
+      : member.photoUrl;
 
-  const handleImageError = () => setImageError(true);
-
-  const emailUrl = `mailto:${member.email}`;
+  const isActive = !member.to || member.to.toLowerCase() === "present";
 
   const getTeamGradient = () => {
     switch (member.team.toLowerCase()) {
-      case 'tech':
-        return 'from-green-500 to-blue-600';
-      case 'design':
-        return 'from-orange-500 to-red-500';
+      case "tech":
+        return "from-emerald-500/90 to-sky-500/90";
+      case "design":
+        return "from-amber-500/90 to-rose-500/90";
       default:
-        return 'from-purple-500 to-pink-500';
+        return "from-violet-500/90 to-fuchsia-500/90";
     }
   };
 
-  const getStatusBadge = () => {
-    const isActive = !member.to || member.to.toLowerCase() === 'present';
-    if (isActive) {
-      return 'bg-green-100 text-green-800 border border-green-200';
+  const getDurationText = () => {
+    const wh = member.workHistory || [];
+    if (!wh.length) {
+      return isActive
+        ? `${formatYear(member.from)} – Present`
+        : `${formatYear(member.from)} – ${formatYear(member.to)}`;
     }
-    return 'bg-gray-100 text-gray-600 border border-gray-200';
-  };
-  const router = useRouter();
 
-  const getCookie = (name: string) => {
-    if (typeof document === 'undefined') return null;
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    return match ? decodeURIComponent(match[2]) : null;
+    const starts = wh.map(w => w.start).filter(Boolean) as string[];
+    const ends = wh.map(w => w.end).filter(Boolean) as string[];
+
+    const earliest = starts.sort()[0] ?? member.from;
+    if (wh.some(w => !w.end)) return `${formatYear(earliest)} – Present`;
+
+    const latest = ends.sort().at(-1) ?? member.to;
+    return `${formatYear(earliest)} – ${formatYear(latest)}`;
   };
 
   const handleClick = () => {
-    const uid = getCookie('uid');
-    if (uid && (uid === member.rollNumber || uid === member.id || uid === member.email)) {
-      router.push(`/me/profile/${member.rollNumber}`);
-    } else {
-      const preferred = member.email || member.id || member.rollNumber;
-      router.push(`/member/profile/${encodeURIComponent(preferred)}`);
-    }
+    router.push(`/member/profile/${member.rollNumber}`);
   };
-  
+
+  /* ---------- JSX ---------- */
+
   return (
     <div
-      className="w-full max-w-[280px] min-w-[220px] h-auto aspect-[280/320] mx-auto my-4 relative group"
+      className="w-full max-w-[280px] aspect-[280/360] mx-auto my-5"
       style={{ perspective: 1200 }}
-      onClick={handleClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={handleClick}
     >
       <div
-        className={`relative w-full h-full transition-transform duration-300 ease-out rounded-3xl cursor-pointer ${
-          hover 
-            ? 'shadow-2xl shadow-blue-200/50 scale-[1.02]' 
-            : 'shadow-lg shadow-gray-200/50'
+        className={`relative w-full h-full rounded-3xl transition-all duration-700 ${
+          hover ? "shadow-2xl shadow-blue-200/40" : "shadow-lg shadow-gray-200/60"
         }`}
+        style={{
+          transformStyle: "preserve-3d",
+          transform: hover ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
       >
-        {/* Front Side */}
+        {/* ================= FRONT ================= */}
         <div
-          className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white to-gray-50 rounded-3xl flex flex-col items-center p-6 text-center justify-between border-2 border-gray-100 hover:border-blue-200 transition-all duration-300"
+          className="absolute inset-0 bg-white rounded-3xl border border-gray-200 flex flex-col items-center px-7 pt-9 h-fit"
+          style={{ backfaceVisibility: "hidden" }}
         >
-          {/* Indian Flag Border */}
-          <div 
-            className="absolute top-0 left-6 right-6 h-1 rounded-full"
-            style={{
-              background: "linear-gradient(to right, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%)"
-            }}
-          />
-          
-          {/* Profile Section */}
-          <div className="flex flex-col items-center">
-            <div
-              className="relative mb-4"
-              style={{
-              width: 109, // Decreased by 5%
-              height: 109, // Decreased by 5%
-              borderRadius: "50%",
-              overflow: "hidden",
-              border: "4px solid transparent",
-              background: `linear-gradient(white, white) padding-box, linear-gradient(135deg, #FF9933, #138808) border-box`,
-              padding: 2,
-              }}
-            >
-              <div className="w-full h-full rounded-full overflow-hidden bg-gray-100">
+          {/* Profile Image */}
+          <div className="relative mb-5">
+            <div className="w-[116px] h-[116px] rounded-full p-[3px] bg-gradient-to-br from-orange-400 to-green-600">
               <img
                 src={getImageSrc()}
+                onError={() => setImageError(true)}
                 alt={member.name}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                onError={handleImageError}
+                className="w-full h-full rounded-full object-cover bg-gray-100"
               />
-              </div>
-              
-              {/* Status Indicator */}
-              <div 
-              className={`absolute -top-1 -right-1 w-6 h-6 rounded-full border-3 border-white z-20 ${
-                (!member.to || member.to.toLowerCase() === 'present')
-                ? 'bg-green-500 animate-pulse' 
-                : 'bg-gray-400'
-              }`}
-              />
-            </div>
-            
-            {/* Team Badge - Top Right with high z-index */}
-            <div className={`absolute top-2 right-2 inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r ${getTeamGradient()} text-white shadow-lg border-2 border-white z-50`}>
-              {member.team}
-            </div>
-            
-            <h3 className="text-xl font-bold text-gray-800 mb-2 leading-tight">{member.name}</h3>
-
-            {/* Roll Number and Email (moved from back) */}
-            <div className="flex gap-2 items-center justify-center mb-3 mt-1">
-              <div className="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full border border-white shadow">
-                <span className="text-slate-700 text-sm font-semibold">
-                  {member.rollNumber}
-                </span>
-              </div>
-              <a 
-                href={emailUrl}
-                className="flex items-center justify-center w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full border border-white hover:bg-white hover:scale-110 transition-all duration-300 shadow"
-                title={member.email}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Mail className="w-5 h-5 text-blue-700" />
-              </a>
             </div>
           </div>
-          
-          {/* Duration Info - Positioned on card outline */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-40">
-            <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${getStatusBadge()} shadow-xl`}>
-              <span className="mr-2">
-              {(!member.to || (typeof member.to === 'string' && member.to.toLowerCase() === 'present')) ? 
-                <CheckCircle className="w-4 h-4 text-green-600 inline" /> : <></>
-                }
-              </span>
-              <span className="truncate">
-              {(() => {
-                const wh = member.workHistory || [];
-                if (!Array.isArray(wh) || wh.length === 0) {
-                return (!member.to || (typeof member.to === 'string' && member.to.toLowerCase() === 'present'))
-                  ? `${formatYear(member.from)} - Present`
-                  : `${formatYear(member.from)} - ${formatYear(member.to)}`;
-                }
 
-                const starts = wh.map(w => w.start).filter(Boolean) as string[];
-                const ends = wh.map(w => w.end).filter(Boolean) as string[];
+          {/* Name */}
+          <h3 className="text-lg font-semibold text-gray-800 text-center leading-snug">
+            {member.name}
+          </h3>
 
-                let earliestStart = starts.length ? starts[0] : member.from;
-                for (const s of starts) {
-                try {
-                  if (new Date(s) < new Date(earliestStart)) earliestStart = s;
-                } catch (e) {
-                  // ignore invalid dates
-                }
-                }
+          {/* Roll */}
+          <p className="mt-1.5 text-sm text-gray-500">
+            {member.rollNumber}
+          </p>
 
-                const hasPresent = wh.some(w => !w.end);
-                if (hasPresent) return `${formatYear(earliestStart)} - Present`;
-
-                let latestEnd = ends.length ? ends[0] : member.to;
-                for (const e of ends) {
-                try {
-                  if (new Date(e) > new Date(latestEnd)) latestEnd = e;
-                } catch (err) {
-                  // ignore
-                }
-                }
-
-                return `${formatYear(earliestStart)} - ${formatYear(latestEnd)}`;
-              })()}
-              </span>
-            </div>
-            </div>
+          {/* Duration (no overflow) */}
+          <div
+            className={`mt-2 mb-4 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium ${
+              isActive
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                : "bg-gray-100 text-gray-600 border border-gray-200"
+            }`}
+          >
+            {isActive ? (
+              <CheckCircle className="w-4 h-4" />
+            ) : (
+              <XCircle className="w-4 h-4" />
+            )}
+            {getDurationText()}
+          </div>
         </div>
 
-        {/* Back Side removed (no rotation) */}
+        {/* ================= BACK ================= */}
+        <div
+          className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-800 via-blue-700 to-slate-800 flex flex-col items-center justify-center gap-6 text-white px-8"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        >
+          <h3 className="text-xl font-semibold">{member.name}</h3>
+
+          {/* Team badge moved here */}
+          <div
+            className={`px-4 py-1.5 text-center rounded-full text-xs font-semibold tracking-wide bg-gradient-to-r ${getTeamGradient()} shadow-md`}
+          >
+            {member.team}
+          </div>
+
+          <div className="flex gap-7 mt-2">
+            {/* <a
+              href={`https://www.linkedin.com/in/${member.rollNumber}`}
+              target="_blank"
+              onClick={(e) => e.stopPropagation()}
+              className="w-13 h-13 rounded-full bg-white flex items-center justify-center shadow-md"
+            >
+              <Linkedin className="text-blue-700 w-6 h-6" />
+            </a> */}
+
+            <a
+              href={`mailto:${member.email}`}
+              onClick={(e) => e.stopPropagation()}
+              className="w-13 h-13 rounded-full bg-white flex items-center justify-center shadow-md"
+            >
+              <Mail className="text-blue-700 w-6 h-6" />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -7,37 +7,30 @@ import Link from 'next/link';
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gray-50">
-      {/* Clean Professional Background */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-white"></div>
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-50 rounded-full blur-3xl opacity-30"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100 rounded-full blur-3xl opacity-20"></div>
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">
       <Navbar />
 
-      <main className="relative z-10 px-4 sm:px-6 lg:px-8 py-16">
+      <main className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-7xl mx-auto">
             {/* Hero Section */}
             <div className="text-center mb-20">
-              <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 bg-clip-text text-transparent animate-gradient-x">
+              <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] tracking-tight leading-tight">
               Contact Us
               </h1>
-              <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-900 via-purple-700 to-indigo-900 rounded-full"></div>
+              <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-[#FF3B00] to-[#00B050] rounded-full"></div>
             </div>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
             {/* Contact Form */}
             <div className="relative">
-              <div className="bg-white rounded-2xl p-10 shadow-md border border-blue-200">
+              <div className="bg-white rounded-2xl p-10 shadow-md border border-gray-200">
                 <div>
-                  <h2 className="text-3xl font-bold text-blue-900 mb-8">Are you interested in joining NSS?</h2>
+                  <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] mb-8">Are you interested in joining NSS?</h2>
                   
                   <form className="space-y-6">
                     <Link
                       href="/#join-nss"
-                      className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-blue-800 hover:bg-blue-900 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+                      className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-lg transition-all duration-300"
                     >
                       <Rocket className="w-5 h-5" />
                       <span>Join Us</span>
@@ -68,15 +61,15 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="space-y-6">
               {/* Contact Cards */}
-              <div className="rounded-2xl bg-white border-2 border-blue-200/50 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="rounded-2xl bg-white border-2 border-gray-200 hover:border-orange-300 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="p-8 flex items-start gap-4 relative">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-700 to-blue-900 rounded-xl flex items-center justify-center shadow-md">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#FF3B00] to-orange-600 rounded-xl flex items-center justify-center shadow-md">
                     <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-800 mb-2">Email Us</h3>
-                    <a href="mailto:nss@iiit.ac.in" className="text-blue-600 hover:text-blue-800 font-medium text-lg">
+                    <a href="mailto:nss@iiit.ac.in" className="text-orange-600 hover:text-orange-800 font-medium text-lg">
                       nss@iiit.ac.in
                     </a>
                     <p className="text-gray-600 text-sm mt-1">We'll respond within 24 hours</p>
@@ -84,9 +77,9 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-white border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300">
+              <div className="rounded-xl bg-white border border-gray-200 hover:border-orange-300 hover:shadow-md transition-all duration-300">
                 <div className="p-8 flex items-start gap-4">
-                  <div className="flex-shrink-0 w-14 h-14 bg-blue-700 rounded-lg flex items-center justify-center shadow-sm">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
                     <Phone className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -111,9 +104,9 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-white border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300">
+              <div className="rounded-xl bg-white border border-gray-200 hover:border-green-300 hover:shadow-md transition-all duration-300">
                 <div className="p-8 flex items-start gap-4">
-                  <div className="flex-shrink-0 w-14 h-14 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-green-500 to-[#00B050] rounded-lg flex items-center justify-center shadow-sm">
                     <MapPin className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -130,7 +123,7 @@ export default function ContactPage() {
               </div>
 
               {/* Social Media */}
-              <div className="relative overflow-hidden rounded-xl bg-blue-900 p-8 shadow-lg">
+              <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-orange-400 via-blue-400 to-green-400 p-8 shadow-lg">
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
                 <div className="relative">
                   <h3 className="text-2xl font-bold text-white mb-6">Follow Us On Social Media</h3>
@@ -160,7 +153,7 @@ export default function ContactPage() {
 
           {/* Map Section */}
           <div className="relative mb-20">
-            <div className="bg-white rounded-2xl p-4 shadow-md border border-blue-200 overflow-hidden">
+            <div className="bg-white rounded-2xl p-4 shadow-md border border-gray-200 overflow-hidden">
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <iframe
                   src="https://www.google.com/maps?q=17.447249876210552,78.3487203338203&z=17&output=embed"
@@ -178,9 +171,9 @@ export default function ContactPage() {
 
           {/* CTA Section */}
           <div className="text-center">
-            <div className="bg-white rounded-2xl px-12 py-10 shadow-md border border-blue-200">
+            <div className="bg-white rounded-2xl px-12 py-10 shadow-md border border-gray-200">
               <div>
-                <h2 className="text-4xl font-bold text-blue-900 mb-4">
+                <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] mb-4">
                   Join Our Community
                 </h2>
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -188,7 +181,7 @@ export default function ContactPage() {
                 </p>
                 <a
                   href="/about"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-blue-800 hover:bg-blue-900 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-lg transition-all duration-300"
                 >
                   <span>Learn More About Us</span>
                 </a>
@@ -198,71 +191,7 @@ export default function ContactPage() {
         </div>
       </main>
 
-      <style jsx global>{`
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes float-rotate {
-          0% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(30px, -30px) rotate(120deg); }
-          66% { transform: translate(-20px, 20px) rotate(240deg); }
-          100% { transform: translate(0, 0) rotate(360deg); }
-        }
-        
-        @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); opacity: 0.3; }
-          50% { transform: scale(1.1); opacity: 0.5; }
-        }
-        
-        @keyframes ping-slow {
-          0% { transform: scale(0.8); opacity: 1; }
-          100% { transform: scale(1.3); opacity: 0; }
-        }
-        
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 3s ease infinite;
-        }
-        
-        /* Use individual animation-* properties so inline styles (animationDuration/animationDelay)
-           applied to particles are not inadvertently overridden by the shorthand. */
-        .animate-float-rotate {
-          animation-name: float-rotate;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse-slow 4s ease-in-out infinite;
-        }
-        
-        .animate-ping-slow {
-          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-        
-        .animate-bounce-slow {
-          animation: bounce-slow 2s ease-in-out infinite;
-        }
-        
-        .delay-1000 {
-          animation-delay: 1s;
-        }
-        
-        .delay-2000 {
-          animation-delay: 2s;
-        }
-        
-        .delay-3000 {
-          animation-delay: 3s;
-        }
-      `}</style>
+
     </div>
   );
 }

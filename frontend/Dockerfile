@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production --no-audit --no-fund
+RUN npm ci
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -52,8 +52,8 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
+CMD ["node", "server.js"]
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000/api/health || exit 1
-
-CMD ["npm", "run", "start"]
+    CMD curl -f http://localhost:3000/api/health || exit 1CMD ["npm", "run", "start"]

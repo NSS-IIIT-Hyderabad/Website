@@ -69,7 +69,7 @@ const AboutUs = () => {
         </div>
 
         {/* RIGHT - Hero Image */}
-        <div className="relative flex items-center justify-center min-h-[calc(100vh-5rem)] w-full bg-cover bg-center" style={{ backgroundImage: "url('/carousel_images/about_us.jpg')" }}>
+        <div className="relative flex items-center justify-center min-h-[calc(100vh-5rem)] w-full bg-cover bg-center" style={{ backgroundImage: "url('/carousel_images/1.jpg')" }}>
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-indigo-900/50 to-blue-900/60" />
           
           {/* Decorative Elements */}

@@ -131,10 +131,13 @@ export default function MembersSection({ members }: { members: Member[] }) {
           </div>
           
           <button
-            onClick={() => setShowAll(!showAll)}
-            className="btn-base bg-blue-800 text-white hover:bg-blue-900 px-6 py-3 whitespace-nowrap"
+            onClick={() => {
+              setSearchTerm("");
+              setActiveFilters(["all"]);
+            }}
+            className="btn-base bg-red-500 text-white hover:bg-red-700 px-6 py-3 whitespace-nowrap"
           >
-            <span>{showAll ? "Show Less" : "View All"}</span>
+            <span>Clear</span>
           </button>
         </div>
 

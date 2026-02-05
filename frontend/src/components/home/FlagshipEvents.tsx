@@ -61,7 +61,7 @@ const FlagshipEvents = () => {
       imagePosition: 'left',
       icon: <Leaf className="w-16 h-16 text-green-500" />,
       category: 'Environment',
-      backgroundImage: 'https://media.licdn.com/dms/image/v2/D5622AQFBLTT7U2lQeQ/feedshare-shrink_800/B56Zie.vLeG0Ag-/0/1755013904389?e=1764806400&v=beta&t=jMbGsOSLmdPRAtP67e1XvivW87R-X5NAhN77EzvGxpM',
+      backgroundImage: '/carousel_images/4.jpg',
       stats: {
         participants: '120+',
         audience: 'Freshers',

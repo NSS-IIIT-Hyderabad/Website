@@ -15,24 +15,40 @@ services:
     volumes:
       - mongodb_data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1024M
+        reservations:
+          cpus: '1'
+          memory: 512M
     networks:
       - app-network
 
   # Backend API Service (Multiple instances for load balancing)
   backend-1:
     build:
-      context: ./backend/members
+      context: ./backend
       dockerfile: Dockerfile
     container_name: nss-backend-1
     restart: unless-stopped
     environment:
       - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
-      - API_ENV=${API_ENV:-development}
+      - API_ENV=${API_ENV:-production}
       - API_PORT=8000
     depends_on:
       - mongodb
     volumes:
-      - ./backend/members:/app
+      - ./backend:/app
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
     networks:
       - app-network
 
@@ -65,11 +81,18 @@ services:
       - NEXT_PUBLIC_API_URL=http://nginx/api
     depends_on:
       - backend-1
-      - backend-2
     volumes:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
     networks:
       - app-network
 #
@@ -107,9 +130,15 @@ services:
       - ./nginx/logs:/var/log/nginx
     depends_on:
       - frontend-1
-      - frontend-2
       - backend-1
-      - backend-2
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 256M
+        reservations:
+          cpus: '0.5'
+          memory: 128M
     networks:
       - app-network
 
@@ -122,6 +151,14 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
     networks:
       - app-network
 
@@ -140,6 +177,14 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
     networks:
       - app-network
 
@@ -154,6 +199,14 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin123
     volumes:
       - grafana_data:/var/lib/grafana
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
     networks:
       - app-network
 

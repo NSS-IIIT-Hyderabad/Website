@@ -52,3 +52,28 @@ clean:
 shell:
 	docker exec -it $$(docker ps -q | head -n1) sh
 	docker exec -it $$(docker ps -q | head -n1) bash
+# Production targets
+prod-up:
+	docker compose -f docker-compose.prod.yml up -d
+
+prod-down:
+	docker compose -f docker-compose.prod.yml down
+
+prod-build:
+	docker compose -f docker-compose.prod.yml build
+
+prod-ub:
+	docker compose -f docker-compose.prod.yml up -d --build
+
+prod-logs:
+	docker compose -f docker-compose.prod.yml logs -f
+
+prod-ps:
+	docker compose -f docker-compose.prod.yml ps
+
+prod-restart:
+	docker compose -f docker-compose.prod.yml down
+	docker compose -f docker-compose.prod.yml up -d
+
+prod-clean:
+	docker compose -f docker-compose.prod.yml down -v --rmi all --remove-orphans

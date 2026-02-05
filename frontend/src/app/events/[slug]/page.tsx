@@ -72,8 +72,8 @@ export default function EventDetailPage() {
   }
 
   const status = getEventStatus(event.start, event.end);
-  const posterUrl = event.event_profile && event.event_profile !== "No Poster URL" 
-    ? `/events_posters/${event.event_profile}` 
+  const posterUrl = event.event_profile && event.event_profile !== "No Poster URL" && event.event_profile !== ""
+    ? event.event_profile 
     : "/favicon.ico";
 
   return (
@@ -233,7 +233,7 @@ export default function EventDetailPage() {
                       navigator.clipboard?.writeText(window.location.href);
                       alert('Event link copied to clipboard!');
                     }} 
-                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 font-bold"
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 font-bold"
                   >
                     <Share2 className="w-5 h-5" />
                     Share Event

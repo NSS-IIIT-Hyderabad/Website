@@ -69,7 +69,7 @@ export default async function MemberProfile({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <Link 
@@ -83,7 +83,7 @@ export default async function MemberProfile({ params }: Props) {
         {/* Profile Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header with gradient */}
-          <div className="h-32 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative">
+          <div className="h-32 bg-blue-600 relative">
             <div className="absolute -bottom-16 left-8">
               {/* India Flag Border */}
               <div className="w-32 h-32 rounded-full p-1 shadow-xl" style={{
@@ -123,17 +123,17 @@ export default async function MemberProfile({ params }: Props) {
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-gray-800 mb-2">{member.name}</h1>
               <div className="flex flex-wrap items-center gap-3 mb-3">
-                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-medium shadow-lg">
+                <div className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-full font-medium shadow-lg">
                   <Users className="w-4 h-4 mr-2" />
                   {team} Team
                 </div>
                 {member.department && (
-                  <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-full font-medium shadow-lg">
+                  <div className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-full font-medium shadow-lg">
                     {member.department}
                   </div>
                 )}
                 {batchOrYear && (
-                  <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-medium shadow-lg">
+                  <div className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-medium shadow-lg">
                     {batchOrYear}
                   </div>
                 )}
@@ -148,13 +148,13 @@ export default async function MemberProfile({ params }: Props) {
             {/* Information Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {/* Roll Number */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border-2 border-blue-200">
+              <div className="bg-blue-50 p-6 rounded-2xl border-2 border-blue-200">
                 <h3 className="text-sm font-semibold text-blue-800 uppercase mb-2">Roll Number</h3>
                 <p className="text-2xl font-bold text-blue-900">{member.rollNumber}</p>
               </div>
 
               {/* Email */}
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl border-2 border-purple-200">
+              <div className="bg-purple-50 p-6 rounded-2xl border-2 border-purple-200">
                 <h3 className="text-sm font-semibold text-purple-800 uppercase mb-2 flex items-center gap-2">
                   <Mail className="w-4 h-4" />
                   Email
@@ -168,12 +168,12 @@ export default async function MemberProfile({ params }: Props) {
               </div>
 
               {/* Duration */}
-              <div className="bg-gradient-to-br from-pink-50 to-pink-100 p-6 rounded-2xl border-2 border-pink-200">
-                  <h3 className="text-sm font-semibold text-pink-800 uppercase mb-2 flex items-center gap-2">
+              <div className="bg-green-50 p-6 rounded-2xl border-2 border-green-200">
+                  <h3 className="text-sm font-semibold text-green-800 uppercase mb-2 flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     Working Duration
                   </h3>
-                  <p className="text-lg font-semibold text-pink-900">
+                  <p className="text-lg font-semibold text-green-900">
                     {(() => {
                       // compute overall duration from member.workHistory if present
                       const wh = Array.isArray(member.workHistory) ? member.workHistory : [];
@@ -224,7 +224,7 @@ export default async function MemberProfile({ params }: Props) {
 
         {/* Bio Section */}
         {member.bio && (
-          <div className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl shadow-lg p-6 border-2 border-blue-100">
+          <div className="mt-8 bg-blue-50 rounded-2xl shadow-lg p-6 border-2 border-blue-100">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">About</h2>
             <p className="text-gray-700 leading-relaxed">{member.bio}</p>
           </div>
@@ -233,7 +233,7 @@ export default async function MemberProfile({ params }: Props) {
         {/* Work History Table */}
         {member.workHistory && member.workHistory.length > 0 && (
           <div className="mt-8 bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+            <div className="bg-blue-600 px-6 py-4">
               <h2 className="text-2xl font-bold text-white">Work History</h2>
             </div>
             
@@ -261,7 +261,7 @@ export default async function MemberProfile({ params }: Props) {
                           <tr key={index} className="border-b border-green-100 hover:bg-green-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-600 text-white">
                                 {work.team}
                               </span>
                             </td>
@@ -303,7 +303,7 @@ export default async function MemberProfile({ params }: Props) {
                           <tr key={index} className="border-b border-blue-100 hover:bg-blue-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-600 text-white">
                                 {work.team}
                               </span>
                             </td>

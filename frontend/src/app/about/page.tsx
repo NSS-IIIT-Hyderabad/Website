@@ -6,28 +6,21 @@ import { Heart, Users, Target, Award, Sparkles, HandHeart } from 'lucide-react';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gray-50">
-      {/* Clean Professional Background */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-white"></div>
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-50 rounded-full blur-3xl opacity-30"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100 rounded-full blur-3xl opacity-20"></div>
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">
       <Navbar />
 
-      <main className="relative z-10 px-4 sm:px-6 lg:px-8 py-16">
+      <main className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-7xl mx-auto">
             {/* Hero Section */}
             <div className="text-center mb-20">
             
-            <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-900 via-purple-800 to-indigo-900 bg-clip-text text-transparent animate-gradient-x">
+            <h1 className="text-6xl sm:text-7xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] tracking-tight leading-tight">
               About NSS IIIT-H
             </h1>
             
-            <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-800 via-purple-600 to-indigo-800 rounded-full"></div>
+            <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-[#FF3B00] to-[#00B050] rounded-full"></div>
             
-            <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed animate-bounce-slow">
+            <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Empowering students to create meaningful change through service, leadership, and community engagement
             </p>
             </div>
@@ -35,9 +28,9 @@ export default function AboutPage() {
           {/* Mission & Vision Cards */}
           <div className="grid md:grid-cols-2 gap-8 mb-20">
             {/* Mission Card */}
-            <div className="group relative overflow-hidden rounded-2xl bg-white border border-blue-200 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-orange-300 shadow-md hover:shadow-lg transition-all duration-300">
               <div className="p-10">
-                <div className="flex items-center justify-center w-16 h-16 mb-6 bg-blue-800 rounded-xl shadow-sm">
+                <div className="flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-[#FF3B00] to-orange-600 rounded-xl shadow-sm">
                   <Target className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Mission</h2>
@@ -49,9 +42,9 @@ export default function AboutPage() {
             </div>
 
             {/* Vision Card */}
-            <div className="group relative overflow-hidden rounded-2xl bg-white border border-blue-200 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-green-300 shadow-md hover:shadow-lg transition-all duration-300">
               <div className="p-10">
-                <div className="flex items-center justify-center w-16 h-16 mb-6 bg-blue-700 rounded-xl shadow-sm">
+                <div className="flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-green-500 to-[#00B050] rounded-xl shadow-sm">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Vision</h2>
@@ -66,7 +59,7 @@ export default function AboutPage() {
           {/* What We Do Section */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-5xl font-bold text-blue-900 mb-4">
+              <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] mb-4">
                 What We Do
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -118,7 +111,7 @@ export default function AboutPage() {
                   className="group relative overflow-hidden rounded-xl bg-white border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300"
                 >
                   <div className="p-8">
-                    <div className="inline-flex items-center justify-center w-14 h-14 mb-4 bg-blue-700 rounded-lg shadow-sm group-hover:scale-105 transition-transform duration-300">
+                    <div className="inline-flex items-center justify-center w-14 h-14 mb-4 bg-amber-600 rounded-lg shadow-sm group-hover:scale-105 transition-transform duration-300">
                       <item.icon className="w-7 h-7 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-800 mb-3">{item.title}</h3>
@@ -131,7 +124,7 @@ export default function AboutPage() {
 
           {/* Stats Section */}
           <div className="mb-20">
-            <div className="relative overflow-hidden rounded-2xl bg-blue-900 p-12 shadow-lg">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-orange-400 via-blue-400 to-green-400 p-12 shadow-lg">
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
                 {[
                   { number: "500+", label: "Active Volunteers" },
@@ -152,9 +145,9 @@ export default function AboutPage() {
 
           {/* Join Us CTA */}
           <div className="text-center">
-            <div className="bg-white rounded-2xl px-12 py-10 border border-blue-200 shadow-md">
+            <div className="bg-white rounded-2xl px-12 py-10 border border-gray-200 shadow-md">
               <div>
-                <h2 className="text-4xl font-bold text-blue-900 mb-4">
+                <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] mb-4">
                   Ready to Make a Difference?
                 </h2>
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -162,7 +155,7 @@ export default function AboutPage() {
                 </p>
                 <a
                   href="/members"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-blue-800 hover:bg-blue-900 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-lg transition-all duration-300"
                 >
                   <Users className="w-6 h-6" />
                   <span>Meet Our Team</span>
@@ -173,52 +166,7 @@ export default function AboutPage() {
         </div>
       </main>
 
-      <style jsx global>{`
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 3s ease infinite;
-        }
-        
-        .animate-float {
-          animation: float ease-in-out infinite;
-        }
-        
-        .animate-spin-slow {
-          animation: spin-slow 30s linear infinite;
-        }
-        
-        .animate-bounce-slow {
-          animation: bounce-slow 2s ease-in-out infinite;
-        }
-        
-        .delay-1000 {
-          animation-delay: 1s;
-        }
-        
-        .delay-2000 {
-          animation-delay: 2s;
-        }
-      `}</style>
+
     </div>
   );
 }
