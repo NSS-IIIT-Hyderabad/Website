@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CheckCircle, XCircle, Linkedin, Mail } from "lucide-react";
+import { CheckCircle, XCircle, Mail } from "lucide-react";
 
 type Member = {
   id?: string;
@@ -96,10 +97,12 @@ export default function MemberCard({ member }: { member: Member }) {
           {/* Profile Image */}
           <div className="relative mb-5">
             <div className="w-[116px] h-[116px] rounded-full p-[3px] bg-gradient-to-br from-orange-400 to-green-600">
-              <img
+              <Image
                 src={getImageSrc()}
                 onError={() => setImageError(true)}
                 alt={member.name}
+                width={116}
+                height={116}
                 className="w-full h-full rounded-full object-cover bg-gray-100"
               />
             </div>

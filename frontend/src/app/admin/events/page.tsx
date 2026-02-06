@@ -8,9 +8,10 @@ export default function AdminEventsPage() {
   const [search, setSearch] = useState("");
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
 
-  function updateField(idx: number, key: keyof EventItem, value: string | string[]) {
+  function updateField(idx: number, key: keyof EventItem, value: EventItem[keyof EventItem]) {
     const copy = [...events];
-    (copy[idx] as any)[key] = value;
+    // create a new object for the updated event and assert its type to satisfy TS
+    copy[idx] = { ...copy[idx], [key]: value } as EventItem;
     setEvents(copy);
   }
   
@@ -91,6 +92,7 @@ export default function AdminEventsPage() {
                   </div>
                   <div>
                     {ev.event_profile && ev.event_profile !== "No Poster URL" && (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img src={`/events_posters/${ev.event_profile}`} alt={ev.event_name} className="w-full rounded" />
                     )}
                   </div>

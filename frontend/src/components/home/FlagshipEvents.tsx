@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Monitor, Leaf, Calendar, BookOpen, Rocket, Phone, Sparkles, Award, Handshake, Star, Flag } from 'lucide-react';
+import { Heart, Leaf, Calendar, BookOpen, Handshake } from 'lucide-react';
 
 interface Event {
   id: number;
@@ -71,7 +71,7 @@ const FlagshipEvents = () => {
   ];
 
   const renderEventCard = (event: Event) => (
-    <div 
+    <a 
       key={event.id} href={event.url}
       className={`
         grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-16 
@@ -127,10 +127,10 @@ const FlagshipEvents = () => {
         
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <button href={event.url} className="btn-base bg-indigo-800 text-white hover:bg-indigo-900 transition-all duration-300">
+          <a href={event.url} className="btn-base bg-indigo-800 text-white hover:bg-indigo-900 transition-all duration-300 inline-flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
             <span>Learn More</span>
-          </button>
+          </a>
         </div>
 
         {/* Impact stats */}
@@ -149,7 +149,7 @@ const FlagshipEvents = () => {
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 
   return (
@@ -171,7 +171,7 @@ const FlagshipEvents = () => {
           {/* Mission Statement */}
           <div className="max-w-2xl mx-auto p-6 bg-white backdrop-blur-sm rounded-2xl border-2 border-blue-200 shadow-lg">
             <p className="text-lg font-medium text-blue-800 mb-2">
-              "सेवा परमो धर्मः"
+              &quot;सेवा परमो धर्मः&quot;
             </p>
             <p className="text-gray-600">
               Service is the highest virtue - Ancient Indian Wisdom

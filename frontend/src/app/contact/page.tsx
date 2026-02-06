@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Navbar from '@/components/common/Navbar';
 import { Mail, Phone, MapPin, Instagram, Linkedin, X, Heart, Rocket } from 'lucide-react';
 import Link from 'next/link';
@@ -41,11 +42,13 @@ export default function ContactPage() {
               {/* Large centered logo below the Join button */}
               <div className="mt-6">
                 <div className="w-full flex justify-center">
-                  <a href="/" aria-label="NSS IIIT Hyderabad" className="flex flex-col items-center gap-4">
+                  <Link href="/" aria-label="NSS IIIT Hyderabad" className="flex flex-col items-center gap-4">
                     <div className="w-48 h-48 md:w-72 md:h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-lg border-4 border-white/80">
-                      <img
+                      <Image
                         src="/favicon.ico"
                         alt="NSS IIIT Hyderabad Logo"
+                        width={384}
+                        height={384}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -53,7 +56,7 @@ export default function ContactPage() {
                       <h4 className="text-2xl md:text-3xl font-bold text-gray-800">NSS IIIT Hyderabad</h4>
                       <p className="text-sm md:text-base text-gray-600 max-w-xl">National Service Scheme - community service &amp; student outreach</p>
                     </div>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -72,7 +75,7 @@ export default function ContactPage() {
                     <a href="mailto:nss@iiit.ac.in" className="text-orange-600 hover:text-orange-800 font-medium text-lg">
                       nss@iiit.ac.in
                     </a>
-                    <p className="text-gray-600 text-sm mt-1">We'll respond within 24 hours</p>
+                    <p className="text-gray-600 text-sm mt-1">We&apos;ll respond within 24 hours</p>
                   </div>
                 </div>
               </div>

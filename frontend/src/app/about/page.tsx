@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/common/Navbar';
 import { Heart, Users, Target, Award, Sparkles, HandHeart } from 'lucide-react';
 
@@ -153,13 +154,13 @@ export default function AboutPage() {
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                   Join us in our mission to create positive change in society
                 </p>
-                <a
+                <Link
                   href="/members"
                   className="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white text-lg font-semibold rounded-lg shadow-sm hover:shadow-lg transition-all duration-300"
                 >
                   <Users className="w-6 h-6" />
                   <span>Meet Our Team</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

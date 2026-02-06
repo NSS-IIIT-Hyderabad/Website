@@ -1,8 +1,25 @@
 // getMembers.tsx
 import membersData from '@/data/Data';
 
+type MemberData = {
+  name: string;
+  email: string;
+  rollNumber: string;
+  photoUrl?: string;
+  batch?: string;
+  year?: string;
+  bio?: string;
+  workHistory?: Array<{ role: string; team: string; start: string; end: string | null }>;
+  achievements?: string[];
+  interests?: string[];
+  linkedin?: string;
+  github?: string;
+  phone?: string;
+  department?: string;
+};
+
 // Transform Data.tsx format to the expected format
-function transformMemberData(member: any) {
+function transformMemberData(member: MemberData) {
   // Get the current/most recent work history entry
   const currentWork = member.workHistory && member.workHistory.length > 0 
     ? member.workHistory[0] 
@@ -46,7 +63,7 @@ export async function getMembersFromDB() {
     
     console.log(`Successfully loaded ${transformedMembers.length} members from local data`);
     return transformedMembers;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to load members:', error);
     
     // Return empty array instead of throwing to prevent page crashes

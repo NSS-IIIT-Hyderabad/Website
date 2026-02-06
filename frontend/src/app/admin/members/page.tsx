@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import membersData from "@/data/Data";
 
 type WorkHistory = { role: string; team: string; start: string; end: string | null };
@@ -76,10 +77,10 @@ export default function AdminMembersPage() {
         </div>
 
         <div className="space-y-4">
-          {filtered.map((m, idx) => (
+          {filtered.map((m) => (
             <div key={m.id} className="modern-card">
               <div className="flex items-center gap-4">
-                <img src={m.photoUrl || '/favicon.ico'} alt={m.name} className="w-14 h-14 rounded-full object-cover" />
+                <Image src={m.photoUrl || '/favicon.ico'} alt={m.name} width={56} height={56} className="w-14 h-14 rounded-full object-cover" />
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
                     <h3 className="text-lg font-semibold">{m.name}</h3>
@@ -110,7 +111,7 @@ export default function AdminMembersPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {(m.workHistory || []).map((row: any, rIdx: number) => (
+                        {(m.workHistory || []).map((row: WorkHistory, rIdx: number) => (
                           <tr key={rIdx} className="border-t">
                             <td className="px-2 py-2">{row.role}</td>
                             <td className="px-2 py-2">{row.team}</td>
@@ -160,7 +161,7 @@ export default function AdminMembersPage() {
                 <div>
                   <h4 className="font-semibold mb-2">Work History</h4>
                   <div className="space-y-2">
-                    {(editing.workHistory || []).map((row: any, rIdx: number) => (
+                    {(editing.workHistory || []).map((row: WorkHistory, rIdx: number) => (
                       <div key={rIdx} className="flex gap-2 items-center">
                         <input value={row.role} onChange={e => updateWorkHistory(members.findIndex(x => x.id === editing.id), rIdx, 'role', e.target.value)} className="border p-2 rounded w-1/4" />
                         <input value={row.team} onChange={e => updateWorkHistory(members.findIndex(x => x.id === editing.id), rIdx, 'team', e.target.value)} className="border p-2 rounded w-1/4" />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -64,9 +65,11 @@ const Testimonials = () => {
                 {/* Top area: avatar left, name & title right */}
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-4 p-4 md:p-6 lg:p-8 bg-gradient-to-br from-blue-50 to-orange-50">
                   <div className="flex-shrink-0 flex items-center justify-center">
-                    <img
+                    <Image
                       src="/favicon.ico"
                       alt="avatar"
+                      width={112}
+                      height={112}
                       className={`rounded-full object-cover transition-all duration-500 border-2 md:border-3 lg:border-4 border-white shadow-md lg:shadow-lg ${
                         isActive 
                           ? 'w-16 h-16 md:w-20 md:h-20 lg:w-28 lg:h-28' 
@@ -99,7 +102,7 @@ const Testimonials = () => {
                   <p className={`text-gray-700 leading-relaxed italic text-center self-center ${
                     isActive ? 'text-sm sm:text-lg lg:text-xl line-clamp-3 sm:line-clamp-6 lg:line-clamp-8' : 'text-xs sm:text-base lg:text-lg line-clamp-2 sm:line-clamp-4 lg:line-clamp-6'
                   }`}>
-                    "{t.quote}"
+                    &quot;{t.quote}&quot;
                   </p>
                 </div>
               </div>

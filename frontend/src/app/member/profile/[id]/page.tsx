@@ -1,11 +1,35 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
-import { redirect, notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { Mail, Calendar, CheckCircle, XCircle, ArrowLeft, Users } from 'lucide-react';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+};
+
+type WorkHistory = {
+  role: string;
+  team: string;
+  start: string;
+  end: string | null;
+};
+
+type Member = {
+  id?: string;
+  name: string;
+  email: string;
+  rollNumber: string;
+  emailUsername?: string;
+  photoUrl?: string;
+  batch?: string;
+  year?: string;
+  team?: string;
+  status?: string;
+  workHistory: WorkHistory[];
+  phone?: string;
+  department?: string;
 };
 
 export default async function MemberProfile({ params }: Props) {
@@ -13,14 +37,14 @@ export default async function MemberProfile({ params }: Props) {
 
   // Decode the incoming param in case the URL used percent-encoding (e.g. %40 for @)
   let lookupId = String(id || '');
-  try { lookupId = decodeURIComponent(lookupId); } catch (e) { /* fall back to raw id */ }
+  try { lookupId = decodeURIComponent(lookupId); } catch { /* fall back to raw id */ }
   const normalizedLookup = lookupId.toLowerCase();
 
   // Fetch live data with error handling
   const members = await getMembersFromDB();
 
   // Try to find member by rollNumber, id, email, or email username (case-insensitive)
-  const member = members.find((m: any) => {
+  const member = members.find((m: Member) => {
     const roll = m.rollNumber ? String(m.rollNumber).toLowerCase() : '';
     const mid = m.id ? String(m.id).toLowerCase() : '';
     const email = m.email ? String(m.email).toLowerCase() : '';
@@ -42,14 +66,14 @@ export default async function MemberProfile({ params }: Props) {
 
   // Compute active status and pick current/most-recent work entry
   const workHistory = Array.isArray(member.workHistory) ? member.workHistory : [];
-  const currentWork = workHistory.find((w: any) => !w.end) || workHistory[workHistory.length - 1] || null;
-  const isActive = workHistory.some((w: any) => !w.end);
+  const currentWork = workHistory.find((w: WorkHistory) => !w.end) || workHistory[workHistory.length - 1] || null;
+  const isActive = workHistory.some((w: WorkHistory) => !w.end);
 
   // Friendly vars used by the UI (preserve UI without changing markup)
   const team = currentWork?.team || member.team || '';
   const start = currentWork?.start || '';
   const end = currentWork?.end || '';
-  const batchOrYear = (member as any).batch || (member as any).year || null;
+  const batchOrYear = member.batch || member.year || null;
 
   const formatYear = (val?: string) => {
     if (!val) return '';
@@ -90,9 +114,11 @@ export default async function MemberProfile({ params }: Props) {
                 background: 'linear-gradient(to bottom, #FF9933 0%, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%, #138808 100%)'
               }}>
                   <div className="w-full h-full rounded-full overflow-hidden bg-white border-2 border-white">
-                  <img 
+                  <Image 
                     src={getPhoto(member.photoUrl)} 
-                    alt={member.name || ''} 
+                    alt={member.name || ''}
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -182,23 +208,23 @@ export default async function MemberProfile({ params }: Props) {
                       }
 
                       // collect valid starts and ends
-                      const starts = wh.map((w: any) => w.start).filter(Boolean) as string[];
-                      const ends = wh.map((w: any) => w.end).filter(Boolean) as string[]; // end may be null for present
+                      const starts = wh.map((w: WorkHistory) => w.start).filter(Boolean) as string[];
+                      const ends = wh.map((w: WorkHistory) => w.end).filter(Boolean) as string[]; // end may be null for present
 
                       // earliest start
                       let earliestStart = starts.length ? starts[0] : start;
                       for (const s of starts) {
-                        try { if (new Date(s) < new Date(earliestStart)) earliestStart = s; } catch (e) { /* ignore */ }
+                        try { if (new Date(s) < new Date(earliestStart)) earliestStart = s; } catch { /* ignore */ }
                       }
 
                       // if any current role (no end) -> Present
-                      const hasPresent = wh.some((w: any) => !w.end);
+                      const hasPresent = wh.some((w: WorkHistory) => !w.end);
                       if (hasPresent) return `${formatYear(earliestStart)} - Present`;
 
                       // latest end
                       let latestEnd = ends.length ? ends[0] : end;
                       for (const e of ends) {
-                        try { if (new Date(e) > new Date(latestEnd)) latestEnd = e; } catch (err) { /* ignore */ }
+                        try { if (new Date(e) > new Date(latestEnd)) latestEnd = e; } catch { /* ignore */ }
                       }
 
                       return `${formatYear(earliestStart)} - ${formatYear(latestEnd)}`;
@@ -238,7 +264,7 @@ export default async function MemberProfile({ params }: Props) {
             </div>
             
             {/* Current Position */}
-            {member.workHistory.some((work: any) => !work.end) && (
+            {member.workHistory.some((work: WorkHistory) => !work.end) && (
               <div className="p-6 border-b-2 border-gray-100">
                 <h3 className="text-lg font-bold text-green-700 mb-4 flex items-center gap-2">
                   <CheckCircle className="w-5 h-5" />
@@ -256,8 +282,8 @@ export default async function MemberProfile({ params }: Props) {
                     </thead>
                     <tbody>
                       {member.workHistory
-                        .filter((work: any) => !work.end)
-                        .map((work: any, index: number) => (
+                        .filter((work: WorkHistory) => !work.end)
+                        .map((work: WorkHistory, index: number) => (
                           <tr key={index} className="border-b border-green-100 hover:bg-green-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">
@@ -281,7 +307,7 @@ export default async function MemberProfile({ params }: Props) {
             )}
 
             {/* Past Positions */}
-            {member.workHistory.some((work: any) => work.end) && (
+            {member.workHistory.some((work: WorkHistory) => work.end) && (
               <div className="p-6">
                 <h3 className="text-lg font-bold text-blue-700 mb-4 flex items-center gap-2">
                   <XCircle className="w-5 h-5" />
@@ -298,8 +324,8 @@ export default async function MemberProfile({ params }: Props) {
                     </thead>
                     <tbody>
                       {member.workHistory
-                        .filter((work: any) => work.end)
-                        .map((work: any, index: number) => (
+                        .filter((work: WorkHistory) => work.end)
+                        .map((work: WorkHistory, index: number) => (
                           <tr key={index} className="border-b border-blue-100 hover:bg-blue-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">

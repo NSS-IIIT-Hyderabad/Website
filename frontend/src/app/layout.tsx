@@ -1,10 +1,18 @@
-//@ts-ignore
 import type { Metadata } from "next";
+import { Playfair_Display, Inter, Merriweather } from "next/font/google";
 import "@/app/global.css";
 import React from "react";
 import ScrollThumbEffect from "../utils/Scrollbar";
 import { Providers } from "@/providers/Providers";
 import AuthRedirect from "@/components/common/AuthRedirect";
+
+const playfairDisplay = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const merriweather = Merriweather({ 
+  weight: ["300", "400", "700", "900"],
+  subsets: ["latin"],
+  variable: "--font-merriweather"
+});
 
 export const metadata: Metadata = {
   title: "NSS IIIT-H | National Service Scheme - IIIT Hyderabad",
@@ -34,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${playfairDisplay.variable} ${inter.variable} ${merriweather.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#332a67" />
@@ -45,14 +53,6 @@ export default function RootLayout({
         />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
-        {/* Preconnect to Google Fonts for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Google Fonts: Playfair Display, Inter, Merriweather */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body 
         style={{ 

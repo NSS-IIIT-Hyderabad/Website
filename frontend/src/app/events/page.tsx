@@ -1,25 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import { Calendar as CalendarIcon, BarChart3, Users } from "lucide-react";
+import React from "react";
 import EventGrid from "@/components/events/EventGrid";
-import defaultEvents from "@/data/eventsData";
-
-
-
-
 
 export default function EventsPage() {
-  const [events, setEvents] = React.useState<any[] | null>(null);
-
   React.useEffect(() => {
     try {
       const raw = localStorage.getItem("admin_events");
       if (raw) {
-        setEvents(JSON.parse(raw));
+        JSON.parse(raw);
         return;
       }
-    } catch (e) {}
-    setEvents(defaultEvents as any[]);
+    } catch {}
+    // Using default events
   }, []);
 
   return (
@@ -41,7 +33,7 @@ export default function EventsPage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6 lg:px-8">
 
-          <EventGrid selectedDate={new Date()} />
+          <EventGrid />
         </div>
       </section>
     </div>

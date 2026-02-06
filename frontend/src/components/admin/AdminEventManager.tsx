@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import eventsData from "@/data/eventsData";
 
 export type EventItem = {
@@ -8,6 +9,20 @@ export type EventItem = {
   endTime: string;
   location: string;
   description: string;
+  image?: string;
+};
+
+type LegacyEventData = {
+  event_name?: string;
+  name?: string;
+  start?: string;
+  startTime?: string;
+  end?: string;
+  endTime?: string;
+  venue?: string;
+  location?: string;
+  description?: string;
+  event_profile?: string;
   image?: string;
 };
 
@@ -26,7 +41,7 @@ export default function AdminEventManager() {
       } catch {}
     }
     // Map legacy eventsData shape to the EventItem shape used in this component
-    const mapped = (eventsData as any[]).map(e => ({
+    const mapped = (eventsData as LegacyEventData[]).map(e => ({
       name: e.event_name || e.name || "",
       startTime: e.start || e.startTime || "",
       endTime: e.end || e.endTime || "",
@@ -64,7 +79,7 @@ export default function AdminEventManager() {
           <div className="flex gap-2">
             <button className="px-4 py-2 bg-green-600 text-white rounded" onClick={() => openEditor({ name: "", startTime: "", endTime: "", location: "", description: "", image: "" })}>Add Event</button>
             <button className="px-4 py-2 bg-gray-100 rounded" onClick={() => { localStorage.removeItem(STORAGE_KEY);
-              const mapped = (eventsData as any[]).map(e => ({
+              const mapped = (eventsData as LegacyEventData[]).map(e => ({
                 name: e.event_name || e.name || "",
                 startTime: e.start || e.startTime || "",
                 endTime: e.end || e.endTime || "",
@@ -80,7 +95,7 @@ export default function AdminEventManager() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((ev, idx) => (
             <div key={idx} className="bg-white rounded-2xl shadow p-4 border border-gray-100">
-              {ev.image && <img src={ev.image} alt={ev.name} className="w-full h-40 object-cover rounded-md mb-3" />}
+              {ev.image && <Image src={ev.image} alt={ev.name} width={400} height={160} className="w-full h-40 object-cover rounded-md mb-3" />}
               <div className="text-lg font-semibold text-blue-800">{ev.name}</div>
               <div className="text-sm text-gray-500">{ev.location}</div>
               <p className="text-sm text-gray-600 mt-2 line-clamp-3">{ev.description}</p>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Calendar,
@@ -6,7 +7,6 @@ import {
   ArrowRight,
   Search,
   X,
-  ClipboardList,
   Clock,
   CalendarCheck,
   CalendarX,
@@ -24,12 +24,10 @@ function formatDateIndian(dateStr: string) {
 }
 
 interface EventGridProps {
-  selectedDate: Date;
   events?: EventItem[];
 }
 
 const EventGrid: React.FC<EventGridProps> = ({
-  selectedDate,
   events: passedEvents,
 }) => {
   const [search, setSearch] = useState("");
@@ -107,9 +105,11 @@ const EventGrid: React.FC<EventGridProps> = ({
           </div>
 
           <div className="relative overflow-hidden h-48 bg-gradient-to-br from-blue-50 to-purple-50">
-            <img
+            <Image
               src={posterUrl}
               alt={event.event_name}
+              width={400}
+              height={192}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -210,7 +210,7 @@ const EventGrid: React.FC<EventGridProps> = ({
           ].map(({ key, label, icon: Icon }) => (
             <button
               key={key}
-              onClick={() => setFilter(key as any)}
+              onClick={() => setFilter(key as "all" | "ongoing" | "upcoming" | "past")}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold transition ${
                 filter === key
                   ? "bg-blue-600 text-white shadow-lg"

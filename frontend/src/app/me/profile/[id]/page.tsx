@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
@@ -6,7 +7,33 @@ import { redirect, notFound } from 'next/navigation';
 import { Mail, Calendar, CheckCircle, XCircle, Linkedin, ArrowLeft, Users, User, Shield } from 'lucide-react';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+};
+
+type WorkHistory = {
+  role: string;
+  team: string;
+  start: string;
+  end: string | null;
+};
+
+type Member = {
+  name: string;
+  email: string;
+  rollNumber: string;
+  emailUsername: string;
+  photoUrl?: string;
+  batch?: string;
+  status?: string;
+  workHistory: WorkHistory[];
+  bio?: string;
+  achievements?: string[];
+  interests?: string[];
+  linkedin?: string;
+  github?: string;
+  phone?: string;
+  department?: string;
+  year?: string;
 };
 
 export default async function MeProfile({ params }: Props) {
@@ -23,7 +50,7 @@ export default async function MeProfile({ params }: Props) {
   const members = await getMembersFromDB();
   
   // Try to find member by rollNumber first, then by emailUsername
-  const member = members.find((m: any) => 
+  const member = members.find((m: Member) => 
     m.rollNumber === id || m.emailUsername === id
   ) || null;
 
@@ -65,9 +92,11 @@ export default async function MeProfile({ params }: Props) {
                 background: 'linear-gradient(to bottom, #FF9933 0%, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%, #138808 100%)'
               }}>
                 <div className="w-full h-full rounded-full overflow-hidden bg-white border-2 border-white">
-                  <img 
+                  <Image 
                     src={member.photoUrl || '/favicon.ico'} 
-                    alt={member.name || ''} 
+                    alt={member.name || ''}
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -198,7 +227,7 @@ export default async function MeProfile({ params }: Props) {
             </div>
             
             {/* Current Position */}
-            {member.workHistory.some((work: any) => !work.end) && (
+            {member.workHistory.some((work: WorkHistory) => !work.end) && (
               <div className="p-6 border-b-2 border-gray-100">
                 <h3 className="text-lg font-bold text-green-700 mb-4 flex items-center gap-2">
                   <CheckCircle className="w-5 h-5" />
@@ -216,8 +245,8 @@ export default async function MeProfile({ params }: Props) {
                     </thead>
                     <tbody>
                       {member.workHistory
-                        .filter((work: any) => !work.end)
-                        .map((work: any, index: number) => (
+                        .filter((work: WorkHistory) => !work.end)
+                        .map((work: WorkHistory, index: number) => (
                           <tr key={index} className="border-b border-green-100 hover:bg-green-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">
@@ -241,7 +270,7 @@ export default async function MeProfile({ params }: Props) {
             )}
 
             {/* Past Positions */}
-            {member.workHistory.some((work: any) => work.end) && (
+            {member.workHistory.some((work: WorkHistory) => work.end) && (
               <div className="p-6">
                 <h3 className="text-lg font-bold text-blue-700 mb-4 flex items-center gap-2">
                   <XCircle className="w-5 h-5" />
@@ -259,8 +288,8 @@ export default async function MeProfile({ params }: Props) {
                     </thead>
                     <tbody>
                       {member.workHistory
-                        .filter((work: any) => work.end)
-                        .map((work: any, index: number) => {
+                        .filter((work: WorkHistory) => work.end)
+                        .map((work: WorkHistory, index: number) => {
                           const startDate = new Date(work.start);
                           const endDate = new Date(work.end);
                           const months = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30));

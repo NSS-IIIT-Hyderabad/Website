@@ -1,7 +1,5 @@
 "use client";
-//@ts-ignore
 import { hasCookie } from "cookies-next";
-//@ts-ignore
 import { createContext, useContext } from "react";
 
 const AuthContext = createContext({

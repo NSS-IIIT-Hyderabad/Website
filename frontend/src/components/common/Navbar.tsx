@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Calendar, Info, Users, Phone, Menu, X } from "lucide-react";
@@ -62,9 +63,11 @@ export default function Navbar() {
                         {/* Logo Section */}
                         <Link href="/" className="flex items-center space-x-3 group">
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 via-white to-green-500 p-0.5 group-hover:scale-105 transition-all duration-300">
-                                <img 
+                                <Image 
                                     src="/favicon.ico" 
-                                    alt="NSS Logo" 
+                                    alt="NSS Logo"
+                                    width={48}
+                                    height={48}
                                     className="w-full h-full rounded-full object-cover bg-white"
                                 />
                             </div>
@@ -131,7 +134,7 @@ export default function Navbar() {
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 via-white to-green-500 p-0.5">
-                                <img src="/favicon.ico" alt="NSS Logo" className="w-full h-full rounded-full object-cover bg-white" />
+                                <Image src="/favicon.ico" alt="NSS Logo" width={40} height={40} className="w-full h-full rounded-full object-cover bg-white" />
                             </div>
                             <div>
                                 <div className="font-bold text-lg text-blue-800">NSS</div>

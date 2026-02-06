@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react";
-import { Users, BookOpen, Heart, Target, ArrowRight } from "lucide-react";
 import Carousel from "@/components/home/Carousel";
 import Testimonials from "@/components/home/Testimonials";
 import AboutUs from "@/components/home/AboutUs";
@@ -18,10 +17,6 @@ const heroImages = [
 ];
 
 export default function HomePage() {
-  const scrollToJoinNSS = () => {
-    const element = document.getElementById('join-nss');
-    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50">

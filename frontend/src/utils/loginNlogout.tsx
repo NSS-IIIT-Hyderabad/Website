@@ -1,5 +1,5 @@
 "use client";
-export function login(path) {
+export function login() {
     window.location.replace("http://localhost:8000/login");
 }
 export function logout() {

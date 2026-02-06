@@ -23,7 +23,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate }) =>
     setToday({ year: now.getFullYear(), month: now.getMonth(), date: now.getDate() });
     setCurrentMonth(selectedDate.getMonth());
     setCurrentYear(selectedDate.getFullYear());
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => {
     setCurrentMonth(selectedDate.getMonth());

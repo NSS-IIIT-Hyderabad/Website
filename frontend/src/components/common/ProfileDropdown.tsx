@@ -1,53 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { User, LogOut, ChevronDown } from 'lucide-react';
-// import { logout, getUserData } from '@/utils/loginNlogout';
-
-// export default function ProfileDropdown() {
-//     const [isOpen, setIsOpen] = useState(false);
-//     const [userData, setUserData] = useState<{ uid: string; email: string; name: string } | null>(null);
-//     const dropdownRef = useRef<HTMLDivElement>(null);
-
-//     useEffect(() => {
-//         // Get user data from cookies
-//         const data = getUserData();
-//         setUserData(data);
-
-//         // Close dropdown when clicking outside
-//         const handleClickOutside = (event: MouseEvent) => {
-//             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-//                 setIsOpen(false);
-//             }
-//         };
-
-//         document.addEventListener('mousedown', handleClickOutside);
-//         return () => document.removeEventListener('mousedown', handleClickOutside);
-//     }, []);
-
-//     if (!userData) return null;
-
-//     const handleLogout = () => {
-//         setIsOpen(false);
-//         logout();
-//     };
-
-//     // Get initials for profile image fallback
-//     const getInitials = () => {
-//         if (userData.name) {
-//             return userData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-//         }
-//         return userData.email.charAt(0).toUpperCase();
-//     };
-
-//     return (
-//         <div className="relative" ref={dropdownRef}>
-//             {/* Profile Button */}
-//             <button
-//                 onClick={() => setIsOpen(!isOpen)}
-//                 className="flex items-center space-x-2 p-1 pr-3 rounded-full bg-gradient-to-r from-green-500 to-blue-800 hover:from-green-600 hover:to-blue-900 transition-all duration-200 shadow-md hover:shadow-lg"
-//                 aria-label="Profile menu"
+// Default noop export so components importing the dropdown don't break when auth isn't wired
+export default function ProfileDropdown() {
+	return null;
+}
 //             >
 //                 {/* Profile Image with India Flag Border */}
 //                 <div className="w-10 h-10 rounded-full p-0.5" style={{
@@ -130,8 +86,3 @@ import { User, LogOut, ChevronDown } from 'lucide-react';
 //         </div>
 //     );
 // }
-
-// Default noop export so components importing the dropdown don't break when auth isn't wired
-export default function ProfileDropdown() {
-	return null;
-}

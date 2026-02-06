@@ -1,5 +1,5 @@
 import React from "react";
-import { Heart, Leaf, BookOpen, Users, Flag, Sparkles, Circle, Rocket } from "lucide-react";
+import { Heart, Leaf, BookOpen, Users, Circle } from "lucide-react";
 
 const AboutUs = () => {
   return (
@@ -13,7 +13,7 @@ const AboutUs = () => {
               <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-6 rounded-xl shadow-md border-l-4 border-orange-500">
                 <p>
                   The <span className="font-bold text-green-700">National Service Scheme</span> at IIIT Hyderabad stands as a beacon of hope and transformation, 
-                  embodying the true spirit of <span className="font-semibold text-orange-600">"सेवा परमो धर्मः"</span> - service is the highest virtue.
+                  embodying the true spirit of <span className="font-semibold text-orange-600">&quot;सेवा परमो धर्मः&quot;</span> - service is the highest virtue.
                 </p>
               </div>
             </div>
@@ -90,7 +90,7 @@ const AboutUs = () => {
             <div className="mt-8 animate-fade-in" style={{ animationDelay: '0.6s' }}>
               <div className="text-2xl md:text-3xl mb-4"><Circle className="w-8 h-8 md:w-10 md:h-10 mx-auto text-yellow-200" /></div>
               <p className="text-lg md:text-xl italic mb-2 text-yellow-200">
-                "यत्र सेवा तत्र देवता"
+                &quot;यत्र सेवा तत्र देवता&quot;
               </p>
               <p className="text-base md:text-lg opacity-90">
                 Where there is service, there is divinity

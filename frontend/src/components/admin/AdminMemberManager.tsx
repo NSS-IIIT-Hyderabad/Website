@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import membersData from "@/data/Data";
 
 type WorkHistory = { role: string; team: string; start: string; end: string | null };
@@ -45,7 +46,7 @@ export default function AdminMemberManager() {
           {members.map((m) => (
             <div key={m.id} className="bg-white rounded-2xl shadow p-6 border border-gray-100">
               <div className="flex items-center gap-4">
-                <img src={m.photoUrl || "/favicon.ico"} alt={m.name} className="w-16 h-16 rounded-full object-cover" />
+                <Image src={m.photoUrl || "/favicon.ico"} alt={m.name} width={64} height={64} className="w-16 h-16 rounded-full object-cover" />
                 <div>
                   <div className="text-lg font-semibold text-blue-800">{m.name}</div>
                   <div className="text-sm text-gray-500">{m.email}</div>

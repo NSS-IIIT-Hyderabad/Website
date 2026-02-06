@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -14,15 +14,10 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }) => {
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const router = useRouter();
 
   const scrollToJoinNSS = () => {
     const element = document.getElementById('join-nss');
     element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const navigateToEvents = () => {
-    router.push('/events');
   };
 
   useEffect(() => {
@@ -60,10 +55,11 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
       {/* Background Image */}
       <div className="absolute inset-0">
         {images.map((image, index) => (
-          <img
+          <Image
             key={index}
             src={image}
             alt={`NSS IIIT Hyderabad - Slide ${index + 1}`}
+            fill
             className={`
               absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out
               ${index === current ? 'opacity-100' : 'opacity-0'}
@@ -90,7 +86,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
           </h1>
           
           <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-blue-100 font-bold leading-relaxed max-w-4xl mx-auto">
-            Building tomorrow's leaders through today's service
+            Building tomorrow&apos;s leaders through today&apos;s service
           </p>
           
           <div className="text-lg md:text-xl mb-12 italic text-orange-200 max-w-3xl mx-auto">

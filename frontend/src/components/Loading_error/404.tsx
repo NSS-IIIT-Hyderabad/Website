@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Home, AlertTriangle } from "lucide-react";
 
 export default function Custom404() {
@@ -22,17 +23,17 @@ export default function Custom404() {
       
       {/* Error message */}
       <p className="text-lg md:text-xl lg:text-2xl my-8 text-slate-600 font-normal tracking-wide max-w-2xl leading-relaxed relative z-10 px-4">
-        Oops! The page you're looking for seems to have wandered off. Let's get you back to where the action is!
+        Oops! The page you&apos;re looking for seems to have wandered off. Let&apos;s get you back to where the action is!
       </p>
       
       {/* Home button */}
-      <a 
+      <Link 
         href="/" 
         className="inline-flex items-center gap-3 text-lg text-slate-800 border-2 border-slate-800 py-3 px-8 rounded-lg transition-all duration-300 font-medium tracking-wide relative z-10 bg-transparent hover:bg-slate-800 hover:text-white hover:-translate-y-1 hover:shadow-xl active:translate-y-0 group"
       >
         <Home className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
         Go back home
-      </a>
+      </Link>
       
       {/* Additional decorative elements */}
       <div className="absolute bottom-10 left-10 w-3 h-3 bg-orange-300/30 rounded-full animate-bounce delay-0"></div>

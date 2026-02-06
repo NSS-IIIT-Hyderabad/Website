@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Star, CheckCircle, XCircle, Monitor, Palette, Users, Eye, List, RotateCcw, Search, GraduationCap } from "lucide-react";
+import { RotateCcw, Search, GraduationCap } from "lucide-react";
 import MemberCard from "./MemberCard";
 
 type Member = {
@@ -83,7 +83,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
   // Preferred team ordering for display
   const preferredOrder = ["NSS CORE", "TECH", "LOGISTICS", "SOCIAL MEDIA", "DESIGN"];
   const presentTeamKeys = Object.keys(presentGroups);
-  const presentTeamKeyMap: { [upper: string]: string } = presentTeamKeys.reduce((acc: any, k) => {
+  const presentTeamKeyMap: { [upper: string]: string } = presentTeamKeys.reduce((acc: Record<string, string>, k) => {
     acc[k.toUpperCase().trim()] = k;
     return acc;
   }, {});
@@ -205,7 +205,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
         <div className="mb-8 p-4 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
           <p className="text-blue-800">
             <span className="font-semibold">{filteredMembers.length}</span> 
-            {filteredMembers.length === 1 ? ' member' : ' members'} found for "{searchTerm}"
+            {filteredMembers.length === 1 ? ' member' : ' members'} found for &quot;{searchTerm}&quot;
           </p>
         </div>
       )}
@@ -303,7 +303,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
           <div className="text-8xl mb-6"><Search className="w-32 h-32 mx-auto text-gray-400" /></div>
           <h3 className="text-2xl font-bold text-gray-700 mb-4">No Members Found</h3>
           <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
-            We couldn't find any members matching your search criteria. Try adjusting your filters or search terms.
+            We couldn&apos;t find any members matching your search criteria. Try adjusting your filters or search terms.
           </p>
           <button
             onClick={() => {

@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import eventsDataRaw, { EventItem } from "@/data/eventsData";
 import Link from "next/link";
-import { Calendar, MapPin, Clock, Share2, ArrowLeft, Info, Users, Flag, ExternalLink } from "lucide-react";
+import { Calendar, MapPin, Share2, ArrowLeft, Info, Users, Flag } from "lucide-react";
 
 function slugify(name: string) {
   return name.replace(/\s+/g, "-").toLowerCase();
@@ -32,7 +33,7 @@ function getEventStatus(start: string, end: string) {
 export default function EventDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = (params as any)?.slug as string | undefined;
+  const slug = (params as Record<string, string>)?.slug as string | undefined;
   const [event, setEvent] = useState<EventItem | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -47,7 +48,7 @@ export default function EventDetailPage() {
         setEvent(found);
         return;
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
 
@@ -133,9 +134,11 @@ export default function EventDetailPage() {
               {/* Enhanced Event Image with Loading State */}
               <div className="relative group">
                 <div className={`overflow-hidden rounded-3xl shadow-2xl border-4 border-white transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
-                  <img 
+                  <Image 
                     src={posterUrl} 
-                    alt={event.event_name} 
+                    alt={event.event_name}
+                    width={800}
+                    height={500}
                     className="w-full h-72 md:h-96 lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-110"
                     onLoad={() => setImageLoaded(true)}
                   />
@@ -259,7 +262,7 @@ export default function EventDetailPage() {
           <p className="font-semibold bg-gradient-to-r from-saffron to-green bg-clip-text text-transparent text-lg mb-2">
             National Service Scheme
           </p>
-          <p className="text-gray-500 italic">"Not Me But You"</p>
+          <p className="text-gray-500 italic">&quot;Not Me But You&quot;</p>
         </div>
       </div>
     </div>

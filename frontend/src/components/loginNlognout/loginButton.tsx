@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { login, logout } from "../../utils/loginNlogout";
+import Image from "next/image";
+import { login } from "../../utils/loginNlogout";
 
 export default function LoginButton() {
     const [uid, setUid] = useState<string | null>(null);
@@ -15,7 +16,7 @@ export default function LoginButton() {
     if (!uid) {
         return (
             <button
-                onClick={() => login("/")}
+                onClick={() => login()}
                 style={{
                     padding: "0.5rem 1.2rem",
                     borderRadius: "12px",
@@ -47,12 +48,12 @@ export default function LoginButton() {
                 }}
                 title="Go to profile"
             >
-                <img
+                <Image
                     src="/favicon.ico"
                     alt="Profile"
+                    width={28}
+                    height={28}
                     style={{
-                        width: "28px",
-                        height: "28px",
                         borderRadius: "50%",
                         objectFit: "cover"
                     }}
