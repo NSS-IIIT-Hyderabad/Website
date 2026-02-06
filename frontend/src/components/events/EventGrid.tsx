@@ -180,9 +180,10 @@ const EventGrid: React.FC<EventGridProps> = ({
   /* ---------------- UI ---------------- */
   return (
     <div className="w-full">
-      {/* Search */}
-      <div className="flex mb-2 justify-between max-w-7xl mx-auto">
-        <div className="max-w-2xl mx-auto mb-8 relative w-full">
+      {/* Search & Filters (Stacked) */}
+      <div className="w-full max-w-4xl mx-auto mb-8">
+        {/* Search Bar */}
+        <div className="relative w-full mb-3">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             value={search}
@@ -199,9 +200,8 @@ const EventGrid: React.FC<EventGridProps> = ({
             </button>
           )}
         </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center mx-6 gap-3 mb-10 w-full">
+        {/* Filter Buttons Row */}
+        <div className="flex flex-row flex-nowrap gap-3 w-full overflow-x-auto pb-2">
           {[
             { key: "all", label: "All", icon: Layers },
             { key: "ongoing", label: "Ongoing", icon: Clock },
@@ -211,7 +211,7 @@ const EventGrid: React.FC<EventGridProps> = ({
             <button
               key={key}
               onClick={() => setFilter(key as "all" | "ongoing" | "upcoming" | "past")}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold transition ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold transition whitespace-nowrap ${
                 filter === key
                   ? "bg-blue-600 text-white shadow-lg"
                   : "bg-white border-2 border-gray-200 text-gray-700"

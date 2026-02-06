@@ -127,10 +127,16 @@ const FlagshipEvents = () => {
         
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <a href={event.url} className="btn-base bg-indigo-800 text-white hover:bg-indigo-900 transition-all duration-300 inline-flex items-center gap-2">
+          <span
+            className="btn-base bg-indigo-800 text-white hover:bg-indigo-900 transition-all duration-300 inline-flex items-center gap-2 cursor-pointer"
+            onClick={() => window.location.href = event.url}
+            tabIndex={0}
+            role="button"
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') window.location.href = event.url; }}
+          >
             <BookOpen className="w-5 h-5" />
             <span>Learn More</span>
-          </a>
+          </span>
         </div>
 
         {/* Impact stats */}

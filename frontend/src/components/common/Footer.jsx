@@ -41,12 +41,6 @@ export default function Footer() {
       color: "#16a34a",
       key: "linkedin",
     },
-    // {
-    //   name: "Facebook",
-    //   url: "https://www.facebook.com/NSSIIITHyderabad",
-    //   color: "#1877F2",
-    //   key: "facebook",
-    // },
     {
       name: "Whatsapp",
       url: "https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM",
@@ -66,9 +60,9 @@ export default function Footer() {
   const quickLinks = [
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
-    { name: "Gallery", href: "#" },
+    { name: "Gallery", href: "/" },
     { name: "Members", href: "/members" },
-    { name: "FAQs", href: "#" },
+    { name: "About", href: "/about" },
     { name: "Privacy Policy", href: "https://www.iiit.ac.in/privacy-policy/" },
   ];
 

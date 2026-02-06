@@ -28,7 +28,6 @@ RUN venv/bin/pip install -r requirements.txt
 # Copy application code
 COPY . .
 
-# Create uploads directory (required for schema export)
 RUN mkdir -p uploads
 
 # Generate GraphQL schema
@@ -37,9 +36,10 @@ RUN venv/bin/strawberry export-schema main > schema.graphql
 # Make init script executable
 RUN chmod +x init.sh
 
-# Create non-root user
 RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
 USER app
+# Ensure uploads directory exists and is owned by app user
+RUN mkdir -p uploads && chown app:app uploads
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
