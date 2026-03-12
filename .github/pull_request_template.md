@@ -1,4 +1,4 @@
-[ ]  I read the Generative AI policy of NSS IIIT Hyderabad Open Source Community
+- [x]  I read the Generative AI policy of NSS IIIT Hyderabad Open Source Community
  
 ## Summary of Changes
 Provide a clear description of the changes.
