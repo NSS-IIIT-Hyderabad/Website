@@ -279,9 +279,9 @@ We welcome contributions from the IIIT Hyderabad community and beyond!
 ### Reporting Issues
 
 Use the GitHub issue templates:
-- 🐛 [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md)
-- ✨ [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md)
-- ❓ [Question](.github/ISSUE_TEMPLATE/question.md)
+- [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md)
+- [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md)
+- [Question](.github/ISSUE_TEMPLATE/question.md)
 
 ### AI-Generated Code Policy
 
