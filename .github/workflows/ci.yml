@@ -69,5 +69,5 @@ jobs:
       - name: Test
         working-directory: .
         env:
-          PYTHONPATH: ${{ github.workspace }}
+          PYTHONPATH: ${{ github.workspace }}/backend
         run: pytest backend/tests/ -v
