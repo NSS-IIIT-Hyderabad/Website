@@ -1,7 +1,7 @@
 import strawberry
 from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import Optional
 from enum import Enum
+from typing import Optional
 import re
 import datetime
 
@@ -77,14 +77,6 @@ class Event:
     pass
 
 
-@strawberry.experimental.pydantic.input(model=EventModel, fields=[
-    "event_name",
-    "start_time",
-    "end_time",
-    "venue",
-    "description",
-    "event_profile",
-    "audience"
-])
+@strawberry.experimental.pydantic.input(model=EventModel, all_fields=True)
 class EventInput:
     pass

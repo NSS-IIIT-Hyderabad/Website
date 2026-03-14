@@ -1,13 +1,13 @@
-from fastapi.testclient import TestClient
-import pytest
-
-import sys
 import os
+import sys
 
-# Ensure backend package files are importable when running tests from repo root
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from fastapi.testclient import TestClient
 
-from backend.main import app
+BACKEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if BACKEND_DIR not in sys.path:
+    sys.path.insert(0, BACKEND_DIR)
+
+from main import app  # noqa: E402
 
 
 client = TestClient(app)
