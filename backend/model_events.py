@@ -77,14 +77,6 @@ class Event:
     pass
 
 
-@strawberry.experimental.pydantic.input(model=EventModel, fields=[
-    "event_name",
-    "start_time",
-    "end_time",
-    "venue",
-    "description",
-    "event_profile",
-    "audience"
-])
+@strawberry.experimental.pydantic.input(model=EventModel, all_fields=True)
 class EventInput:
     pass
