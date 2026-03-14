@@ -42,8 +42,8 @@ export default function MembersSection({ members }: { members: Member[] }) {
     }
   }
   const [searchTerm, setSearchTerm] = useState("");
-  const [showAll, setShowAll] = useState(false);
-    const [activeFilters, setActiveFilters] = useState<string[]>(["all"]);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  const [activeFilters, setActiveFilters] = useState<string[]>(["all"]);
 
   // Filter members based on search and active filter
   const filteredMembers = members.filter(member => {
@@ -134,6 +134,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
             onClick={() => {
               setSearchTerm("");
               setActiveFilters(["all"]);
+              setExpandedGroups({});
             }}
             className="btn-base bg-red-500 text-white hover:bg-red-700 px-6 py-3 whitespace-nowrap"
           >
@@ -223,6 +224,8 @@ export default function MembersSection({ members }: { members: Member[] }) {
           {orderedPresentTeamKeys.map(team => {
             const group = presentGroups[team];
             if (!group) return null;
+            const groupKey = `present:${team}`;
+            const isExpanded = !!expandedGroups[groupKey];
             return (
               <div key={team} className="mb-16">
                 <div className="flex items-center justify-between mb-8">
@@ -234,14 +237,16 @@ export default function MembersSection({ members }: { members: Member[] }) {
                   </h3>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center">
-                  {(showAll ? group : group.slice(0, MAX_CARDS)).map(member => (
+                  {(isExpanded ? group : group.slice(0, MAX_CARDS)).map(member => (
                     <MemberCard key={member.id} member={member} />
                   ))}
                 </div>
-                {!showAll && group.length > MAX_CARDS && (
+                {!isExpanded && group.length > MAX_CARDS && (
                   <div className="text-center mt-8">
                     <button
-                      onClick={() => setShowAll(true)}
+                      onClick={() =>
+                        setExpandedGroups(prev => ({ ...prev, [groupKey]: true }))
+                      }
                       className="btn-base bg-gradient-to-r from-green-500 to-blue-500 text-white hover:from-green-600 hover:to-blue-600"
                     >
                       <span>View More</span>
@@ -266,34 +271,41 @@ export default function MembersSection({ members }: { members: Member[] }) {
           )}
           {Object.entries(pastGroups)
             .sort((a, b) => Number(b[0]) - Number(a[0])) // Descending by year
-            .map(([year, group]) => (
-              <div key={year} className="mb-16">
-                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-2xl font-bold text-primary flex items-center gap-3">
-                    <GraduationCap className="w-8 h-8 text-blue-600" />
-                    Team of {year}
-                    <span className="ml-2 px-3 py-1 bg-purple-100 text-purple-800 text-sm font-medium rounded-full">
-                      {group.length} {group.length === 1 ? 'past member' : 'past members'}
-                    </span>
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center">
-                  {(showAll ? group : group.slice(0, MAX_CARDS)).map(member => (
-                    <MemberCard key={member.id} member={member} />
-                  ))}
-                </div>
-                {!showAll && group.length > MAX_CARDS && (
-                  <div className="text-center mt-8">
-                    <button
-                      onClick={() => setShowAll(true)}
-                      className="btn-base bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
-                    >
-                      <span>View More</span>
-                    </button>
+            .map(([year, group]) => {
+              const groupKey = `past:${year}`;
+              const isExpanded = !!expandedGroups[groupKey];
+
+              return (
+                <div key={year} className="mb-16">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-2xl font-bold text-primary flex items-center gap-3">
+                      <GraduationCap className="w-8 h-8 text-blue-600" />
+                      Team of {year}
+                      <span className="ml-2 px-3 py-1 bg-purple-100 text-purple-800 text-sm font-medium rounded-full">
+                        {group.length} {group.length === 1 ? 'past member' : 'past members'}
+                      </span>
+                    </h3>
                   </div>
-                )}
-              </div>
-            ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center">
+                    {(isExpanded ? group : group.slice(0, MAX_CARDS)).map(member => (
+                      <MemberCard key={member.id} member={member} />
+                    ))}
+                  </div>
+                  {!isExpanded && group.length > MAX_CARDS && (
+                    <div className="text-center mt-8">
+                      <button
+                        onClick={() =>
+                          setExpandedGroups(prev => ({ ...prev, [groupKey]: true }))
+                        }
+                        className="btn-base bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+                      >
+                        <span>View More</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </>
       )}
 
@@ -309,6 +321,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
             onClick={() => {
               setSearchTerm("");
               setActiveFilters(["all"]);
+              setExpandedGroups({});
             }}
             className="btn-base bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600"
           >
