@@ -88,15 +88,6 @@ class Member:
     pass
 
 
-@strawberry.experimental.pydantic.input(model=MemberModel, fields=[
-    "id",
-    "name",
-    "email",
-    "rollNumber",
-    "photoUrl",
-    "phone",
-    "bio",
-    "workHistory"
-])
+@strawberry.experimental.pydantic.input(model=MemberModel, all_fields=True)
 class MemberInput:
     pass
