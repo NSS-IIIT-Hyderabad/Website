@@ -74,16 +74,14 @@ export default function MemberCard({ member }: { member: Member }) {
 
   return (
     <div
-      className="w-full max-w-[280px] h-[390px] sm:h-[410px] mx-auto my-5"
+      className="w-full max-w-[280px] aspect-[280/360] mx-auto my-5"
       style={{ perspective: 1200 }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={handleClick}
     >
       <div
-        className={`relative w-full h-full rounded-3xl transition-all duration-700 ${
-          hover ? "shadow-2xl shadow-blue-200/40" : "shadow-lg shadow-gray-200/60"
-        }`}
+        className="relative w-full h-full rounded-3xl transition-all duration-700"
         style={{
           transformStyle: "preserve-3d",
           transform: hover ? "rotateY(180deg)" : "rotateY(0deg)",
@@ -91,7 +89,7 @@ export default function MemberCard({ member }: { member: Member }) {
       >
         {/* ================= FRONT ================= */}
         <div
-          className="absolute inset-0 bg-white rounded-3xl border border-gray-200 flex flex-col items-center px-7 pt-12 pb-5 h-full"
+          className="absolute inset-0 bg-white rounded-3xl border border-gray-200 flex flex-col items-center px-7 pt-9 h-fit"
           style={{ backfaceVisibility: "hidden" }}
         >
           {/* Profile Image */}
