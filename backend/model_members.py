@@ -1,6 +1,5 @@
 import strawberry
 from pydantic import BaseModel, Field, field_validator, EmailStr
-from typing import Optional
 from enum import Enum
 import re
 
@@ -45,6 +44,7 @@ class WorkHistoryModel(BaseModel):
     team: TeamTypeEnum = Field(...)
     status: MemberStatusEnum = Field(...)
 
+
 @strawberry.experimental.pydantic.type(model=WorkHistoryModel, all_fields=True)
 class WorkHistory:
     pass
@@ -81,6 +81,7 @@ class MemberModel(BaseModel):
         if not re.match(r'^\d{10}$', v):
             raise ValueError('Roll number must be a 10-digit number')
         return v
+
 
 @strawberry.experimental.pydantic.type(model=MemberModel, all_fields=True)
 class Member:

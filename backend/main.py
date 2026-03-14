@@ -11,7 +11,6 @@ import psutil
 from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
 from fastapi.responses import Response
 from urllib.parse import quote_plus
-from fastapi import Request
 from fastapi.responses import RedirectResponse
 from cas import CASClient
 from fastapi.staticfiles import StaticFiles
@@ -43,6 +42,7 @@ REDIRECT_URL = getenv("REDIRECT_URL", "/")
 JWT_SECRET = getenv("JWT_SECRET", "jwt-secret-very-very-secret")
 service_url_formatted = "%s?next=%s"
 
+
 @app.get("/login")
 @app.get("/login/")
 async def login_redirect(request: Request, path: str = None):
@@ -52,7 +52,7 @@ async def login_redirect(request: Request, path: str = None):
     if not ticket:
         cas_login_url = cas_client_nss.get_login_url()
         return RedirectResponse(url=cas_login_url)
-    
+
     user, attributes, pgtiou = cas_client_nss.verify_ticket(ticket)
     frontend_url = "http://localhost:3000/"
 
@@ -92,10 +92,12 @@ app.mount(
     name="uploads"
 )
 
+
 @app.on_event("startup")
 async def startup_event():
     # Initialize DB at startup
     get_database()
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -103,10 +105,13 @@ async def shutdown_event():
     close_connection()
 
 # Health check endpoints
+
+
 @app.get("/health")
 async def health_check():
     """Basic health check endpoint"""
     return {"status": "healthy", "timestamp": time.time()}
+
 
 @app.get("/health/detailed")
 async def detailed_health_check():
@@ -116,10 +121,10 @@ async def detailed_health_check():
         cpu_percent = psutil.cpu_percent()
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
-        
+
         # Check database connection (if needed)
         # Add your database health check here
-        
+
         return {
             "status": "healthy",
             "timestamp": time.time(),
@@ -137,12 +142,15 @@ async def detailed_health_check():
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Health check failed: {str(e)}")
 
+
 @app.get("/metrics")
 async def metrics():
     """Prometheus metrics endpoint"""
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 # Root endpoint
+
+
 @app.get("/")
 async def root():
     return {

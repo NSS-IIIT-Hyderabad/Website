@@ -1,7 +1,7 @@
 import strawberry
 from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import Optional
 from enum import Enum
+from typing import Optional
 import re
 import datetime
 
