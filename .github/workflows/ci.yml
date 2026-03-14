@@ -70,7 +70,4 @@ jobs:
         run: mkdir -p "${UPLOAD_DIR:-uploads}"
 
       - name: Test
-        working-directory: .
-        env:
-          PYTHONPATH: ${{ github.workspace }}/backend
-        run: pytest backend/tests/ -v
+        run: pytest tests/ -v
