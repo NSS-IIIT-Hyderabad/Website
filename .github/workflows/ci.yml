@@ -67,4 +67,5 @@ jobs:
         run: flake8 . --max-line-length=120 --exclude=__pycache__
 
       - name: Test
-        run: pytest tests/ -v
+        working-directory: .
+        run: pytest backend/tests/ -v
