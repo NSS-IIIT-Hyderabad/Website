@@ -81,9 +81,7 @@ export default function MemberCard({ member }: { member: Member }) {
       onClick={handleClick}
     >
       <div
-        className={`relative w-full h-full rounded-3xl transition-all duration-700 ${
-          hover ? "shadow-2xl shadow-blue-200/40" : "shadow-lg shadow-gray-200/60"
-        }`}
+        className="relative w-full h-full rounded-3xl transition-all duration-700"
         style={{
           transformStyle: "preserve-3d",
           transform: hover ? "rotateY(180deg)" : "rotateY(0deg)",
