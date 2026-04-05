@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Calendar, Info, Users, Phone, Menu, X } from "lucide-react";
+import LoginButton from "../loginNlognout/loginButton";
 
 const navigationItems = [
     { label: "Home", href: "/", icon: Home },
@@ -107,8 +108,13 @@ export default function Navbar() {
                             })}
                         </div>
 
+                        {/* Login Button - Desktop */}
+                        <div className="hidden lg:flex items-center ml-4">
+                            <LoginButton />
+                        </div>
+
                         {/* Mobile Menu Button */}
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-3 lg:hidden">
                             <button
                                 className="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-200"
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -190,7 +196,10 @@ export default function Navbar() {
                         })}
                     </div>
 
-                    {/* Mobile Auth Section removed */}
+                    {/* Mobile Login Button */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                        <LoginButton />
+                    </div>
                 </div>
             </div>
         </div>
