@@ -51,26 +51,14 @@ export default function MembersSection({ members }: { members: Member[] }) {
       member.team.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.rollNumber.toLowerCase().includes(searchTerm.toLowerCase());
     
-    if (!matchesSearch) return false;
-    
-    // If "all" is selected, show all matching search
-    if (activeFilters.includes("all")) return true;
-    
-    // Separate status and team filters
-    const statusFilters = activeFilters.filter(f => f === "active" || f === "inactive");
-    const teamFilters = activeFilters.filter(f => f !== "active" && f !== "inactive" && f !== "all");
-    
-    // Check status match (if any status filter is active)
-    const statusMatch = statusFilters.length === 0 || 
-      (statusFilters.includes("active") && member.status === "active") ||
-      (statusFilters.includes("inactive") && member.status === "inactive");
-    
-    // Check team match (if any team filter is active)
-    const teamMatch = teamFilters.length === 0 || 
-      teamFilters.some(team => member.team.toLowerCase() === team.toLowerCase());
-    
-    // Both status and team conditions must be satisfied (AND logic)
-    return statusMatch && teamMatch;
+      // If "all" is selected, show all
+      if (activeFilters.includes("all")) return matchesSearch;
+      // If "active" or "inactive" is selected, match status
+      const statusMatch = (activeFilters.includes("active") && member.status === "active") ||
+        (activeFilters.includes("inactive") && member.status === "inactive");
+      // If any team is selected, match team
+      const teamMatch = activeFilters.some(f => f !== "active" && f !== "inactive" && f !== "all" && member.team.toLowerCase() === f.toLowerCase());
+      return matchesSearch && (statusMatch || teamMatch);
   });
 
   // Group present by team, past by year
@@ -282,14 +270,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
             </div>
           )}
           {Object.entries(pastGroups)
-            .sort((a, b) => {
-              // Handle "Unknown" dates - always push to end
-              if (a[0] === "Unknown" && b[0] === "Unknown") return 0;
-              if (a[0] === "Unknown") return 1;
-              if (b[0] === "Unknown") return -1;
-              // Sort by year in descending order
-              return Number(b[0]) - Number(a[0]);
-            })
+            .sort((a, b) => Number(b[0]) - Number(a[0])) // Descending by year
             .map(([year, group]) => {
               const groupKey = `past:${year}`;
               const isExpanded = !!expandedGroups[groupKey];
