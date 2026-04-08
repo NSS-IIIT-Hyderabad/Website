@@ -2,6 +2,7 @@ import strawberry
 from pydantic import BaseModel, Field, field_validator, EmailStr
 from enum import Enum
 import re
+from uuid import uuid4
 
 
 # ==================== ENUMS ====================
@@ -40,19 +41,26 @@ class RoleEnum(str, Enum):
 # ==================== WORK HISTORY ====================
 
 class WorkHistoryModel(BaseModel):
-    role: RoleEnum = Field(...)
-    team: TeamTypeEnum = Field(...)
-    status: MemberStatusEnum = Field(...)
+    role: str = Field(...)
+    team: str = Field(...)
+    start: str = Field(...)
+    end: str | None = Field(default=None)
 
 
-@strawberry.experimental.pydantic.type(model=WorkHistoryModel, all_fields=True)
+@strawberry.type
 class WorkHistory:
-    pass
+    role: str
+    team: str
+    start: str
+    end: str | None
 
 
-@strawberry.experimental.pydantic.input(model=WorkHistoryModel, all_fields=True)
+@strawberry.input
 class WorkHistoryInput:
-    pass
+    role: str
+    team: str
+    start: str
+    end: str | None = None
 
 
 # ==================== MEMBER MODEL ====================
@@ -64,8 +72,15 @@ class MemberModel(BaseModel):
     rollNumber: str = Field(..., min_length=1)
     photoUrl: str = Field(default="-")
     phone: str = Field(default="-")
+    batch: str = Field(default="")
+    year: str = Field(default="")
+    department: str = Field(default="")
+    linkedin: str = Field(default="")
+    github: str = Field(default="")
     bio: str = Field(default="", max_length=500)
-    workHistory: list[WorkHistoryModel] = Field(default_factory=list)
+    achievements: list[str] = Field(default_factory=list)
+    interests: list[str] = Field(default_factory=list)
+    workHistory: list[dict] = Field(default_factory=list)  # Stored as dicts, converted to Strawberry types in resolver
 
     @field_validator('email')
     @classmethod
@@ -83,11 +98,85 @@ class MemberModel(BaseModel):
         return v
 
 
-@strawberry.experimental.pydantic.type(model=MemberModel, all_fields=True)
+@strawberry.type
 class Member:
+    id: str
+    name: str
+    email: str
+    rollNumber: str
+    photoUrl: str = "/favicon.ico"
+    phone: str = "-"
+    batch: str = ""
+    year: str = ""
+    department: str = ""
+    linkedin: str = ""
+    github: str = ""
+    bio: str = ""
+    achievements: list[str]
+    interests: list[str]
+    workHistory: list[WorkHistory]
+
+
+@strawberry.input
+class MemberInput:
+    id: str
+    name: str
+    email: str
+    rollNumber: str
+    photoUrl: str = "-"
+    phone: str = "-"
+    batch: str = ""
+    year: str = ""
+    department: str = ""
+    linkedin: str = ""
+    github: str = ""
+    bio: str = ""
+    achievements: list[str] | None = None
+    interests: list[str] | None = None
+    workHistory: list[WorkHistoryInput] | None = None
+
+
+# ==================== EVENT MODEL ====================
+
+class EventModel(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()), description="Unique event ID")
+    eventName: str = Field(..., min_length=1, alias="event_name")
+    start: str = Field(...)  # ISO format: YYYY-MM-DD or YYYY/MM/DD
+    end: str = Field(...)
+    venue: str = Field(...)
+    description: str = Field(default="")
+    eventProfile: str = Field(default="", alias="event_profile")  # Image URL
+    audience: list[str] = Field(default_factory=list)  # e.g., ["internal", "ug2", "faculty"]
+    
+    class Config:
+        populate_by_name = True  # Allow both field name and alias
+
+
+@strawberry.experimental.pydantic.type(model=EventModel, all_fields=True)
+class Event:
     pass
 
 
-@strawberry.experimental.pydantic.input(model=MemberModel, all_fields=True)
-class MemberInput:
+@strawberry.experimental.pydantic.input(model=EventModel, all_fields=True)
+class EventInput:
+    pass
+
+
+# ==================== TESTIMONIAL MODEL ====================
+
+class TestimonialModel(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    name: str = Field(..., min_length=1)
+    title: str = Field(...)  # Role/Position
+    period: str = Field(default="")  # e.g., "(2023 - 2025)"
+    quote: str = Field(...)
+
+
+@strawberry.experimental.pydantic.type(model=TestimonialModel, all_fields=True)
+class Testimonial:
+    pass
+
+
+@strawberry.experimental.pydantic.input(model=TestimonialModel, all_fields=True)
+class TestimonialInput:
     pass

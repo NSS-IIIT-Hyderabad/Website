@@ -1,7 +1,7 @@
 // getMembers.tsx
-import membersData from '@/data/Data';
 
 type MemberData = {
+  id?: string;
   name: string;
   email: string;
   rollNumber: string;
@@ -18,6 +18,88 @@ type MemberData = {
   department?: string;
 };
 
+type GraphQLMember = {
+  id?: string;
+  name: string;
+  email: string;
+  rollNumber: string;
+  photoUrl?: string;
+  batch?: string;
+  year?: string;
+  bio?: string;
+  achievements?: string[];
+  interests?: string[];
+  linkedin?: string;
+  github?: string;
+  phone?: string;
+  department?: string;
+  workHistory?: Array<{ role: string; team: string; start: string; end: string | null }>;
+};
+
+const MEMBERS_QUERY = `
+  query ViewMembers {
+    viewMembers {
+      id
+      name
+      email
+      rollNumber
+      photoUrl
+      batch
+      year
+      bio
+      achievements
+      interests
+      linkedin
+      github
+      phone
+      department
+      workHistory {
+        role
+        team
+        start
+        end
+      }
+    }
+  }
+`;
+
+function getGraphQLEndpoints() {
+  return [
+    'http://backend:8000/graphql',
+    'http://localhost:8000/graphql',
+    'http://localhost/api/graphql',
+  ];
+}
+
+async function fetchMembersFromGraphQL(): Promise<GraphQLMember[] | null> {
+  for (const endpoint of getGraphQLEndpoints()) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: MEMBERS_QUERY }),
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const payload = await response.json();
+      const members = payload?.data?.viewMembers;
+      if (Array.isArray(members)) {
+        return members as GraphQLMember[];
+      }
+    } catch {
+      // Try the next endpoint.
+    }
+  }
+
+  return null;
+}
+
 // Transform Data.tsx format to the expected format
 function transformMemberData(member: MemberData) {
   // Get the current/most recent work history entry
@@ -32,6 +114,7 @@ function transformMemberData(member: MemberData) {
   const emailUsername = member.email ? member.email.split('@')[0] : '';
   
   return {
+    id: member.id || member.rollNumber || member.email,
     name: member.name,
     email: member.email,
     // Preserve original batch if present; fall back to year for compatibility
@@ -57,16 +140,12 @@ function transformMemberData(member: MemberData) {
 }
 
 export async function getMembersFromDB() {
-  try {
-    // Transform the data from Data.tsx to match the expected format
-    const transformedMembers = membersData.map(transformMemberData);
-    
-    console.log(`Successfully loaded ${transformedMembers.length} members from local data`);
-    return transformedMembers;
-  } catch (error: unknown) {
-    console.error('Failed to load members:', error);
-    
-    // Return empty array instead of throwing to prevent page crashes
-    return [];
+  const members = await fetchMembersFromGraphQL();
+  if (!members || members.length === 0) {
+    throw new Error('Failed to load members from GraphQL backend');
   }
+  const transformedMembers = members.map((member) =>
+    transformMemberData(member as MemberData)
+  );
+  return transformedMembers;
 }

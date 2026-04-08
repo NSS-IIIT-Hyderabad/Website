@@ -1,0 +1,106 @@
+type Event {
+  """Unique event ID"""
+  id: String!
+  event_name: String!
+  start: String!
+  end: String!
+  venue: String!
+  description: String!
+  event_profile: String!
+  audience: [String!]!
+}
+
+input EventInput {
+  """Unique event ID"""
+  id: String! = "773df1f3-f125-4593-8a57-9600796033d4"
+  event_name: String!
+  start: String!
+  end: String!
+  venue: String!
+  description: String! = ""
+  event_profile: String! = ""
+  audience: [String!]! = []
+}
+
+type Member {
+  id: String!
+  name: String!
+  email: String!
+  rollNumber: String!
+  photoUrl: String!
+  phone: String!
+  batch: String!
+  year: String!
+  department: String!
+  linkedin: String!
+  github: String!
+  bio: String!
+  achievements: [String!]!
+  interests: [String!]!
+  workHistory: [WorkHistory!]!
+}
+
+input MemberInput {
+  id: String!
+  name: String!
+  email: String!
+  rollNumber: String!
+  photoUrl: String! = "-"
+  phone: String! = "-"
+  batch: String! = ""
+  year: String! = ""
+  department: String! = ""
+  linkedin: String! = ""
+  github: String! = ""
+  bio: String! = ""
+  achievements: [String!] = null
+  interests: [String!] = null
+  workHistory: [WorkHistoryInput!] = null
+}
+
+type Mutation {
+  addEvent(event: EventInput!): Boolean!
+  changeEvent(event: EventInput!): Boolean!
+  addMember(member: MemberInput!): Boolean!
+  changeMember(member: MemberInput!): Boolean!
+  addTestimonial(testimonial: TestimonialInput!): Boolean!
+}
+
+type Query {
+  viewEvents: [Event!]!
+  viewMembers(name: String = null): [Member!]!
+  viewMember(identifier: String!): Member
+  viewEvent(eventId: String!): Event
+  viewTestimonials: [Testimonial!]!
+  viewTestimonial(testimonialId: String!): Testimonial
+}
+
+type Testimonial {
+  id: String!
+  name: String!
+  title: String!
+  period: String!
+  quote: String!
+}
+
+input TestimonialInput {
+  id: String! = "bbb57880-f405-4194-a663-46049c80c0b3"
+  name: String!
+  title: String!
+  period: String! = ""
+  quote: String!
+}
+
+type WorkHistory {
+  role: String!
+  team: String!
+  start: String!
+  end: String
+}
+
+input WorkHistoryInput {
+  role: String!
+  team: String!
+  start: String!
+  end: String = null
+}

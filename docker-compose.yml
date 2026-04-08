@@ -34,9 +34,9 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - ./backend:/app
-      - /app/venv
-      - files_data:/app/uploads
+      - ./backend:/backend
+      - /backend/venv
+      - files_data:/backend/uploads
     networks:
       - app-network
   
