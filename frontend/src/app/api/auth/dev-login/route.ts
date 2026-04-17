@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+function getNodeEnv(): string {
+  const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env;
+  return (env?.NODE_ENV || '').trim().toLowerCase();
+}
+
 export async function GET(request: NextRequest) {
-  const host = request.nextUrl.hostname;
-  const isLocalhost = host === 'localhost' || host === '127.0.0.1';
-  if (!isLocalhost) {
+  // Dev login must never be enabled outside development.
+  if (getNodeEnv() !== 'development') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -27,6 +31,7 @@ export async function GET(request: NextRequest) {
   response.cookies.set('uid', uid, cookieOptions);
   response.cookies.set('email', email, cookieOptions);
   response.cookies.set('name', name, cookieOptions);
+  response.cookies.set('logout', '', { ...cookieOptions, maxAge: 0 });
 
   return response;
 }

@@ -1,6 +1,6 @@
 // src/app/loading.tsx
-import Loading from "../components/Loading_error/Loading";
+import LoadingState from "../components/feedback/LoadingState";
 
 export default function GlobalLoading() {
-  return <Loading />;
+  return <LoadingState />;
 }

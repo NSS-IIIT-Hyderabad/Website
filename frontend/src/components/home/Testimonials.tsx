@@ -6,8 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-import { getTestimonialsFromDB } from "@/graphql_Q&M/getTestimonials";
-import type { Testimonial } from "@/graphql_Q&M/getTestimonials";
+import { getTestimonialsFromDB } from "@/services/graphql/testimonials";
+import type { Testimonial } from "@/services/graphql/testimonials";
 
 const Testimonials = () => {
   const [current, setCurrent] = useState(0);

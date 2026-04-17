@@ -1,6 +1,6 @@
 // src/app/not-found.tsx
-import Custom404 from "../components/Loading_error/404";
+import NotFoundState from "../components/feedback/NotFoundState";
 
 export default function NotFound() {
-  return <Custom404 />;
+  return <NotFoundState />;
 }

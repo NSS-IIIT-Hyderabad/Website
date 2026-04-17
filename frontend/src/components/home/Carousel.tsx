@@ -60,6 +60,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
             src={image}
             alt={`NSS IIIT Hyderabad - Slide ${index + 1}`}
             fill
+            priority={index === 0}
             className={`
               absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out
               ${index === current ? 'opacity-100' : 'opacity-0'}

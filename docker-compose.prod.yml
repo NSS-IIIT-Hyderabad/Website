@@ -30,10 +30,12 @@ services:
       MONGODB_URL: mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
       API_ENV: production
       API_PORT: 8000
+      UPLOAD_DIR: /var/www/nss-uploads
     depends_on:
       - mongodb
     volumes:
       - ./backend:/app
+      - ${UPLOADS_HOST_DIR:-/var/www/nss-uploads}:/var/www/nss-uploads
     networks:
       - app-network
     deploy:

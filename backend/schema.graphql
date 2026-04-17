@@ -1,6 +1,15 @@
+type AdminAccount {
+  memberId: String!
+  rollNumber: String!
+  email: String!
+  name: String!
+  active: Boolean!
+  source: String!
+  grantedBy: String
+  grantedAt: String!
+}
+
 type Event {
-  """Unique event ID"""
-  id: String!
   event_name: String!
   start: String!
   end: String!
@@ -11,8 +20,6 @@ type Event {
 }
 
 input EventInput {
-  """Unique event ID"""
-  id: String! = "773df1f3-f125-4593-8a57-9600796033d4"
   event_name: String!
   start: String!
   end: String!
@@ -23,7 +30,6 @@ input EventInput {
 }
 
 type Member {
-  id: String!
   name: String!
   email: String!
   rollNumber: String!
@@ -41,7 +47,6 @@ type Member {
 }
 
 input MemberInput {
-  id: String!
   name: String!
   email: String!
   rollNumber: String!
@@ -59,20 +64,27 @@ input MemberInput {
 }
 
 type Mutation {
-  addEvent(event: EventInput!): Boolean!
-  changeEvent(event: EventInput!): Boolean!
   addMember(member: MemberInput!): Boolean!
   changeMember(member: MemberInput!): Boolean!
+  changeMemberByEmail(memberEmail: String!, member: MemberInput!): Boolean!
+  deleteMember(memberEmail: String!): Boolean!
+  addEvent(event: EventInput!): Boolean!
+  changeEvent(eventName: String!, event: EventInput!): Boolean!
+  deleteEvent(eventName: String!): Boolean!
+  grantAdmin(identifier: String!): Boolean!
+  revokeAdmin(identifier: String!): Boolean!
   addTestimonial(testimonial: TestimonialInput!): Boolean!
 }
 
 type Query {
-  viewEvents: [Event!]!
   viewMembers(name: String = null): [Member!]!
   viewMember(identifier: String!): Member
-  viewEvent(eventId: String!): Event
+  viewEvents: [Event!]!
+  viewEvent(eventName: String!): Event
+  isCurrentUserAdmin: Boolean!
   viewTestimonials: [Testimonial!]!
   viewTestimonial(testimonialId: String!): Testimonial
+  viewAdmins: [AdminAccount!]!
 }
 
 type Testimonial {
@@ -84,7 +96,7 @@ type Testimonial {
 }
 
 input TestimonialInput {
-  id: String! = "bbb57880-f405-4194-a663-46049c80c0b3"
+  id: String! = "03c6a87e-d041-4d6c-b50a-5d9c9f1ca351"
   name: String!
   title: String!
   period: String! = ""

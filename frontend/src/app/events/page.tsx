@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import { getEventsFromDB } from "@/graphql_Q&M/getEvents";
-import type { Event } from "@/graphql_Q&M/getEvents";
+import { getEventsFromDB } from "@/services/graphql/events";
+import type { Event } from "@/services/graphql/events";
+import { buildUploadUrl } from "@/utils/uploads";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -60,10 +61,10 @@ export default function EventsPage() {
           ) : !error && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events.map((event, index) => (
-                <div key={`${event.id || event.eventName || index}`} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                  {event.eventProfile && event.eventProfile !== "-" && (
+                <div key={`${event.eventName || index}`} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                  {buildUploadUrl(event.eventProfile, "events") && (
                     <img 
-                      src={event.eventProfile} 
+                      src={buildUploadUrl(event.eventProfile, "events")} 
                       alt={event.eventName} 
                       className="w-full h-48 object-cover"
                     />

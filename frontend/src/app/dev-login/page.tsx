@@ -59,12 +59,22 @@ export default function DevLoginPage() {
   }, [loginValue, memberSuggestions]);
 
   useEffect(() => {
+    const hostname = window.location.hostname;
     const isLocalhost =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
-    const isDevelopment = process.env.NODE_ENV === "development";
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "0.0.0.0";
+    const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env;
+    const nodeEnv = (env?.NODE_ENV || "").trim().toLowerCase();
+    // Keep behavior aligned with login() fallback: localhost is allowed in dev workflows.
+    const isDevelopment = nodeEnv === "development" || isLocalhost;
 
-    if (!isLocalhost || !isDevelopment) {
+    const hasUid = /(?:^|;\s*)uid=/.test(document.cookie || "");
+    const hasEmail = /(?:^|;\s*)email=/.test(document.cookie || "");
+    const hasLogoutMarker = /(?:^|;\s*)logout=/.test(document.cookie || "");
+    const isAlreadyLoggedIn = (hasUid || hasEmail) && !hasLogoutMarker;
+
+    if (!isLocalhost || !isDevelopment || isAlreadyLoggedIn) {
       router.replace("/");
     }
   }, [router]);

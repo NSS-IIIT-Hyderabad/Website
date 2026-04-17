@@ -29,14 +29,14 @@ services:
       - MONGODB_URL=mongodb://admin:password123@mongodb:27017/nss_db?authSource=admin
       - API_ENV=development
       - API_PORT=8000
-      - UPLOAD_DIR=uploads
-      - FILES_BASE_URL=http://localhost:8000/uploads
+      - UPLOAD_DIR=/var/www/nss-uploads
+      - FILES_BASE_URL=http://localhost/uploads
     depends_on:
       - mongodb
     volumes:
       - ./backend:/backend
       - /backend/venv
-      - files_data:/backend/uploads
+      - ${UPLOADS_HOST_DIR:-/mnt/c/Users/SANGAMESHWAR/OneDrive - International Institute of Information Technology/Documents/NSS/13-03-2026/uploads}:/var/www/nss-uploads
     networks:
       - app-network
   
@@ -52,6 +52,8 @@ services:
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
     volumes:
@@ -92,7 +94,6 @@ services:
 
 volumes:
   mongodb_data:
-  files_data:
   redis_data:
 
 networks:

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
+import { getMembersFromDB } from '@/services/graphql/members';
 import MembersSection from '@/components/team/MembersSection';
 
 type WorkHistory = {
@@ -10,7 +10,6 @@ type WorkHistory = {
 };
 
 type MemberFromDB = {
-  id?: string;
   name: string;
   email: string;
   rollNumber: string;
@@ -41,7 +40,7 @@ export default async function MembersPage() {
     // Deduplicate before rendering so React keys remain stable and unique.
     const seen = new Set<string>();
     const uniqueMembersData = membersData.filter((member: MemberFromDB) => {
-      const key = `${member.id || ''}|${member.rollNumber || ''}|${member.email || ''}`.toLowerCase();
+      const key = `${member.rollNumber || ''}|${member.email || ''}`.toLowerCase();
       if (seen.has(key)) {
         return false;
       }
@@ -63,7 +62,7 @@ export default async function MembersPage() {
       const status = active && !active.end ? 'active' : 'inactive';
 
       return {
-        id: member.id || member.rollNumber || `member-${index}`,
+        id: member.email || member.rollNumber || `member-${index}`,
         email: member.email || '',
         name: member.name || '',
         photoUrl: (member.photoUrl && member.photoUrl !== '-') ? member.photoUrl : '/favicon.ico',
