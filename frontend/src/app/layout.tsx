@@ -5,7 +5,6 @@ import React from "react";
 import ScrollThumbEffect from "../utils/Scrollbar";
 import { Providers } from "@/providers/Providers";
 import AuthRedirect from "@/components/common/AuthRedirect";
-import KeyboardShortcuts from "@/components/common/KeyboardShortcuts";
 
 const playfairDisplay = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -66,7 +65,6 @@ export default function RootLayout({
         }}
       >
         <ScrollThumbEffect />
-        <KeyboardShortcuts />
         <AuthRedirect />
         <Providers>
           {children}
