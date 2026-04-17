@@ -1,0 +1,118 @@
+type AdminAccount {
+  memberId: String!
+  rollNumber: String!
+  email: String!
+  name: String!
+  active: Boolean!
+  source: String!
+  grantedBy: String
+  grantedAt: String!
+}
+
+type Event {
+  event_name: String!
+  start: String!
+  end: String!
+  venue: String!
+  description: String!
+  event_profile: String!
+  audience: [String!]!
+}
+
+input EventInput {
+  event_name: String!
+  start: String!
+  end: String!
+  venue: String!
+  description: String! = ""
+  event_profile: String! = ""
+  audience: [String!]! = []
+}
+
+type Member {
+  name: String!
+  email: String!
+  rollNumber: String!
+  photoUrl: String!
+  phone: String!
+  batch: String!
+  year: String!
+  department: String!
+  linkedin: String!
+  github: String!
+  bio: String!
+  achievements: [String!]!
+  interests: [String!]!
+  workHistory: [WorkHistory!]!
+}
+
+input MemberInput {
+  name: String!
+  email: String!
+  rollNumber: String!
+  photoUrl: String! = "-"
+  phone: String! = "-"
+  batch: String! = ""
+  year: String! = ""
+  department: String! = ""
+  linkedin: String! = ""
+  github: String! = ""
+  bio: String! = ""
+  achievements: [String!] = null
+  interests: [String!] = null
+  workHistory: [WorkHistoryInput!] = null
+}
+
+type Mutation {
+  addMember(member: MemberInput!): Boolean!
+  changeMember(member: MemberInput!): Boolean!
+  changeMemberByEmail(memberEmail: String!, member: MemberInput!): Boolean!
+  deleteMember(memberEmail: String!): Boolean!
+  addEvent(event: EventInput!): Boolean!
+  changeEvent(eventName: String!, event: EventInput!): Boolean!
+  deleteEvent(eventName: String!): Boolean!
+  grantAdmin(identifier: String!): Boolean!
+  revokeAdmin(identifier: String!): Boolean!
+  addTestimonial(testimonial: TestimonialInput!): Boolean!
+}
+
+type Query {
+  viewMembers(name: String = null): [Member!]!
+  viewMember(identifier: String!): Member
+  viewEvents: [Event!]!
+  viewEvent(eventName: String!): Event
+  isCurrentUserAdmin: Boolean!
+  viewTestimonials: [Testimonial!]!
+  viewTestimonial(testimonialId: String!): Testimonial
+  viewAdmins: [AdminAccount!]!
+}
+
+type Testimonial {
+  id: String!
+  name: String!
+  title: String!
+  period: String!
+  quote: String!
+}
+
+input TestimonialInput {
+  id: String! = "03c6a87e-d041-4d6c-b50a-5d9c9f1ca351"
+  name: String!
+  title: String!
+  period: String! = ""
+  quote: String!
+}
+
+type WorkHistory {
+  role: String!
+  team: String!
+  start: String!
+  end: String
+}
+
+input WorkHistoryInput {
+  role: String!
+  team: String!
+  start: String!
+  end: String = null
+}

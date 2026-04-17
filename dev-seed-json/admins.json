@@ -1,0 +1,225 @@
+[
+  {
+    "id": "bakaram.charan@students.iiit.ac.in",
+    "name": "Bakaram Sai Charan",
+    "email": "bakaram.charan@students.iiit.ac.in",
+    "rollNumber": "2023101044",
+    "batch": "ug2k23",
+    "department": "CSE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Bridging teams and aligning efforts towards common goals. Currently Coordinator, passionate about creating synergy in social work.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Logistics Team Member",
+        "team": "Logistics",
+        "start": "2024-01",
+        "end": "2025-01"
+      },
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2025-01",
+        "end": null
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  },
+  {
+    "id": "jaswanthreddy.k@students.iiit.ac.in",
+    "name": "Konapalli Jaswanth Reddy",
+    "email": "jaswanthreddy.k@students.iiit.ac.in",
+    "rollNumber": "2023101025",
+    "batch": "ug2k23",
+    "department": "CSE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Bridging teams and aligning efforts towards common goals. Currently Coordinator, passionate about creating synergy in social work.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Social Media Team Member",
+        "team": "Social",
+        "start": "2024-01",
+        "end": "2025-01"
+      },
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2025-01",
+        "end": null
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  },
+  {
+    "id": "jeevesh.madala@students.iiit.ac.in",
+    "name": "Madala Venkata Renu Jeevesh",
+    "email": "jeevesh.madala@students.iiit.ac.in",
+    "rollNumber": "2022102009",
+    "batch": "ug2k22",
+    "department": "CSE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Driving strategic initiatives and team coordination. Currently serving as Coordinator, focused on scaling NSS's community impact.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Logistics Team Member",
+        "team": "Logistics",
+        "start": "2023-01",
+        "end": "2024-01"
+      },
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2024-01",
+        "end": "2025-01"
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  },
+  {
+    "id": "sai.nikhita@students.iiit.ac.in",
+    "name": "Obbineni Sai Nikhita",
+    "email": "sai.nikhita@students.iiit.ac.in",
+    "rollNumber": "2021101040",
+    "batch": "ug2k21",
+    "department": "CSE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Crafting compelling content for NSS's digital channels. Enthusiastic about building online communities that care and take action.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2023-01",
+        "end": "2024-01"
+      },
+      {
+        "role": "Social Media Team Member",
+        "team": "Social",
+        "start": "2022-01",
+        "end": "2023-01"
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  },
+  {
+    "id": "srihari.bandarupalli@research.iiit.ac.in",
+    "name": "Srihari Bandarupalli",
+    "email": "srihari.bandarupalli@research.iiit.ac.in",
+    "rollNumber": "2021112006",
+    "batch": "ug2k21",
+    "department": "ECE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Contributing to seamless event execution behind the scenes. Detail-oriented logistics team member committed to operational excellence.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2023-01",
+        "end": "2024-01"
+      },
+      {
+        "role": "Logistics Team",
+        "team": "Logistics",
+        "start": "2022-01",
+        "end": "2023-01"
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  },
+  {
+    "id": "sukasi.manidhar@students.iiit.ac.in",
+    "name": "Sukasi Manidhar",
+    "email": "sukasi.manidhar@students.iiit.ac.in",
+    "rollNumber": "2023101067",
+    "batch": "ug2k23",
+    "department": "CSE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Driving strategic initiatives and team coordination. Currently serving as Coordinator, focused on scaling NSS's community impact.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Logistics Team Member",
+        "team": "Logistics",
+        "start": "2024-01",
+        "end": "2025-01"
+      },
+      {
+        "role": "Social Media Team Head",
+        "team": "Social",
+        "start": "2025-01",
+        "end": "2025-01"
+      },
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2025-01",
+        "end": null
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  },
+  {
+    "id": "vysishtya.karanam@students.iiit.ac.in",
+    "name": "Karanam Vysishtya",
+    "email": "vysishtya.karanam@students.iiit.ac.in",
+    "rollNumber": "2022102044",
+    "batch": "ug2k22",
+    "department": "CSE",
+    "photoUrl": "-",
+    "phone": "-",
+    "linkedin": "-",
+    "github": "-",
+    "bio": "Bridging teams and aligning efforts towards common goals. Currently Coordinator, passionate about creating synergy in social work.",
+    "achievements": [],
+    "interests": [],
+    "workHistory": [
+      {
+        "role": "Design Team Member",
+        "team": "Design",
+        "start": "2023-01",
+        "end": "2024-01"
+      },
+      {
+        "role": "Coordinator",
+        "team": "NSS Core",
+        "start": "2024-01",
+        "end": "2025-01"
+      }
+    ],
+    "isAdmin": true,
+    "adminRole": "Coordinator"
+  }
+]

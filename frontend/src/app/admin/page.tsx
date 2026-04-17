@@ -1,43 +1,67 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-
-// Feature flag: toggle visibility/access to the admin index.
-// Set to `true` to re-enable admin landing page (keeps code intact).
-const SHOW_ADMIN_INDEX = false;
+import { CalendarDays, KeyRound, Shield, Users } from "lucide-react";
+import AdminProtect from "@/components/admin/AdminProtect";
+import { AdminCard, AdminShell } from "@/components/admin/AdminUi";
 
 export default function AdminIndex() {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!SHOW_ADMIN_INDEX) {
-      // Redirect users away from /admin when the admin index is disabled.
-      // We use replace so the back button won't return to /admin.
-      router.replace("/");
-    }
-  }, [router]);
-
-  // When admin index is disabled, render nothing (redirect happens in client)
-  if (!SHOW_ADMIN_INDEX) return null;
-
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50 py-12">
-      <div className="container mx-auto px-6 lg:px-8">
-        <h1 className="text-4xl font-playfair font-bold text-blue-800 mb-6">Admin Dashboard</h1>
+    <AdminProtect>
+      <AdminShell>
+        <AdminCard>
+          <div className="flex items-start gap-3">
+            <Shield className="mt-1 h-6 w-6 text-slate-700" />
+            <div>
+              <h1 className="text-3xl font-playfair font-bold text-slate-900">Admin Dashboard</h1>
+              <p className="mt-1 text-sm text-slate-600">
+                Manage NSS website records from one place. Use the modules below to update members and events.
+              </p>
+            </div>
+          </div>
+        </AdminCard>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link href="/admin/members" className="block p-6 bg-white rounded-2xl shadow hover:shadow-xl border">
-            <h2 className="text-2xl font-semibold">Members</h2>
-            <p className="text-sm text-gray-600 mt-2">View and edit member admin flags and work history.</p>
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Link
+            href="/admin/members"
+            className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            <div className="mb-4 inline-flex rounded-xl bg-purple-100 p-3 text-purple-700">
+              <Users className="h-5 w-5" />
+            </div>
+            <h2 className="text-2xl font-semibold text-purple-900">Members</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              View member profiles and update work history details.
+            </p>
           </Link>
 
-          <Link href="/admin/events" className="block p-6 bg-white rounded-2xl shadow hover:shadow-xl border">
-            <h2 className="text-2xl font-semibold">Events</h2>
-            <p className="text-sm text-gray-600 mt-2">Full edit access to event data (add/edit/delete).</p>
+          <Link
+            href="/admin/events"
+            className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            <div className="mb-4 inline-flex rounded-xl bg-purple-100 p-3 text-purple-700">
+              <CalendarDays className="h-5 w-5" />
+            </div>
+            <h2 className="text-2xl font-semibold text-purple-900">Events</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Create, edit, and remove event entries used by the website.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/access"
+            className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            <div className="mb-4 inline-flex rounded-xl bg-purple-100 p-3 text-purple-700">
+              <KeyRound className="h-5 w-5" />
+            </div>
+            <h2 className="text-2xl font-semibold text-purple-900">Admin Access</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              View admins list and grant or revoke admin permissions.
+            </p>
           </Link>
         </div>
-      </div>
-    </div>
+      </AdminShell>
+    </AdminProtect>
   );
 }

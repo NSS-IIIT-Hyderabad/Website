@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
+import { getMembersFromDB } from '@/services/graphql/members';
 import { redirect, notFound } from 'next/navigation';
 import { Mail, Calendar, CheckCircle, XCircle, Linkedin, ArrowLeft, Users, User, Shield } from 'lucide-react';
 

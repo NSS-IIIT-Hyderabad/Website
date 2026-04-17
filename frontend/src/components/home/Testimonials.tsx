@@ -1,15 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-import { testimonials, Testimonial } from "@/data/testimonials";
+import { getTestimonialsFromDB } from "@/services/graphql/testimonials";
+import type { Testimonial } from "@/services/graphql/testimonials";
 
 const Testimonials = () => {
   const [current, setCurrent] = useState(0);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadTestimonials() {
+      try {
+        const data = await getTestimonialsFromDB();
+        setTestimonials(data);
+        setError(null);
+      } catch (error) {
+        console.error("Error loading testimonials:", error);
+        setError("Failed to load testimonials. Please ensure the GraphQL backend is running.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadTestimonials();
+  }, []);
   
   return (
     <section className="w-full min-h-[calc(100vh-5rem)] h-auto flex flex-col justify-center py-4 sm:py-6 lg:py-8">
@@ -23,6 +43,22 @@ const Testimonials = () => {
         <div className="w-16 sm:w-20 lg:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-orange-500 via-blue-800 to-green-600 mx-auto rounded-full"></div>
       </div>
 
+      {loading ? (
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-gray-600">Loading testimonials...</p>
+        </div>
+      ) : error ? (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-600 font-semibold mb-2">Error</p>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      ) : testimonials.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-gray-600">No testimonials available</p>
+        </div>
+      ) : (
       <div className="flex-1 flex items-center justify-center px-2 sm:px-2 py-3 sm:py-4 lg:py-6">
         <Swiper
           modules={[Autoplay]}
@@ -111,6 +147,7 @@ const Testimonials = () => {
         })}
         </Swiper>
       </div>
+      )}
     </section>
   );
 };
