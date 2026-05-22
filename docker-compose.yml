@@ -36,7 +36,7 @@ services:
     volumes:
       - ./backend:/backend
       - /backend/venv
-      - ${UPLOADS_HOST_DIR:-/mnt/c/Users/SANGAMESHWAR/OneDrive - International Institute of Information Technology/Documents/NSS/13-03-2026/uploads}:/var/www/nss-uploads
+      - ${UPLOADS_HOST_DIR:-./uploads}:/var/www/nss-uploads
     networks:
       - app-network
   
