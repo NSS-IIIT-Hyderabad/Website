@@ -3,7 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/common/Navbar';
-import { Mail, Phone, MapPin, Instagram, Linkedin, X, Heart, Rocket } from 'lucide-react';
+import Footer from '@/components/common/Footer';
+import { Mail, Phone, MapPin, Instagram, Linkedin, X, MessageCircle, Rocket } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContactPage() {
@@ -135,7 +136,7 @@ export default function ContactPage() {
                       { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/nss_iiith/", color: "from-blue-600 to-blue-800" },
                       { icon: X, label: "X", href: "https://x.com/NSSIIITH", color: "from-blue-700 to-blue-900" },
                       { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/nssiiith/", color: "from-blue-700 to-blue-900" },
-                      { icon: Heart, label: "Whatsapp", href: "https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM", color: "from-green-600 to-green-800" },
+                      { icon: MessageCircle, label: "Whatsapp", href: "https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM", color: "from-green-600 to-green-800" },
                     ].map((social, index) => (
                       <a
                         key={index}
@@ -194,7 +195,7 @@ export default function ContactPage() {
         </div>
       </main>
 
-
+      <Footer />
     </div>
   );
 }

@@ -22,6 +22,7 @@ const VolunteerReg = () => {
             <a 
               href="https://mybharat.gov.in/" 
               target='_blank' 
+              rel="noopener noreferrer"
               className="text-orange-500 font-semibold hover:text-orange-600 hover:underline transition-colors duration-300"
             >
               MyBharat portal
@@ -40,6 +41,7 @@ const VolunteerReg = () => {
             <a 
               href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=vDsaA3zPK06W7IZ1VVQKHJoDdm6dAj9NvMDyKNlznNdUN01EWFdDRkhYUzlUTzBHNVRKM05SQU5ZQy4u&route=shorturl" 
               target='_blank' 
+              rel="noopener noreferrer"
               className="text-orange-500 font-semibold hover:text-orange-600 hover:underline transition-colors duration-300"
             >
               registration form
@@ -58,6 +60,7 @@ const VolunteerReg = () => {
             <a 
               href="https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM" 
               target='_blank' 
+              rel="noopener noreferrer"
               className="text-red-600 font-semibold hover:text-red-700 hover:underline transition-colors duration-300"
             >
               WhatsApp group
