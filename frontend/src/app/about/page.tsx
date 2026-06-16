@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/common/Navbar';
+import Footer from '@/components/common/Footer';
 import { Heart, Users, Target, Award, Sparkles, HandHeart } from 'lucide-react';
 
 export default function AboutPage() {
@@ -130,7 +131,7 @@ export default function AboutPage() {
                 {[
                   { number: "500+", label: "Active Volunteers" },
                   { number: "10+", label: "Events Organized" },
-                  { number: "10K+", label: "Lives Impacted:@IIITH-Campus and @outside IIITH" },
+                  { number: "10K+", label: "Lives Impacted" },
                   { number: "5+", label: "Years of Service" }
                 ].map((stat, index) => (
                   <div key={index} className="group">
@@ -167,7 +168,7 @@ export default function AboutPage() {
         </div>
       </main>
 
-
+      <Footer />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 interface CarouselProps {
@@ -12,6 +12,7 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }) => {
+  const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -104,7 +105,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
               <div className="w-2 h-2 bg-white rounded-full group-hover:translate-x-1 transition-transform" />
             </button>
             <button 
-            className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer" onClick={() => redirect('/events')} >
+            className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer" onClick={() => router.push('/events')} >
               Explore Events
             </button>
           </div>
