@@ -136,7 +136,7 @@ export default function ContactPage() {
                       { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/nss_iiith/", color: "from-blue-600 to-blue-800" },
                       { icon: X, label: "X", href: "https://x.com/NSSIIITH", color: "from-blue-700 to-blue-900" },
                       { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/nssiiith/", color: "from-blue-700 to-blue-900" },
-                      { icon: MessageCircle, label: "Whatsapp", href: "https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM", color: "from-green-600 to-green-800" },
+                      { icon: MessageCircle, label: "WhatsApp", href: "https://chat.whatsapp.com/DmDwI59gXglHHZ9CuYPKkM", color: "from-green-600 to-green-800" },
                     ].map((social, index) => (
                       <a
                         key={index}
