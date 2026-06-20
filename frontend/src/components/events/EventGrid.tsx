@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import eventsData, { EventItem } from "@/data/eventsData";
+import { buildUploadUrl } from "@/utils/uploads";
 
 function formatDateIndian(dateStr: string) {
   const d = new Date(dateStr);
@@ -75,12 +76,7 @@ const EventGrid: React.FC<EventGridProps> = ({
       event.event_name.replace(/\s+/g, "-").toLowerCase()
     );
 
-    const posterUrl =
-      event.event_profile && event.event_profile !== "No Poster URL"
-        ? event.event_profile.startsWith("/")
-          ? event.event_profile
-          : `/events_posters/${event.event_profile}`
-        : "/favicon.ico";
+    const posterUrl = buildUploadUrl(event.event_profile, "events") || "/favicon.ico";
 
     const status = getEventStatus(event);
 
@@ -110,6 +106,7 @@ const EventGrid: React.FC<EventGridProps> = ({
               alt={event.event_name}
               width={400}
               height={192}
+              priority={idx === 0}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

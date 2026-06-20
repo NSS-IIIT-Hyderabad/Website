@@ -10,7 +10,7 @@ set -e
 # echo "MongoDB is ready!"
 
 # Generate GraphQL schema
-if ! venv/bin/strawberry export-schema main > schema.graphql; then
+if ! venv/bin/strawberry export-schema app.main > schema.graphql; then
   echo "Failed to generate GraphQL schema"
   echo "---- Error log ----"
   cat schema.graphql
@@ -20,7 +20,7 @@ fi
 echo "GraphQL schema generated successfully"
 
 # Run with hot reload
-if ! exec venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --root-path /api --reload; then
+if ! exec venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --root-path /api --reload; then
   echo "Failed to start Uvicorn server"
   exit 1
 fi

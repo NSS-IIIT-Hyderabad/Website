@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
+import { getMembersFromDB } from '@/services/graphql/members';
 import { notFound } from 'next/navigation';
 import { Mail, Calendar, CheckCircle, XCircle, ArrowLeft, Users } from 'lucide-react';
 
@@ -17,7 +17,6 @@ type WorkHistory = {
 };
 
 type Member = {
-  id?: string;
   name: string;
   email: string;
   rollNumber: string;
@@ -43,16 +42,14 @@ export default async function MemberProfile({ params }: Props) {
   // Fetch live data with error handling
   const members = await getMembersFromDB();
 
-  // Try to find member by rollNumber, id, email, or email username (case-insensitive)
+  // Try to find member by rollNumber, email, or email username (case-insensitive)
   const member = members.find((m: Member) => {
     const roll = m.rollNumber ? String(m.rollNumber).toLowerCase() : '';
-    const mid = m.id ? String(m.id).toLowerCase() : '';
     const email = m.email ? String(m.email).toLowerCase() : '';
     const emailUser = email.includes('@') ? email.split('@')[0] : (m.emailUsername ? String(m.emailUsername).toLowerCase() : '');
 
     return (
       roll === normalizedLookup ||
-      mid === normalizedLookup ||
       email === normalizedLookup ||
       emailUser === normalizedLookup
     );
@@ -60,7 +57,7 @@ export default async function MemberProfile({ params }: Props) {
 
   // Show 404 if member not found
   if (!member) {
-    console.warn('Member not found with ID:', id);
+    console.warn('Member not found with identifier:', id);
     notFound();
   }
 

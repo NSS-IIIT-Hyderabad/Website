@@ -113,6 +113,8 @@ Key variables:
 | `MONGODB_URL` | MongoDB connection string |
 | `API_ENV` | `development` or `production` |
 | `NEXT_PUBLIC_API_URL` | Public URL the browser uses to reach the API |
+| `UPLOADS_HOST_DIR` | Host machine directory where uploaded files are persisted |
+| `UPLOAD_DIR` | Backend container path for uploads (mounted from `UPLOADS_HOST_DIR`) |
 | `CAS_SERVER_URL` | IIIT CAS login server URL |
 | `SERVICE_URL` | Callback URL for CAS authentication |
 | `SECRET_KEY` | Secret key for signing tokens |

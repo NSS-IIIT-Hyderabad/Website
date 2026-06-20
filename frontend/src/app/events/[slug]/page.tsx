@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import eventsDataRaw, { EventItem } from "@/data/eventsData";
 import Link from "next/link";
 import { Calendar, MapPin, Share2, ArrowLeft, Info, Users, Flag } from "lucide-react";
+import { buildUploadUrl } from "@/utils/uploads";
 
 function slugify(name: string) {
   return name.replace(/\s+/g, "-").toLowerCase();
@@ -73,9 +74,7 @@ export default function EventDetailPage() {
   }
 
   const status = getEventStatus(event.start, event.end);
-  const posterUrl = event.event_profile && event.event_profile !== "No Poster URL" && event.event_profile !== ""
-    ? event.event_profile 
-    : "/favicon.ico";
+  const posterUrl = buildUploadUrl(event.event_profile, "events") || "/favicon.ico";
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">

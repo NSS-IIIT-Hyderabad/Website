@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { ThemeProvider } from "./ThemeProvider";
-import { AuthProvider } from "@/components/loginNlognout/first";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 

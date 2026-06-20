@@ -31,7 +31,7 @@ COPY . .
 RUN mkdir -p uploads
 
 # Generate GraphQL schema
-RUN venv/bin/strawberry export-schema main > schema.graphql
+RUN venv/bin/strawberry export-schema app.main > schema.graphql
 
 # Make init script executable
 RUN chmod +x init.sh
