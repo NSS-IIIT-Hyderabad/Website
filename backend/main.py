@@ -15,7 +15,7 @@ from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_
 from strawberry.fastapi import GraphQLRouter
 from strawberry.tools import create_type
 
-from database import close_connection, get_database, ping_database
+from database import close_connection, ping_database
 from qnm_members import mutations, queries
 
 logger = logging.getLogger(__name__)
