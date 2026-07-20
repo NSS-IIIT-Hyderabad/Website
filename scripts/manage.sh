@@ -16,10 +16,10 @@ fi
 # Build services
 function build() {
   echo "Building backend..."
-  docker-compose build backend-1 backend-2
+  docker-compose build backend-1
 
   echo "Building frontend..."
-  docker-compose build frontend-1 frontend-2
+  docker-compose build frontend-1
 }
 
 # Start services
