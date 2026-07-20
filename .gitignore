@@ -1,2 +1,23 @@
 nginx/logs/
 /node_modules
+
+# ---------------------------------------------------------------------------
+# Secrets — never commit real credentials to version control.
+# Use .env.production.template as the reference for required variables.
+# ---------------------------------------------------------------------------
+.env.production
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Uploads (runtime data, not source)
+backend/uploads/
+
+# Backups
+backups/
