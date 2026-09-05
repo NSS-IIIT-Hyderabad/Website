@@ -1,0 +1,137 @@
+type Event {
+  """Name of the event"""
+  eventName: String!
+
+  """Start date in YYYY/MM/DD format"""
+  startTime: String!
+
+  """End date in YYYY/MM/DD format"""
+  endTime: String!
+
+  """Event venue"""
+  venue: String!
+
+  """Event description"""
+  description: String!
+
+  """Path to event profile image"""
+  eventProfile: String
+
+  """Target audience list"""
+  audience: [String!]!
+}
+
+input EventInput {
+  """Name of the event"""
+  eventName: String!
+
+  """Start date in YYYY/MM/DD format"""
+  startTime: String!
+
+  """End date in YYYY/MM/DD format"""
+  endTime: String!
+
+  """Event venue"""
+  venue: String!
+
+  """Event description"""
+  description: String! = ""
+
+  """Path to event profile image"""
+  eventProfile: String = null
+
+  """Target audience list"""
+  audience: [String!]! = []
+}
+
+type Member {
+  id: String!
+  name: String!
+  email: String!
+  rollNumber: String!
+  photoUrl: String!
+  phone: String!
+  bio: String!
+  workHistory: [WorkHistory!]!
+  batch: String!
+  department: String!
+  linkedin: String!
+  github: String!
+  achievements: [String!]!
+  interests: [String!]!
+}
+
+input MemberInput {
+  id: String!
+  name: String!
+  email: String!
+  rollNumber: String!
+  photoUrl: String! = "-"
+  phone: String! = "-"
+  bio: String! = ""
+  workHistory: [WorkHistoryInput!]! = []
+  batch: String! = ""
+  department: String! = ""
+  linkedin: String! = "-"
+  github: String! = "-"
+  achievements: [String!]! = []
+  interests: [String!]! = []
+}
+
+enum MemberStatusEnum {
+  ACTIVE
+  INACTIVE
+}
+
+type Mutation {
+  addEvent(event: EventInput!): Boolean!
+  changeEvent(event: EventInput!): Boolean!
+  removeEvent(eventName: String!): Boolean!
+  addMember(member: MemberInput!): Boolean!
+  changeMember(member: MemberInput!): Boolean!
+  removeMember(rollNumber: String!): Boolean!
+}
+
+type Query {
+  viewEvents(name: String = null, startTime: String = null, endTime: String = null): [Event!]!
+  viewMembers(name: String = null): [Member!]!
+}
+
+enum RoleEnum {
+  COORDINATOR
+  TECH_TEAM_HEAD
+  TECH_TEAM_MEMBER
+  DESIGN_TEAM_HEAD
+  DESIGN_TEAM_MEMBER
+  SOCIAL_MEDIA_TEAM_HEAD
+  SOCIAL_MEDIA_TEAM_MEMBER
+  LOGISTICS_TEAM_HEAD
+  LOGISTICS_TEAM_MEMBER
+  CONTENT_TEAM_HEAD
+  CONTENT_TEAM_MEMBER
+}
+
+enum TeamTypeEnum {
+  NSS_CORE
+  TECH
+  DESIGN
+  SOCIAL
+  LOGISTICS
+  CONTENT
+}
+
+type WorkHistory {
+  role: RoleEnum!
+  team: TeamTypeEnum!
+  start: String!
+  end: String
+  status: MemberStatusEnum
+}
+
+input WorkHistoryInput {
+  role: RoleEnum!
+  team: TeamTypeEnum!
+  start: String! = ""
+  end: String = null
+  status: MemberStatusEnum = null
+}

@@ -19,6 +19,9 @@ if ! venv/bin/strawberry export-schema main > schema.graphql; then
 fi
 echo "GraphQL schema generated successfully"
 
+echo "Seeding database..."
+venv/bin/python seed_data.py
+
 # Run with hot reload
 if ! exec venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --root-path /api --reload; then
   echo "Failed to start Uvicorn server"

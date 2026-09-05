@@ -1,6 +1,10 @@
+"use client";
+
 import React from 'react';
-import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
+import { useQuery } from '@apollo/client';
+import { GET_MEMBERS } from '@/graphql_Q&M/getMembers';
 import MembersSection from '@/components/team/MembersSection';
+import { teamLabel, roleLabel } from '@/data/memberEnums';
 
 type WorkHistory = {
   role: string;
@@ -32,19 +36,25 @@ type TransformedMember = {
   workHistory: WorkHistory[];
 };
 
-export default async function MembersPage() {
-  // Fetch all members from the database
-  const membersData = await getMembersFromDB();
+export default function MembersPage() {
+  const { data, loading, error } = useQuery(GET_MEMBERS);
+  const membersData = data?.viewMembers ?? [];
   
   // Transform the canonical member shape (Data.tsx / DB) to the lightweight shape
   // expected by MembersSection. We derive `team`, `from`, `to`, and `status`
   // from the member.workHistory array (pick active position if present).
   const members = membersData.map((member: MemberFromDB, index: number) => {
-    const workHistory = Array.isArray(member.workHistory) ? member.workHistory : [];
+    // viewMembers returns GraphQL enum wire names (e.g. "TECH_TEAM_MEMBER"),
+    // not the human labels - translate before using them anywhere.
+    const workHistory = (Array.isArray(member.workHistory) ? member.workHistory : []).map((w: WorkHistory) => ({
+      ...w,
+      role: roleLabel(w.role),
+      team: teamLabel(w.team),
+    }));
     // Prefer the currently active position (end === null), else the most
     // recent entry (last element).
     const active = workHistory.find((w: WorkHistory) => !w.end) || workHistory[workHistory.length - 1] || null;
-    const team = active?.team || member.team || '';
+    const team = active?.team || teamLabel(member.team || '') || '';
     const from = active?.start || '';
     const to = active?.end || '';
     const status = active && !active.end ? 'active' : 'inactive';
@@ -64,12 +74,15 @@ export default async function MembersPage() {
     };
   });
 
+  if (loading) return <div className="min-h-screen p-12 text-center">Loading members...</div>;
+  if (error) return <div className="min-h-screen p-12 text-center">Unable to load members.</div>;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-12">
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF3B00] to-[#00B050] mb-4 tracking-tight leading-tight">
+        <h1 className="text-6xl sm:text-7xl text-gray-600 max-w-3xl mx-auto font-extrabold tracking-tight leading-tight">
             Our Team
         </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">

@@ -13,7 +13,7 @@ echo "MongoDB is ready!"
 
 # Run database migrations/setup if needed
 echo "Setting up database..."
-# Add your database initialization code here
+venv/bin/python seed_data.py
 
 # Start the application
 echo "Starting FastAPI application..."

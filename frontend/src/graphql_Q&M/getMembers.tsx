@@ -1,72 +1,37 @@
-// getMembers.tsx
-import membersData from '@/data/Data';
+import { gql } from "@apollo/client";
 
-type MemberData = {
-  name: string;
-  email: string;
-  rollNumber: string;
-  photoUrl?: string;
-  batch?: string;
-  year?: string;
-  bio?: string;
-  workHistory?: Array<{ role: string; team: string; start: string; end: string | null }>;
-  achievements?: string[];
-  interests?: string[];
-  linkedin?: string;
-  github?: string;
-  phone?: string;
-  department?: string;
-};
-
-// Transform Data.tsx format to the expected format
-function transformMemberData(member: MemberData) {
-  // Get the current/most recent work history entry
-  const currentWork = member.workHistory && member.workHistory.length > 0 
-    ? member.workHistory[0] 
-    : null;
-  
-  // Determine status based on whether they have an active role
-  const isActive = currentWork && currentWork.end === null;
-  
-  // Extract email username (part before @) to use as alternative ID
-  const emailUsername = member.email ? member.email.split('@')[0] : '';
-  
-  return {
-    name: member.name,
-    email: member.email,
-    // Preserve original batch if present; fall back to year for compatibility
-    batch: member.batch || member.year || '',
-    rollNumber: member.rollNumber,
-    emailUsername: emailUsername, // Add this for matching
-    team: currentWork?.team || 'General',
-    status: isActive ? 'active' : 'inactive',
-    start: currentWork?.start || '2024',
-    end: currentWork?.end || (isActive ? 'Present' : '2024'),
-    photoUrl: member.photoUrl || '/favicon.ico',
-    // Include full member data for profile pages
-    bio: member.bio || '',
-    workHistory: member.workHistory || [],
-    achievements: member.achievements || [],
-    interests: member.interests || [],
-    linkedin: member.linkedin || '',
-    github: member.github || '',
-    phone: member.phone || '',
-    department: member.department || '',
-    year: member.year || ''
-  };
-}
+export const GET_MEMBERS = gql`
+  query GetMembers {
+    viewMembers {
+      id
+      name
+      email
+      rollNumber
+      batch
+      department
+      photoUrl
+      phone
+      bio
+      linkedin
+      github
+      achievements
+      interests
+      workHistory { role team start end status }
+    }
+  }
+`;
 
 export async function getMembersFromDB() {
-  try {
-    // Transform the data from Data.tsx to match the expected format
-    const transformedMembers = membersData.map(transformMemberData);
-    
-    console.log(`Successfully loaded ${transformedMembers.length} members from local data`);
-    return transformedMembers;
-  } catch (error: unknown) {
-    console.error('Failed to load members:', error);
-    
-    // Return empty array instead of throwing to prevent page crashes
-    return [];
-  }
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const response = await fetch(`${apiUrl}/graphql`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ query: GET_MEMBERS.loc?.source.body }),
+    cache: "no-store",
+  });
+
+  if (!response.ok) throw new Error("Unable to load members");
+  const result = await response.json();
+  if (result.errors) throw new Error(result.errors[0]?.message || "Unable to load members");
+  return result.data?.viewMembers || [];
 }

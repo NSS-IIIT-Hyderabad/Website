@@ -4,7 +4,6 @@ import "@/app/global.css";
 import React from "react";
 import ScrollThumbEffect from "../utils/Scrollbar";
 import { Providers } from "@/providers/Providers";
-import AuthRedirect from "@/components/common/AuthRedirect";
 
 const playfairDisplay = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -49,7 +48,7 @@ export default function RootLayout({
         {/* CSP for development - allows unsafe-eval for Next.js dev mode */}
         <meta 
           httpEquiv="Content-Security-Policy" 
-          content="default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' ws: wss:;" 
+          content={`default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://googleapis.com https://gstatic.com; style-src 'self' 'unsafe-inline' https://googleapis.com; font-src 'self' https://gstatic.com data:; img-src 'self' data: https:; connect-src 'self' ws: wss: ${process.env.NEXT_PUBLIC_GRAPHQL_API_URL || "http://localhost:8000"}; frame-src 'self' https://www.google.com https://maps.google.com;`} 
         />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
@@ -65,7 +64,6 @@ export default function RootLayout({
         }}
       >
         <ScrollThumbEffect />
-        <AuthRedirect />
         <Providers>
           {children}
         </Providers>

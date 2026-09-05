@@ -8,10 +8,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Install system dependencies
+# gcc is kept as a fallback in case a pinned dependency version has no
+# prebuilt wheel for this platform and needs to compile from source.
 RUN apt-get update && apt-get install -y \
     gcc \
-    libldap2-dev \
-    libsasl2-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
@@ -43,7 +43,7 @@ RUN mkdir -p uploads && chown app:app uploads
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD ["venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
 
 EXPOSE 8000
 ENTRYPOINT ["./init.sh"]

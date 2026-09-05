@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 export default function Footer() {
   const [hovered, setHovered] = useState({
-    x: false,
     instagram: false,
     linkedin: false,
     whatsapp: false,
@@ -22,12 +21,6 @@ export default function Footer() {
   });
 
   const socialLinks = [
-    {
-      name: "X",
-      url: "https://x.com/NSSIIITH",
-      color: "#1e40af",
-      key: "x",
-    },
     {
       name: "Instagram",
       url: "https://www.instagram.com/nss_iiith/",
@@ -49,7 +42,6 @@ export default function Footer() {
   ];
 
   const IconMap = {
-    x: X,
     instagram: Instagram,
     linkedin: Linkedin,
     whatsapp: MessageCircle,
@@ -58,9 +50,7 @@ export default function Footer() {
   const quickLinks = [
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
-    { name: "Gallery", href: "/members" },
     { name: "Members", href: "/members" },
-    { name: "About", href: "/about" },
     { name: "Privacy Policy", href: "https://www.iiit.ac.in/privacy-policy/" },
   ];
 

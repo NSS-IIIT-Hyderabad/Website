@@ -1,9 +1,11 @@
-import React from 'react';
+"use client"; // 1. Must be the absolute first line of the file
+
+import React, { use } from 'react'; // 2. Import 'use' from react
 import Image from 'next/image';
 import Link from 'next/link';
-import { getMembersFromDB } from '@/graphql_Q&M/getMembers';
-import { notFound } from 'next/navigation';
-import { Mail, Calendar, CheckCircle, XCircle, ArrowLeft, Users } from 'lucide-react';
+import { GET_MEMBERS } from '@/graphql_Q&M/getMembers';
+import { useQuery } from "@apollo/client";
+import { Mail, Calendar, ArrowLeft, Users } from 'lucide-react';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -32,19 +34,19 @@ type Member = {
   department?: string;
 };
 
-export default async function MemberProfile({ params }: Props) {
-  const { id } = await params as { id: string };
-
-  // Decode the incoming param in case the URL used percent-encoding (e.g. %40 for @)
+export default function MemberProfile({ params }: Props) {
+  const { id } = use(params);
   let lookupId = String(id || '');
   try { lookupId = decodeURIComponent(lookupId); } catch { /* fall back to raw id */ }
   const normalizedLookup = lookupId.toLowerCase();
+  const { data, loading, error } = useQuery(GET_MEMBERS);
+  if (loading) return <div className="p-8 text-center">Loading member profile...</div>;
+  if (error) return <div className="p-8 text-center text-red-500">Error loading data.</div>;
 
-  // Fetch live data with error handling
-  const members = await getMembersFromDB();
+  const members = data?.viewMembers || [];
 
   // Try to find member by rollNumber, id, email, or email username (case-insensitive)
-  const member = members.find((m: Member) => {
+    const member = members.find((m: Member) => {
     const roll = m.rollNumber ? String(m.rollNumber).toLowerCase() : '';
     const mid = m.id ? String(m.id).toLowerCase() : '';
     const email = m.email ? String(m.email).toLowerCase() : '';
@@ -58,10 +60,8 @@ export default async function MemberProfile({ params }: Props) {
     );
   }) || null;
 
-  // Show 404 if member not found
   if (!member) {
-    console.warn('Member not found with ID:', id);
-    notFound();
+    return <div className="p-8 text-center text-gray-600">Member not found.</div>;
   }
 
   // Compute active status and pick current/most-recent work entry
@@ -93,12 +93,12 @@ export default async function MemberProfile({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-white to-green-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <Link 
           href="/members" 
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 transition-colors duration-200"
+          className="mb-6 inline-flex items-center gap-2 text-[#332a67] transition-colors duration-200 hover:text-gray-700"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="font-medium">Back to all members</span>
@@ -107,7 +107,7 @@ export default async function MemberProfile({ params }: Props) {
         {/* Profile Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header with gradient */}
-          <div className="h-32 bg-blue-600 relative">
+          <div className="relative h-32 bg-[#332a67]">
             <div className="absolute -bottom-16 left-8">
               {/* India Flag Border */}
               <div className="w-32 h-32 rounded-full p-1 shadow-xl" style={{
@@ -131,12 +131,10 @@ export default async function MemberProfile({ params }: Props) {
               }`}>
                 {isActive ? (
                   <>
-                    <CheckCircle className="w-3 h-3" />
                     Active
                   </>
                 ) : (
                   <>
-                    <XCircle className="w-3 h-3" />
                     Past Member
                   </>
                 )}
@@ -149,17 +147,17 @@ export default async function MemberProfile({ params }: Props) {
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-gray-800 mb-2">{member.name}</h1>
               <div className="flex flex-wrap items-center gap-3 mb-3">
-                <div className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-full font-medium shadow-lg">
+                <div className="inline-flex items-center rounded-full bg-gray-700 px-4 py-2 font-medium text-white shadow-lg">
                   <Users className="w-4 h-4 mr-2" />
                   {team} Team
                 </div>
                 {member.department && (
-                  <div className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-full font-medium shadow-lg">
+                  <div className="inline-flex items-center rounded-full bg-gray-700 px-4 py-2 font-medium text-white shadow-lg">
                     {member.department}
                   </div>
                 )}
                 {batchOrYear && (
-                  <div className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-medium shadow-lg">
+                  <div className="inline-flex items-center rounded-full bg-gray-700 px-4 py-2 font-medium text-white shadow-lg">
                     {batchOrYear}
                   </div>
                 )}
@@ -174,28 +172,28 @@ export default async function MemberProfile({ params }: Props) {
             {/* Information Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {/* Roll Number */}
-              <div className="bg-blue-50 p-6 rounded-2xl border-2 border-blue-200">
-                <h3 className="text-sm font-semibold text-blue-800 uppercase mb-2">Roll Number</h3>
-                <p className="text-2xl font-bold text-blue-900">{member.rollNumber}</p>
+              <div className="rounded-2xl border-2 border-gray-200 bg-gray-100 p-6">
+                <h3 className="mb-2 text-sm font-semibold uppercase text-gray-600">Roll Number</h3>
+                <p className="text-2xl font-bold text-gray-800">{member.rollNumber}</p>
               </div>
 
               {/* Email */}
-              <div className="bg-purple-50 p-6 rounded-2xl border-2 border-purple-200">
-                <h3 className="text-sm font-semibold text-purple-800 uppercase mb-2 flex items-center gap-2">
+              <div className="rounded-2xl border-2 border-gray-200 bg-gray-100 p-6">
+                <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase text-[#332a67]">
                   <Mail className="w-4 h-4" />
                   Email
                 </h3>
                 <a 
                   href={`mailto:${member.email}`}
-                  className="text-lg font-semibold text-purple-900 hover:text-purple-600 transition-colors break-all"
+                  className="break-all text-lg font-semibold text-[#332a67] transition-colors hover:text-gray-700"
                 >
                   {member.email}
                 </a>
               </div>
 
               {/* Duration */}
-              <div className="bg-green-50 p-6 rounded-2xl border-2 border-green-200">
-                  <h3 className="text-sm font-semibold text-green-800 uppercase mb-2 flex items-center gap-2">
+                <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-6">
+                  <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase text-green-800">
                     <Calendar className="w-4 h-4" />
                     Working Duration
                   </h3>
@@ -232,25 +230,12 @@ export default async function MemberProfile({ params }: Props) {
                   </p>
               </div>
             </div>
-
-            {/* Social Links */}
-            <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-200">
-              <h3 className="w-full text-lg font-semibold text-gray-700 mb-2">Connect</h3>
-              
-              <a 
-                href={`mailto:${member.email}`}
-                className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                <Mail className="w-5 h-5" />
-                <span className="font-medium">Send Email</span>
-              </a>
-            </div>
           </div>
         </div>
 
         {/* Bio Section */}
         {member.bio && (
-          <div className="mt-8 bg-blue-50 rounded-2xl shadow-lg p-6 border-2 border-blue-100">
+          <div className="mt-8 rounded-2xl border-2 border-gray-200 bg-gray-100 p-6 shadow-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">About</h2>
             <p className="text-gray-700 leading-relaxed">{member.bio}</p>
           </div>
@@ -259,21 +244,20 @@ export default async function MemberProfile({ params }: Props) {
         {/* Work History Table */}
         {member.workHistory && member.workHistory.length > 0 && (
           <div className="mt-8 bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="bg-blue-600 px-6 py-4">
+            <div className="bg-[#332a67] px-6 py-4">
               <h2 className="text-2xl font-bold text-white">Work History</h2>
             </div>
             
             {/* Current Position */}
             {member.workHistory.some((work: WorkHistory) => !work.end) && (
               <div className="p-6 border-b-2 border-gray-100">
-                <h3 className="text-lg font-bold text-green-700 mb-4 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
+                <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-green-700">
                   Current Position
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="bg-green-50 border-b-2 border-green-200">
+                      <tr className="border-b-2 border-green-200 bg-green-50">
                         <th className="px-4 py-3 text-left text-sm font-semibold text-green-800">Role</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-green-800">Team</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-green-800">Started</th>
@@ -287,14 +271,13 @@ export default async function MemberProfile({ params }: Props) {
                           <tr key={index} className="border-b border-green-100 hover:bg-green-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-600 text-white">
+                              <span className="inline-flex items-center rounded-full bg-green-600 px-3 py-1 text-sm font-medium text-white">
                                 {work.team}
                               </span>
                             </td>
                               <td className="px-4 py-4 text-gray-700">{formatYear(work.start)}</td>
                             <td className="px-4 py-4">
                               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-800">
-                                <CheckCircle className="w-4 h-4" />
                                 Active
                               </span>
                             </td>
@@ -309,17 +292,16 @@ export default async function MemberProfile({ params }: Props) {
             {/* Past Positions */}
             {member.workHistory.some((work: WorkHistory) => work.end) && (
               <div className="p-6">
-                <h3 className="text-lg font-bold text-blue-700 mb-4 flex items-center gap-2">
-                  <XCircle className="w-5 h-5" />
+                  <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-[#332a67]">
                   Past Positions
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="bg-blue-50 border-b-2 border-blue-200">
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-blue-800">Role</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-blue-800">Team</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-blue-800">Period</th>
+                      <tr className="border-b-2 border-gray-200 bg-gray-100">
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-[#332a67]">Role</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-[#332a67]">Team</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-[#332a67]">Period</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -329,7 +311,7 @@ export default async function MemberProfile({ params }: Props) {
                           <tr key={index} className="border-b border-blue-100 hover:bg-blue-50 transition-colors">
                             <td className="px-4 py-4 font-semibold text-gray-800">{work.role}</td>
                             <td className="px-4 py-4">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-600 text-white">
+                              <span className="inline-flex items-center rounded-full bg-[#332a67] px-3 py-1 text-sm font-medium text-white">
                                 {work.team}
                               </span>
                             </td>

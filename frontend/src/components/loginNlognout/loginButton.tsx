@@ -1,19 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { login } from "../../utils/loginNlogout";
+import Avatar from "boring-avatars";
+import { login, logout } from "../../utils/loginNlogout";
+import { useAuth } from "./first";
 
 export default function LoginButton() {
-    const [uid, setUid] = useState<string | null>(null);
-
-    // Check for uid cookie on mount
-    useEffect(() => {
-        // Simple cookie parser for "uid"
-        const match = document.cookie.match(/(?:^|; )uid=([^;]*)/);
-        setUid(match ? decodeURIComponent(match[1]) : null);
-    }, []);
-
-    if (!uid) {
+    const { user, loading } = useAuth();
+    if (loading) return null;
+    if (!user) {
         return (
             <button
                 onClick={() => login()}
@@ -32,33 +25,32 @@ export default function LoginButton() {
         );
     } else {
         return (
-            <button
-                onClick={() => window.location.replace("http://localhost:3000/me/profile")}
-                style={{
-                    padding: "0.3rem",
-                    borderRadius: "50%",
-                    background: "#fff",
-                    border: "2px solid #1e3a8a",
-                    cursor: "pointer",
-                    width: 40,
-                    height: 40,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                }}
-                title="Go to profile"
-            >
-                <Image
-                    src="/favicon.ico"
-                    alt="Profile"
-                    width={28}
-                    height={28}
+            <>
+                <button
+                    onClick={() => window.location.replace("/me")}
                     style={{
+                        padding: "0.3rem",
                         borderRadius: "50%",
-                        objectFit: "cover"
+                        background: "#fff",
+                        border: "2px solid #332a67",
+                        cursor: "pointer",
+                        width: 40,
+                        height: 40,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
                     }}
-                />
-            </button>
+                    title="Go to profile"
+                >
+                    <Avatar
+                        size={28}
+                        name={user.uid}
+                        variant="beam"
+                        colors={["#332a67", "#6b7280", "#d1d5db", "#9ca3af", "#4b5563"]}
+                    />
+                </button>
+                <button onClick={() => logout()} className="ml-2 text-sm text-gray-600">Logout</button>
+            </>
         );
     }
 }

@@ -13,7 +13,7 @@ import {
   Layers,
 } from "lucide-react";
 
-import eventsData, { EventItem } from "@/data/eventsData";
+import { EventDTO, toSlug } from "@/types/event";
 
 function formatDateIndian(dateStr: string) {
   const d = new Date(dateStr);
@@ -24,26 +24,24 @@ function formatDateIndian(dateStr: string) {
 }
 
 interface EventGridProps {
-  events?: EventItem[];
+  events: EventDTO[];
 }
 
-const EventGrid: React.FC<EventGridProps> = ({
-  events: passedEvents,
-}) => {
+const EventGrid: React.FC<EventGridProps> = ({ events }) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "ongoing" | "upcoming" | "past">(
     "all"
   );
 
   /* ---------------- Event Status ---------------- */
-  function getEventStatus(event: EventItem) {
+  function getEventStatus(event: EventDTO) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const start = new Date(event.start);
+    const start = new Date(event.startTime);
     start.setHours(0, 0, 0, 0);
 
-    const end = new Date(event.end);
+    const end = new Date(event.endTime);
     end.setHours(23, 59, 59, 999);
 
     if (today >= start && today <= end) return "ongoing";
@@ -52,12 +50,10 @@ const EventGrid: React.FC<EventGridProps> = ({
     return "unknown";
   }
 
-  const events = passedEvents || eventsData || [];
-
   /* ---------------- Filtering ---------------- */
   const filteredEvents = events.filter((event) => {
     const matchesSearch =
-      event.event_name.toLowerCase().includes(search.toLowerCase()) ||
+      event.eventName.toLowerCase().includes(search.toLowerCase()) ||
       event.description.toLowerCase().includes(search.toLowerCase()) ||
       event.venue.toLowerCase().includes(search.toLowerCase()) ||
       (event.audience?.some((a) =>
@@ -70,16 +66,14 @@ const EventGrid: React.FC<EventGridProps> = ({
   });
 
   /* ---------------- Card Renderer ---------------- */
-  const renderEventCard = (event: EventItem, idx: number) => {
-    const slug = encodeURIComponent(
-      event.event_name.replace(/\s+/g, "-").toLowerCase()
-    );
+  const renderEventCard = (event: EventDTO, idx: number) => {
+    const slug = encodeURIComponent(toSlug(event.eventName));
 
     const posterUrl =
-      event.event_profile && event.event_profile !== "No Poster URL"
-        ? event.event_profile.startsWith("/")
-          ? event.event_profile
-          : `/events_posters/${event.event_profile}`
+      event.eventProfile && event.eventProfile !== "No Poster URL"
+        ? event.eventProfile.startsWith("/")
+          ? event.eventProfile
+          : `/events_posters/${event.eventProfile}`
         : "/favicon.ico";
 
     const status = getEventStatus(event);
@@ -107,7 +101,7 @@ const EventGrid: React.FC<EventGridProps> = ({
           <div className="relative overflow-hidden h-48 bg-gradient-to-br from-blue-50 to-purple-50">
             <Image
               src={posterUrl}
-              alt={event.event_name}
+              alt={event.eventName}
               width={400}
               height={192}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
@@ -117,16 +111,16 @@ const EventGrid: React.FC<EventGridProps> = ({
 
           <div className="p-5 flex-1 flex flex-col">
             <h3 className="font-bold text-lg text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
-              {event.event_name}
+              {event.eventName}
             </h3>
 
             {/* Date */}
             <div className="flex items-center gap-2 text-orange-600 font-medium mb-2 bg-orange-50 px-3 py-2 rounded-lg border border-orange-100">
               <Calendar className="w-4 h-4 flex-shrink-0" />
               <span className="text-xs font-semibold">
-                {formatDateIndian(event.start)}{" "}
+                {formatDateIndian(event.startTime)}{" "}
                 <span className="text-gray-500">to</span>{" "}
-                {formatDateIndian(event.end)}
+                {formatDateIndian(event.endTime)}
               </span>
             </div>
 
@@ -167,7 +161,7 @@ const EventGrid: React.FC<EventGridProps> = ({
 
             {/* CTA */}
             <div className="w-full mt-auto">
-              <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 group-hover:scale-105 shadow-md flex items-center justify-center gap-2">
+              <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#332a67] px-4 py-3 text-sm font-bold text-white shadow-md transition-all duration-300 hover:bg-[#43358a] group-hover:scale-105">
                 View Details
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -213,8 +207,8 @@ const EventGrid: React.FC<EventGridProps> = ({
               onClick={() => setFilter(key as "all" | "ongoing" | "upcoming" | "past")}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold transition whitespace-nowrap ${
                 filter === key
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white border-2 border-gray-200 text-gray-700"
+                  ? "bg-[#332a67] text-white shadow-lg"
+                  : "border-2 border-[#332a67] bg-white text-[#332a67] hover:bg-[#332a67] hover:text-white"
               }`}
             >
               <Icon className="w-4 h-4" />

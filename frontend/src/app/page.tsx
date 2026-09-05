@@ -5,7 +5,7 @@ import Carousel from "@/components/home/Carousel";
 import Testimonials from "@/components/home/Testimonials";
 import AboutUs from "@/components/home/AboutUs";
 import FlagshipEvents from "@/components/home/FlagshipEvents";
-import VolunteerReg from "@/components/home/VolunteerReg";
+import ProgramCoordinators from "@/components/home/ProgramCoordinators";
 
 const heroImages = [
   "/carousel_images/1.jpg",
@@ -32,6 +32,11 @@ export default function HomePage() {
         <AboutUs />
       </div>
 
+      {/* NSS Program Coordinators Section */}
+      <div className="bg-white">
+        <ProgramCoordinators />
+      </div>
+
       {/* Flagship Events Section */}
       <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-slate-100">
         <FlagshipEvents />
@@ -40,11 +45,6 @@ export default function HomePage() {
       {/* Volunteer Testimonials Section */}
       <div className="bg-white">
           <Testimonials />
-      </div>
-
-      {/* Join NSS Section */}
-      <div id='join-nss' className="bg-gradient-to-r from-amber-50 via-orange-50 to-yellow-50">
-          <VolunteerReg />
       </div>
     </div>
   );

@@ -31,12 +31,20 @@ services:
       - API_PORT=8000
       - UPLOAD_DIR=uploads
       - FILES_BASE_URL=http://localhost:8000/uploads
+      - FRONTEND_URL=http://localhost:3000
+      - SERVICE_URL=http://localhost:8000/login
+      - JWT_SECRET=development-only-change-me
+      - CAS_SERVER_URL=https://login.iiit.ac.in/cas/
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost,http://127.0.0.1:3000,http://127.0.0.1
     depends_on:
       - mongodb
     volumes:
-      - ./backend:/app
-      - /app/venv
-      - files_data:/app/uploads
+      # Dockerfile.dev's WORKDIR is /backend - these must match it, or the
+      # bind mount silently doesn't reach the running app and the named
+      # volume mounts to a path nothing reads from.
+      - ./backend:/backend
+      - /backend/venv
+      - files_data:/backend/uploads
     networks:
       - app-network
   

@@ -1,39 +1,32 @@
 "use client";
 import React from "react";
+import { useQuery } from "@apollo/client";
+import { GET_EVENTS } from "@/graphql_Q&M/getEvents";
 import EventGrid from "@/components/events/EventGrid";
 
 export default function EventsPage() {
-  React.useEffect(() => {
-    try {
-      const raw = localStorage.getItem("admin_events");
-      if (raw) {
-        JSON.parse(raw);
-        return;
-      }
-    } catch {}
-    // Using default events
-  }, []);
+  const { data, loading, error } = useQuery(GET_EVENTS);
+  const events = data?.viewEvents ?? [];
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">
-      {/* Compact Header Section */}
-      <section className="relative bg-gradient-to-r from-orange-400 via-blue-400 to-green-400 text-white py-16">
-        <div className="container mx-auto px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-3xl md:text-5xl font-bold mb-4 leading-tight">
-            NSS Events &
-            <span className="bg-gradient-to-r from-orange-300 to-green-300 bg-clip-text text-transparent"> Activities</span>
+    <div className="min-h-screen w-full bg-gradient-to-br from-orange-50 via-white to-green-50">
+      <section className="bg-transparent px-6 py-12 lg:px-8">
+        <div className="container mx-auto text-center">
+          <h1 className="mx-auto max-w-3xl text-6xl font-extrabold leading-tight tracking-tight text-gray-600 sm:text-7xl">
+            Our Events
           </h1>
-          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+          <p className="mx-auto max-w-3xl text-xl text-gray-600">
             Join us in making a difference through community service
           </p>
         </div>
       </section>
       
       {/* All Events Grid */}
-      <section className="py-20 bg-white">
+      <section className="bg-transparent py-20">
         <div className="container mx-auto px-6 lg:px-8">
-
-          <EventGrid />
+          {loading && <div className="text-center text-gray-500">Loading events...</div>}
+          {error && <div className="text-center text-gray-500">Unable to load events.</div>}
+          {!loading && !error && <EventGrid events={events} />}
         </div>
       </section>
     </div>

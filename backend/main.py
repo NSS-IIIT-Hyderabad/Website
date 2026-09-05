@@ -14,6 +14,8 @@ from urllib.parse import quote_plus
 from fastapi.responses import RedirectResponse
 from cas import CASClient
 from fastapi.staticfiles import StaticFiles
+from auth import JWT_COOKIE_NAME, create_access_token, require_user
+from model_users import UserRole
 
 from strawberry.tools import create_type
 Query = create_type("Query", queries)
@@ -32,39 +34,75 @@ app = FastAPI(
 SECURE_COOKIES = getenv("SECURE_COOKIES", "False").lower() in ("true", "1", "t")
 CAS_SERVER_URL = getenv("CAS_SERVER_URL", "https://login.iiit.ac.in/cas/")
 SERVICE_URL = getenv("SERVICE_URL", "http://localhost:8000/login")
-cas_client_nss = CASClient(
-    version=3,
-    server_url=CAS_SERVER_URL,
-    service_url=None
-)
 
 REDIRECT_URL = getenv("REDIRECT_URL", "/")
-JWT_SECRET = getenv("JWT_SECRET", "jwt-secret-very-very-secret")
 service_url_formatted = "%s?next=%s"
+
+
+def _build_cas_client(next_url: str) -> CASClient:
+    # A fresh client per request avoids mutating shared state (service_url)
+    # on a module-level singleton across concurrent requests.
+    return CASClient(
+        version=3,
+        server_url=CAS_SERVER_URL,
+        service_url=service_url_formatted % (SERVICE_URL, quote_plus(next_url)),
+    )
 
 
 @app.get("/login")
 @app.get("/login/")
-async def login_redirect(request: Request, path: str = None):
-    next_url = path or REDIRECT_URL
-    cas_client_nss.service_url = service_url_formatted % (SERVICE_URL, quote_plus(next_url))
+async def login_redirect(request: Request, path: str = None, next: str = None):
+    next_url = path or next or REDIRECT_URL
+    cas_client = _build_cas_client(next_url)
     ticket = request.query_params.get("ticket")
     if not ticket:
-        cas_login_url = cas_client_nss.get_login_url()
+        cas_login_url = cas_client.get_login_url()
         return RedirectResponse(url=cas_login_url)
 
-    user, attributes, pgtiou = cas_client_nss.verify_ticket(ticket)
-    frontend_url = "http://localhost:3000/"
+    try:
+        user, attributes, pgtiou = cas_client.verify_ticket(ticket)
+    except Exception as exc:
+        raise HTTPException(status_code=401, detail="CAS authentication failed") from exc
 
-    response = RedirectResponse(url=frontend_url)
-    # Set cookie with uid
-    response.set_cookie(
-        key="uid",
-        value=attributes["uid"],
-        httponly=False,  # Prevent JS access if you want
-        secure=False,   # Set to True if using HTTPS
-        samesite="lax"
+    if not user:
+        raise HTTPException(status_code=401, detail="CAS authentication failed")
+
+    attributes = attributes or {}
+    uid = attributes.get("uid") or user
+    email = attributes.get("mail") or attributes.get("email") or f"{uid}@iiith.ac.in"
+    if isinstance(email, list):
+        email = email[0]
+    database = get_database()
+    database["users"].update_one(
+        {"uid": uid},
+        {"$set": {"email": email}, "$setOnInsert": {"uid": uid, "role": UserRole.USER.value}},
+        upsert=True,
     )
+    authenticated_user = database["users"].find_one({"uid": uid}, {"_id": 0})
+    frontend_url = getenv("FRONTEND_URL", "http://localhost:3000")
+    redirect_target = next_url if next_url.startswith("/") else REDIRECT_URL
+
+    response = RedirectResponse(url=f"{frontend_url}{redirect_target}")
+    response.set_cookie(
+        key=JWT_COOKIE_NAME,
+        value=create_access_token(authenticated_user),
+        httponly=True,
+        secure=SECURE_COOKIES,
+        samesite="lax",
+        max_age=60 * 60 * 8,
+    )
+    return response
+
+
+@app.get("/auth/me")
+async def current_user(request: Request):
+    return require_user(request)
+
+
+@app.get("/auth/logout")
+async def logout():
+    response = RedirectResponse(url=getenv("CAS_SERVER_URL", "http://localhost:3000")+"/logout")
+    response.delete_cookie(JWT_COOKIE_NAME)
     return response
 
 # Prometheus metrics
@@ -72,9 +110,16 @@ REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method',
 REQUEST_DURATION = Histogram('http_request_duration_seconds', 'HTTP request duration')
 
 # CORS middleware
+# allow_credentials=True cannot be combined with a wildcard origin, so the
+# allowed origins must be an explicit list, driven by ALLOWED_ORIGINS.
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend domains
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -82,7 +127,13 @@ app.add_middleware(
 
 # GraphQL router
 schema = strawberry.Schema(query=Query, mutation=Mutation)
-gqlr = GraphQLRouter(schema, graphql_ide='graphiql')
+
+
+async def graphql_context(request: Request):
+    return {"request": request}
+
+
+gqlr = GraphQLRouter(schema, graphql_ide='graphiql', context_getter=graphql_context)
 app.include_router(gqlr, prefix="/graphql")
 
 # Serve uploaded files statically

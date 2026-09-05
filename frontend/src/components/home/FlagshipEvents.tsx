@@ -1,11 +1,10 @@
 import React from 'react';
-import { Heart, Leaf, Calendar, BookOpen, Handshake } from 'lucide-react';
+import { Heart, Leaf, Handshake } from 'lucide-react';
 
 interface Event {
   id: number;
   url: string;
   title: string;
-  date: string;
   description: string;
   imagePosition: 'left' | 'right';
   icon: React.ReactNode;
@@ -24,14 +23,13 @@ const FlagshipEvents = () => {
       id: 1,
       url: '/events/blood-donation-camp',
       title: "Blood Donation Camp",
-      date: "26/01/2025",
       description: "On the occasion of Republic Day 2025, the National Service Scheme (NSS) organized a Blood Donation Drive in collaboration with Osmania Medical Hospital. The event aimed to support patients in need by encouraging the IIIT-H community to contribute to this life-saving cause.\n\nWith enthusiastic participation from students, faculty, and staff, the drive successfully collected numerous units of blood, showing the strong social responsibility within the IIIT Hyderabad community. The medical team from Osmania Medical Hospital ensured a safe and seamless donation process, making it an impactful and meaningful event.",
       imagePosition: 'left',
       icon: <Heart className="w-16 h-16 text-red-500" />,
       category: 'Health & Wellness',
       backgroundImage: 'https://life.iiit.ac.in/_next/image?url=http%3A%2F%2Ffiles%2Ffiles%2Fdownload%3Ffilename%3DXimHNrJZNnbQGaswLzFukg_poster_Blood_Donation_Camp_nss.png&w=3840&q=75',
       stats: {
-        participants: '300+',
+        participants: '200+ yearly',
         audience: 'Open to All',
         impact: '120+ Units'
       }
@@ -40,14 +38,13 @@ const FlagshipEvents = () => {
       id: 2,
       url: '/events/orphanage-visit',
       title: "Orphanage Visit",
-      date: "16/11/2024",
-      description: "On the occasion of Children’s Day, a meaningful visit was planned to the Tapasvi Foundation Orphanage Home to honor and celebrate the innocence and potential of every child. Volunteers led interactive games, distributed books and educational supplies, and shared encouraging talks, aiming to spread joy and reinforce community care and compassion.",
+      description: "On the occasion of Children’s Day, NSS@IIITH conducts a meaningful visits various Orphanage Homes to honor and celebrate the innocence and potential of every child. Volunteers led interactive games, distributed books and educational supplies, and shared encouraging talks, aiming to spread joy and reinforce community care and compassion.",
       imagePosition: 'right',
       icon: <Handshake className="w-16 h-16 text-blue-500" />,
       category: 'Community Service',
       backgroundImage: 'https://life.iiit.ac.in/_next/image?url=http%3A%2F%2Ffiles%2Ffiles%2Fdownload%3Ffilename%3D684fkoNxWs9RPZnHDewJq9_IMG-20231116-WA0099.jpg&w=3840&q=75',
       stats: {
-        participants: '60+',
+        participants: '20+',
         audience: 'Internal',
         impact: '40+ Children'
       }
@@ -56,14 +53,13 @@ const FlagshipEvents = () => {
       id: 3,
       url: '/events/batch-tree-plantation',
       title: "Batch Tree Plantation",
-      date: "03/08/2024 - 04/08/2024",
       description: "A symbolic batch tree is planted during UG1 induction, and additional saplings are planted to celebrate the new batch's arrival. This tradition emphasizes unity, growth, and a commitment to sustainability for a greener campus.",
       imagePosition: 'left',
       icon: <Leaf className="w-16 h-16 text-green-500" />,
       category: 'Environment',
       backgroundImage: '/carousel_images/4.jpg',
       stats: {
-        participants: '120+',
+        participants: '120+ yearly',
         audience: 'Freshers',
         impact: '50+ Trees'
       }
@@ -109,12 +105,6 @@ const FlagshipEvents = () => {
         ${event.imagePosition === 'right' ? 'lg:col-start-1' : ''}
       `}>
         <div className="space-y-4">
-          <div className="flex items-center space-x-3 text-primary">
-            <Calendar className="w-6 h-6 text-orange-600" />
-            <span className="font-bold uppercase tracking-wide text-sm bg-orange-100 px-3 py-1 rounded-full">
-              {event.date}
-            </span>
-          </div>
           
           <h3 className="heading-primary text-3xl md:text-4xl text-primary">
             {event.title}
@@ -124,20 +114,6 @@ const FlagshipEvents = () => {
         <p className="text-lg leading-relaxed text-gray-700">
           {event.description}
         </p>
-        
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <span
-            className="btn-base bg-indigo-800 text-white hover:bg-indigo-900 transition-all duration-300 inline-flex items-center gap-2 cursor-pointer"
-            onClick={() => window.location.href = event.url}
-            tabIndex={0}
-            role="button"
-            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') window.location.href = event.url; }}
-          >
-            <BookOpen className="w-5 h-5" />
-            <span>Learn More</span>
-          </span>
-        </div>
 
         {/* Impact stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
@@ -166,23 +142,8 @@ const FlagshipEvents = () => {
           <div className="indian-flag-border w-32 h-2 mx-auto mb-8 rounded-full" />
           
           <h1 className="text-4xl md:text-6xl text-blue-800 mb-6 font-bold">
-            Flagship Events
+          Our Major Events
           </h1>
-          
-          <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8">
-            Our signature initiatives that define the NSS spirit - where <span className="font-bold text-orange-500">service meets impact</span>, 
-            and young hearts create lasting change in communities across <span className="font-bold text-green-600">Bharat</span>.
-          </p>
-          
-          {/* Mission Statement */}
-          <div className="max-w-2xl mx-auto p-6 bg-white backdrop-blur-sm rounded-2xl border-2 border-blue-200 shadow-lg">
-            <p className="text-lg font-medium text-blue-800 mb-2">
-              &quot;सेवा परमो धर्मः&quot;
-            </p>
-            <p className="text-gray-600">
-              Service is the highest virtue - Ancient Indian Wisdom
-            </p>
-          </div>
         </header>
 
         {/* Events Container */}

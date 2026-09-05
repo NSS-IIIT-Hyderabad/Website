@@ -86,27 +86,18 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl lg:text-3xl mb-8 text-blue-100 font-bold leading-relaxed max-w-4xl mx-auto">
-            Building tomorrow&apos;s leaders through today&apos;s service
-          </p>
-          
-          <div className="text-lg md:text-xl mb-12 italic text-orange-200 max-w-3xl mx-auto">
-            <p className="text-base text-green-200 font-medium">Not Me But You</p>
-          </div>
-
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button 
               type="button"
               onClick={scrollToJoinNSS}
-              className="group text-white font-bold text-lg px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center gap-3 cursor-pointer" 
-              style={{ background: '#b95943ff' }}
+              className="group flex cursor-pointer items-center gap-3 rounded-full border-2 border-white px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-blue-800 hover:shadow-2xl"
             >
               <span>Join Our Mission</span>
               <div className="w-2 h-2 bg-white rounded-full group-hover:translate-x-1 transition-transform" />
             </button>
             <button 
             className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer" onClick={() => router.push('/events')} >
-              Explore Events
+              Explore Our Events
             </button>
           </div>
         </div>
@@ -150,7 +141,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
       {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-black/30 z-20">
         <div 
-          className="h-full bg-gradient-to-r from-orange-400 to-green-500 transition-all duration-1000 ease-out"
+          className="h-full bg-gray-400 transition-all duration-1000 ease-out"
           style={{ width: `${((current + 1) / images.length) * 100}%` }}
         />
       </div>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 // Feature flag: toggle visibility/access to the admin index.
 // Set to `true` to re-enable admin landing page (keeps code intact).
-const SHOW_ADMIN_INDEX = false;
+const SHOW_ADMIN_INDEX = true;
 
 export default function AdminIndex() {
   const router = useRouter();

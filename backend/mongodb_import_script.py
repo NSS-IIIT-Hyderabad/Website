@@ -10,9 +10,9 @@ import os
 
 from pymongo import MongoClient
 
-# MongoDB connection string - replace with your MongoDB URL
-MONGO_URI = "mongodb://localhost:27017/"
-DB_NAME = "nss_website"
+# MongoDB connection string, matching the conventions used elsewhere in the backend.
+MONGO_URI = os.getenv("MONGODB_URL", "mongodb://localhost:27017/")
+DB_NAME = os.getenv("MONGODB_DB_NAME", "nss_website")
 MEMBERS_COLLECTION = "members"
 EVENTS_COLLECTION = "events"
 

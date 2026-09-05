@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, Info, Users, Phone, Menu, X } from "lucide-react";
+import { Home, Calendar, Users, Phone, Menu, X, ShieldCheck } from "lucide-react";
+import LoginButton from "@/components/loginNlognout/loginButton";
+import { useAuth } from "@/components/loginNlognout/first";
 
 const navigationItems = [
     { label: "Home", href: "/", icon: Home },
     { label: "Events", href: "/events", icon: Calendar },
     { label: "Team", href: "/members", icon: Users },
-    { label: "About", href: "/about", icon: Info },
     { label: "Contact", href: "/contact", icon: Phone }
 ];
 
@@ -17,6 +18,7 @@ export default function Navbar() {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const { user } = useAuth();
     // Authentication UI removed
 
     useEffect(() => {
@@ -27,15 +29,6 @@ export default function Navbar() {
         
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        const footer = document.getElementById("footer");
-        if (footer) {
-            footer.scrollIntoView({ behavior: "smooth" });
-        }
-        setIsMobileMenuOpen(false);
-    };
 
     // Login/Profile actions removed
 
@@ -105,10 +98,25 @@ export default function Navbar() {
                                     </Link>
                                 );
                             })}
+                            {user?.role === "admin" && (
+                                <Link
+                                    href="/admin"
+                                    style={{ background: pathname.startsWith("/admin") ? '#332a67' : 'transparent' }}
+                                    className={`flex items-center space-x-2 rounded-lg px-4 py-2 font-medium transition-all duration-200 ${
+                                        pathname.startsWith("/admin")
+                                            ? 'text-white shadow-lg'
+                                            : 'text-gray-700 hover:bg-green-50 hover:text-green-600'
+                                    }`}
+                                >
+                                    <ShieldCheck className="h-4 w-4" />
+                                    <span>Admin</span>
+                                </Link>
+                            )}
                         </div>
 
                         {/* Mobile Menu Button */}
                         <div className="flex items-center">
+                            <div className="hidden lg:block mr-3"><LoginButton /></div>
                             <button
                                 className="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-200"
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -157,15 +165,15 @@ export default function Navbar() {
                             
                             if (item.label === "Contact") {
                                 return (
-                                    <a
+                                    <Link
                                         key={item.label}
-                                        href="#footer"
-                                        onClick={handleContactClick}
+                                        href={item.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
                                         className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-all duration-200"
                                     >
                                         <IconComponent className="w-5 h-5 text-gray-600" />
                                         <span className="font-medium text-gray-700">{item.label}</span>
-                                    </a>
+                                    </Link>
                                 );
                             }
                             
@@ -188,9 +196,23 @@ export default function Navbar() {
                                 </Link>
                             );
                         })}
+                        {user?.role === "admin" && (
+                            <Link
+                                href="/admin"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`flex items-center space-x-3 rounded-lg p-3 transition-all duration-200 ${
+                                    pathname.startsWith("/admin")
+                                        ? 'bg-[#332a67] text-white shadow-lg'
+                                        : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                            >
+                                <ShieldCheck className={`h-5 w-5 ${pathname.startsWith("/admin") ? 'text-white' : 'text-gray-600'}`} />
+                                <span className="font-medium">Admin</span>
+                            </Link>
+                        )}
                     </div>
 
-                    {/* Mobile Auth Section removed */}
+                    <div className="mt-8"><LoginButton /></div>
                 </div>
             </div>
         </div>

@@ -42,7 +42,9 @@ class RoleEnum(str, Enum):
 class WorkHistoryModel(BaseModel):
     role: RoleEnum = Field(...)
     team: TeamTypeEnum = Field(...)
-    status: MemberStatusEnum = Field(...)
+    start: str = Field(default="")
+    end: str | None = Field(default=None)
+    status: MemberStatusEnum | None = Field(default=None)
 
 
 @strawberry.experimental.pydantic.type(model=WorkHistoryModel, all_fields=True)
@@ -66,6 +68,12 @@ class MemberModel(BaseModel):
     phone: str = Field(default="-")
     bio: str = Field(default="", max_length=500)
     workHistory: list[WorkHistoryModel] = Field(default_factory=list)
+    batch: str = Field(default="")
+    department: str = Field(default="")
+    linkedin: str = Field(default="-")
+    github: str = Field(default="-")
+    achievements: list[str] = Field(default_factory=list)
+    interests: list[str] = Field(default_factory=list)
 
     @field_validator('email')
     @classmethod

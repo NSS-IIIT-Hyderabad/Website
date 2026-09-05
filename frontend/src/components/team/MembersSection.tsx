@@ -95,11 +95,11 @@ export default function MembersSection({ members }: { members: Member[] }) {
   ];
 
   // Section title with simplified styling
-  function SectionTitle({ children }: { children: React.ReactNode }) {
+  function SectionTitle({ children, accentClass = "bg-blue-800" }: { children: React.ReactNode; accentClass?: string }) {
     return (
       <div className="flex items-center justify-center my-12">
         <div className="flex-1 h-0.5 bg-orange-200 mr-4" />
-        <div className="px-6 py-3 bg-blue-800 rounded-lg text-white shadow-lg">
+        <div className={`rounded-lg px-6 py-3 text-white shadow-lg ${accentClass}`}>
           <span className="text-lg md:text-xl font-bold tracking-wide">
             {children}
           </span>
@@ -114,9 +114,9 @@ export default function MembersSection({ members }: { members: Member[] }) {
       {/* Search and Filters */}
       <div className="mb-12">
         {/* Search Bar */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1 relative">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row">
+          <div className="relative flex-1">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
               <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -126,17 +126,17 @@ export default function MembersSection({ members }: { members: Member[] }) {
               placeholder="Search by name, team, or roll number..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-colors duration-200 text-gray-700 placeholder-gray-400"
+              className="w-full rounded-xl border-2 border-gray-200 py-3 pl-12 pr-4 text-gray-700 placeholder-gray-400 transition-colors duration-200 focus:border-gray-400 focus:ring-2 focus:ring-gray-100"
             />
           </div>
-          
+
           <button
             onClick={() => {
               setSearchTerm("");
               setActiveFilters(["all"]);
               setExpandedGroups({});
             }}
-            className="btn-base bg-red-500 text-white hover:bg-red-700 px-6 py-3 whitespace-nowrap"
+            className="btn-base whitespace-nowrap bg-gray-200 px-6 py-3 text-gray-700 hover:bg-gray-300"
           >
             <span>Clear</span>
           </button>
@@ -144,60 +144,38 @@ export default function MembersSection({ members }: { members: Member[] }) {
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap gap-3 justify-center">
-            {/* Indian flag spectrum colors */}
-            {[
-              { label: "All Members", value: "all", color: "bg-orange-500", hover: "hover:bg-orange-100 hover:text-orange-600 border-orange-300" },
-              { label: "Active", value: "active", color: "bg-green-600", hover: "hover:bg-green-100 hover:text-green-700 border-green-300" },
-              { label: "Inactive", value: "inactive", color: "bg-blue-600", hover: "hover:bg-blue-100 hover:text-blue-700 border-blue-300" },
-            ].map(({ label, value, color, hover }) => (
+          {[
+            { label: "All Members", value: "all" },
+            { label: "Active", value: "active" },
+            { label: "Inactive", value: "inactive" },
+          ].map(({ label, value }) => (
+            <button
+              key={value}
+              onClick={() => toggleFilter(value)}
+              className={`rounded-lg border-2 px-6 py-2 font-medium transition-all duration-200 ${
+                activeFilters.includes(value)
+                  ? "scale-105 border-gray-700 bg-gray-700 text-white shadow-lg"
+                  : "border-gray-300 bg-gray-100 text-gray-600 hover:border-gray-400 hover:bg-gray-200"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+          {allTeams.map((team) => {
+            return (
               <button
-                key={value}
-                onClick={() => toggleFilter(value)}
-                className={`px-6 py-2 rounded-lg font-medium border-2 transition-all duration-200 ${
-                  activeFilters.includes(value)
-                    ? `${color} text-white shadow-lg scale-105 border-transparent`
-                    : `bg-white text-gray-600 border-gray-200 ${hover}`
+                key={team}
+                onClick={() => toggleFilter(team)}
+                className={`rounded-lg border-2 px-6 py-2 font-medium transition-all duration-200 ${
+                  activeFilters.includes(team)
+                    ? "scale-105 border-gray-700 bg-gray-700 text-white shadow-lg"
+                    : "border-gray-300 bg-gray-100 text-gray-600 hover:border-gray-400 hover:bg-gray-200"
                 }`}
               >
-                {label}
+                {team}
               </button>
-            ))}
-            {allTeams.map((team, idx) => {
-              // Assign saffron, white, green, blue, etc. in a cycle
-              const teamColors = [
-                "bg-[#FF9933]", // saffron
-                "bg-[#138808]", // green
-                "bg-[#1A5E9A]", // blue
-                "bg-[#FFD700] text-yellow-900 border-yellow-200", // yellow
-                "bg-[#FF9933]", // saffron again for cycle
-              ];
-              const hoverColors = [
-                "hover:bg-orange-100 hover:text-orange-700 border-orange-300",
-                "hover:bg-green-100 hover:text-green-700 border-green-300",
-                "hover:bg-blue-100 hover:text-blue-700 border-blue-300",
-                "hover:bg-yellow-100 hover:text-yellow-700 border-yellow-300",
-                "hover:bg-orange-100 hover:text-orange-700 border-orange-300",
-              ];
-              const color = teamColors[idx % teamColors.length];
-              const hover = hoverColors[idx % hoverColors.length];
-              return (
-                <button
-                  key={team}
-                  onClick={() => toggleFilter(team)}
-                  className={`px-6 py-2 rounded-lg font-medium border-2 transition-all duration-200 ${
-                    activeFilters.includes(team)
-                      ? `${color} text-white shadow-lg scale-105 border-transparent`
-                      : `bg-white text-gray-600 border-gray-200 ${hover}`
-                  }`}
-                >
-                  {team}
-                </button>
-              );
-            })}
-          
-
-          
-          {/* (removed old single-select filter buttons) */}
+            );
+          })}
         </div>
       </div>
 
@@ -214,7 +192,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
       {/* Present Members */}
   {(activeFilters.includes("all") || activeFilters.includes("active") || allTeams.some(team => activeFilters.includes(team))) && presentMembers.length > 0 && (
         <>
-          <SectionTitle>Current Team Members</SectionTitle>
+          <SectionTitle accentClass="bg-[#332a67]">Current Team Members</SectionTitle>
           {Object.keys(presentGroups).length === 0 && (
             <div className="text-center py-12">
               <div className="text-6xl mb-4"><Search className="w-24 h-24 mx-auto text-gray-400" /></div>
@@ -247,7 +225,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
                       onClick={() =>
                         setExpandedGroups(prev => ({ ...prev, [groupKey]: true }))
                       }
-                      className="btn-base bg-gradient-to-r from-green-500 to-blue-500 text-white hover:from-green-600 hover:to-blue-600"
+                      className="btn-base bg-gray-700 text-white hover:bg-gray-600"
                     >
                       <span>View More</span>
                     </button>
@@ -297,7 +275,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
                         onClick={() =>
                           setExpandedGroups(prev => ({ ...prev, [groupKey]: true }))
                         }
-                        className="btn-base bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+                        className="btn-base bg-gray-700 text-white hover:bg-gray-600"
                       >
                         <span>View More</span>
                       </button>
@@ -323,7 +301,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
               setActiveFilters(["all"]);
               setExpandedGroups({});
             }}
-            className="btn-base bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600"
+            className="btn-base bg-gray-700 text-white hover:bg-gray-600"
           >
             <RotateCcw className="w-5 h-5" />
             <span>Reset Filters</span>
