@@ -11,9 +11,9 @@ while ! venv/bin/python -c "import pymongo; pymongo.MongoClient('${MONGODB_URL}'
 done
 echo "MongoDB is ready!"
 
-# Run database migrations/setup if needed
-echo "Setting up database..."
-venv/bin/python seed_data.py
+# Note: seed_data.py is a one-time setup step, not run automatically here.
+# The database is already seeded; run it manually (venv/bin/python seed_data.py)
+# only when you actually want to wipe and reset the members/events collections.
 
 # Start the application
 echo "Starting FastAPI application..."
