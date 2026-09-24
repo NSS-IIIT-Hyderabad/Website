@@ -16,11 +16,6 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const scrollToJoinNSS = () => {
-    const element = document.getElementById('join-nss');
-    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   useEffect(() => {
     if (!isAutoPlaying) return;
     
@@ -87,16 +82,21 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
           </h1>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button 
-              type="button"
-              onClick={scrollToJoinNSS}
+            <a 
+              href="https://app.notion.com/p/Volunteer-Registration-Guide-1b591e66b9f180b1be3ce9dd741ba508"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex cursor-pointer items-center gap-3 rounded-full border-2 border-white px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-blue-800 hover:shadow-2xl"
             >
               <span>Join Our Mission</span>
-              <div className="w-2 h-2 bg-white rounded-full group-hover:translate-x-1 transition-transform" />
-            </button>
+              <div className="w-2 h-2 bg-white rounded-full group-hover:bg-blue-800 group-hover:translate-x-1 transition-transform" />
+            </a>
+            
             <button 
-            className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer" onClick={() => router.push('/events')} >
+              type="button"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer" 
+              onClick={() => router.push('/events')}
+            >
               Explore Our Events
             </button>
           </div>

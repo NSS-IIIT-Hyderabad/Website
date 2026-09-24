@@ -26,7 +26,7 @@ export default function ContactPage() {
                   
                   <form className="space-y-6">
                     <Link
-                      href="/#join-nss"
+                      href="https://app.notion.com/p/Volunteer-Registration-Guide-1b591e66b9f180b1be3ce9dd741ba508"
                       className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-gray-700 px-8 py-4 text-lg font-semibold text-white shadow-sm transition-all duration-300 hover:bg-gray-600 hover:shadow-lg"
                     >
                       <Rocket className="w-5 h-5" />

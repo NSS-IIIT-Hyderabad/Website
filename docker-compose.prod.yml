@@ -50,13 +50,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* vars are inlined into the JS bundle at build time,
+        # so this must be passed as a build arg, not just a runtime env var.
+        # Since we are using Nginx to route /api, the browser sees relative paths.
+        NEXT_PUBLIC_API_URL: /api
     restart: unless-stopped
     env_file:
       - .env.production
     environment:
       NODE_ENV: production
-      # Since we are using Nginx to route /api, the browser sees relative paths
-      NEXT_PUBLIC_API_URL: /api
     depends_on:
       - backend-1
     networks:

@@ -18,6 +18,11 @@ COPY . .
 # Disable telemetry during build
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# NEXT_PUBLIC_* vars are inlined into the JS bundle at build time, so they
+# must be passed in as build args (not just runtime env) to take effect.
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 RUN npm run build
 
 # Production image, copy all the files and run next
