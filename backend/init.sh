@@ -5,7 +5,7 @@ set -e
 
 # Wait for MongoDB to be ready
 echo "Waiting for MongoDB to be ready..."
-while ! python -c "import pymongo; pymongo.MongoClient('${MONGODB_URL}').admin.command('ping')" 2>/dev/null; do
+while ! venv/bin/python -c "import pymongo; pymongo.MongoClient('${MONGODB_URL}').admin.command('ping')" 2>/dev/null; do
   echo "MongoDB not ready yet, waiting..."
   sleep 2
 done
