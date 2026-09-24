@@ -20,7 +20,7 @@ echo "Starting FastAPI application..."
 echo "GraphQL API available at http://localhost:8000/graphql"
 if [ "$API_ENV" = "production" ]; then
     # Production mode with multiple workers
-    exec venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4 --worker-class uvicorn.workers.UvicornWorker
+    exec venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 else
     # Development mode with reload
     exec venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --reload
