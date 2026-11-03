@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +19,10 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const { user } = useAuth();
+
+    const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+    const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+    const wasMobileMenuOpenRef = useRef(false);
     // Authentication UI removed
 
     useEffect(() => {
@@ -29,6 +33,65 @@ export default function Navbar() {
         
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    // Move keyboard focus to the close button when the menu opens
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            wasMobileMenuOpenRef.current = true;
+
+            const closeButton =
+                mobileMenuRef.current?.querySelector<HTMLButtonElement>("button");
+
+            closeButton?.focus();
+            return;
+        }
+
+        if (wasMobileMenuOpenRef.current) {
+            menuButtonRef.current?.focus();
+            wasMobileMenuOpenRef.current = false;
+        }
+    }, [isMobileMenuOpen]);
+
+    // Keep keyboard focus within the mobile menu and handle Escape
+    useEffect(() => {
+        if (!isMobileMenuOpen) return;
+
+        const menu = mobileMenuRef.current;
+        if (!menu) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                setIsMobileMenuOpen(false);
+                return;
+            }
+
+            if (event.key !== "Tab") return;
+
+            const focusableElements = menu.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (!firstElement || !lastElement) return;
+
+            if (event.shiftKey && document.activeElement === firstElement) {
+                event.preventDefault();
+                lastElement.focus();
+            } else if (!event.shiftKey && document.activeElement === lastElement) {
+                event.preventDefault();
+                firstElement.focus();
+            }
+        };
+
+        menu.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            menu.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isMobileMenuOpen]);
 
     // Login/Profile actions removed
 
@@ -118,6 +181,7 @@ export default function Navbar() {
                         <div className="flex items-center">
                             <div className="hidden lg:block mr-3"><LoginButton /></div>
                             <button
+                                ref={menuButtonRef}
                                 className="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-200"
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                 aria-label="Toggle menu"
@@ -134,7 +198,12 @@ export default function Navbar() {
             </nav>
 
             {/* Mobile Menu */}
-            <div className={`fixed top-0 right-0 h-full w-80 max-w-[90vw] bg-white z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
+            <div
+                inert={!isMobileMenuOpen}
+                role="dialog"
+                aria-label="Mobile navigation menu"
+                ref={mobileMenuRef}
+                className={`fixed top-0 right-0 h-full w-80 max-w-[90vw] bg-white z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
                 isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
             } shadow-2xl border-l border-gray-100`}>
                 <div className="p-6">
