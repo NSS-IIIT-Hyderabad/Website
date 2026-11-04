@@ -4,6 +4,14 @@ import React, { useState } from "react";
 import { RotateCcw, Search, GraduationCap } from "lucide-react";
 import MemberCard from "./MemberCard";
 
+type WorkHistory = {
+  role?: string;
+  team?: string;
+  start?: string;
+  end?: string | null;
+  status?: string | null;
+};
+
 type Member = {
   id: string;
   email: string;
@@ -14,6 +22,7 @@ type Member = {
   status: "active" | "inactive";
   from: string;
   to: string;
+  workHistory?: WorkHistory[];
 };
 
 type Grouped<T> = { [key: string]: T[] };
@@ -28,57 +37,110 @@ function groupBy<T>(arr: T[], key: (item: T) => string) {
 }
 
 export default function MembersSection({ members }: { members: Member[] }) {
-  // Multi-select filter toggle function
-  function toggleFilter(filter: string) {
-    if (filter === "all") {
-      setActiveFilters(["all"]);
-    } else {
-      setActiveFilters((prev) => {
-        const next = prev.includes(filter)
-          ? prev.filter(f => f !== filter)
-          : [...prev.filter(f => f !== "all"), filter];
-        return next.length === 0 ? ["all"] : next;
-      });
-    }
-  }
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [activeFilters, setActiveFilters] = useState<string[]>(["all"]);
 
-  // Filter members based on search and active filter
-  const filteredMembers = members.filter(member => {
-    const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.team.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.rollNumber.toLowerCase().includes(searchTerm.toLowerCase());
-    
-      // If "all" is selected, show all
-      if (activeFilters.includes("all")) return matchesSearch;
-      // If "active" or "inactive" is selected, match status
-      const statusMatch = (activeFilters.includes("active") && member.status === "active") ||
-        (activeFilters.includes("inactive") && member.status === "inactive");
-      // If any team is selected, match team
-      const teamMatch = activeFilters.some(f => f !== "active" && f !== "inactive" && f !== "all" && member.team.toLowerCase() === f.toLowerCase());
-      return matchesSearch && (statusMatch || teamMatch);
+  // Extract active status filters ("active", "inactive")
+  const selectedStatuses = activeFilters.filter(
+    (f) => f === "active" || f === "inactive"
+  );
+
+  // Extract active team filters (anything other than "all", "active", "inactive")
+  const selectedTeams = activeFilters.filter(
+    (f) => f !== "all" && f !== "active" && f !== "inactive"
+  );
+
+  const hasStatusFilter = selectedStatuses.length > 0;
+  const hasTeamFilter = selectedTeams.length > 0;
+
+  // Multi-select filter toggle function
+  function toggleFilter(filter: string) {
+    if (filter === "all") {
+      setActiveFilters(["all"]);
+      return;
+    }
+
+    setActiveFilters((prev) => {
+      const isStatusFilter = filter === "active" || filter === "inactive";
+      const opposingStatus = filter === "active" ? "inactive" : "active";
+
+      let next: string[];
+
+      if (isStatusFilter) {
+        if (prev.includes(filter)) {
+          // Deselect this status filter
+          next = prev.filter((f) => f !== filter && f !== "all");
+        } else {
+          // Select this status filter and replace opposing status
+          next = [...prev.filter((f) => f !== filter && f !== opposingStatus && f !== "all"), filter];
+        }
+      } else {
+        // Toggle team filter
+        if (prev.includes(filter)) {
+          next = prev.filter((f) => f !== filter && f !== "all");
+        } else {
+          next = [...prev.filter((f) => f !== "all"), filter];
+        }
+      }
+
+      return next.length === 0 ? ["all"] : next;
+    });
+  }
+
+  // Filter members based on search and multi-criteria filters
+  const filteredMembers = members.filter((member) => {
+    const searchLower = searchTerm.trim().toLowerCase();
+    const memberName = (member.name || "").toLowerCase();
+    const memberTeam = (member.team || "").toLowerCase();
+    const memberRoll = (member.rollNumber || "").toLowerCase();
+
+    const matchesSearch =
+      !searchLower ||
+      memberName.includes(searchLower) ||
+      memberTeam.includes(searchLower) ||
+      memberRoll.includes(searchLower);
+
+    if (!matchesSearch) return false;
+
+    // If "all" is explicitly selected and no filters active, show all
+    if (activeFilters.includes("all") && !hasStatusFilter && !hasTeamFilter) {
+      return true;
+    }
+
+    // Match status (active vs inactive)
+    const matchesStatus =
+      !hasStatusFilter || selectedStatuses.includes(member.status);
+
+    // Match team
+    const matchesTeam =
+      !hasTeamFilter ||
+      selectedTeams.some(
+        (t) => t.trim().toLowerCase() === memberTeam.trim().toLowerCase()
+      );
+
+    // Multi-criteria: MUST satisfy status filter AND team filter simultaneously
+    return matchesStatus && matchesTeam;
   });
 
   // Group present by team, past by year
-  const presentMembers = filteredMembers.filter(m => m.status === "active");
-  const pastMembers = filteredMembers.filter(m => m.status === "inactive");
+  const presentMembers = filteredMembers.filter((m) => m.status === "active");
+  const pastMembers = filteredMembers.filter((m) => m.status === "inactive");
 
-  const presentGroups = groupBy(presentMembers, m => m.team);
-  // Group past members by end year only (extract year from YYYY-MM format)
-  const pastGroups = groupBy(pastMembers, m => {
-    if (!m.to) return "Unknown";
-    // Extract year from date like "2024-05" -> "2024"
-    const year = m.to.split('-')[0];
-    return year;
+  const presentGroups = groupBy(presentMembers, (m) => m.team);
+
+  // Group past members by end year only (extract year from YYYY-MM format), safely handling missing/unknown values
+  const pastGroups = groupBy(pastMembers, (m) => {
+    if (!m.to || m.to === "-" || m.to.toLowerCase() === "null") return "Unknown";
+    const year = m.to.split("-")[0]?.trim();
+    return year || "Unknown";
   });
 
   // Show only 2 rows (8 cards) per section if not viewing all
   const MAX_CARDS = 8;
 
   // Get unique teams for filter buttons
-  const allTeams = [...new Set(members.map(m => m.team))];
+  const allTeams = [...new Set(members.map((m) => m.team?.trim()).filter(Boolean))] as string[];
 
   // Preferred team ordering for display
   const preferredOrder = ["NSS CORE", "TECH", "LOGISTICS", "SOCIAL MEDIA", "DESIGN"];
@@ -89,10 +151,29 @@ export default function MembersSection({ members }: { members: Member[] }) {
   }, {});
   const orderedPresentTeamKeys = [
     // keep only keys that exist in presentGroups in the preferred order
-    ...preferredOrder.map(o => presentTeamKeyMap[o]).filter(Boolean),
+    ...preferredOrder.map((o) => presentTeamKeyMap[o]).filter(Boolean),
     // then any remaining teams (sorted alphabetically)
-    ...presentTeamKeys.filter(k => !preferredOrder.includes(k.toUpperCase())).sort(),
+    ...presentTeamKeys.filter((k) => !preferredOrder.includes(k.toUpperCase())).sort(),
   ];
+
+  // Team display mapping for consistent filter button casing & order
+  const teamDisplayMap = allTeams.reduce<Record<string, string>>((acc, t) => {
+    acc[t.toUpperCase()] = t;
+    return acc;
+  }, {});
+  const orderedFilterTeams = [
+    ...preferredOrder.map((o) => teamDisplayMap[o]).filter(Boolean),
+    ...allTeams.filter((t) => !preferredOrder.includes(t.toUpperCase())).sort(),
+  ];
+
+  // Section visibility conditions
+  const showPresentSection =
+    (!hasStatusFilter || selectedStatuses.includes("active")) &&
+    presentMembers.length > 0;
+
+  const showPastSection =
+    (!hasStatusFilter || selectedStatuses.includes("inactive")) &&
+    pastMembers.length > 0;
 
   // Section title with simplified styling
   function SectionTitle({ children, accentClass = "bg-blue-800" }: { children: React.ReactNode; accentClass?: string }) {
@@ -143,39 +224,57 @@ export default function MembersSection({ members }: { members: Member[] }) {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap gap-3 justify-center">
-          {[
-            { label: "All Members", value: "all" },
-            { label: "Active", value: "active" },
-            { label: "Inactive", value: "inactive" },
-          ].map(({ label, value }) => (
-            <button
-              key={value}
-              onClick={() => toggleFilter(value)}
-              className={`rounded-lg border-2 px-6 py-2 font-medium transition-all duration-200 ${
-                activeFilters.includes(value)
-                  ? "scale-105 border-gray-700 bg-gray-700 text-white shadow-lg"
-                  : "border-gray-300 bg-gray-100 text-gray-600 hover:border-gray-400 hover:bg-gray-200"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-          {allTeams.map((team) => {
-            return (
-              <button
-                key={team}
-                onClick={() => toggleFilter(team)}
-                className={`rounded-lg border-2 px-6 py-2 font-medium transition-all duration-200 ${
-                  activeFilters.includes(team)
-                    ? "scale-105 border-gray-700 bg-gray-700 text-white shadow-lg"
-                    : "border-gray-300 bg-gray-100 text-gray-600 hover:border-gray-400 hover:bg-gray-200"
-                }`}
-              >
-                {team}
-              </button>
-            );
-          })}
+        <div className="flex flex-wrap gap-3 justify-center items-center">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {[
+              { label: "All Members", value: "all" },
+              { label: "Active", value: "active" },
+              { label: "Inactive", value: "inactive" },
+            ].map(({ label, value }) => {
+              const isActive =
+                value === "all"
+                  ? activeFilters.includes("all")
+                  : activeFilters.includes(value);
+
+              return (
+                <button
+                  key={value}
+                  onClick={() => toggleFilter(value)}
+                  className={`rounded-lg border-2 px-6 py-2 font-medium transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? "scale-105 border-gray-700 bg-gray-700 text-white shadow-lg"
+                      : "border-gray-300 bg-gray-100 text-gray-600 hover:border-gray-400 hover:bg-gray-200"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="hidden sm:block h-8 w-px bg-gray-300" />
+
+          <div className="flex flex-wrap gap-3 justify-center">
+            {orderedFilterTeams.map((team) => {
+              const isSelected = activeFilters.some(
+                (f) => f.toLowerCase() === team.toLowerCase()
+              );
+
+              return (
+                <button
+                  key={team}
+                  onClick={() => toggleFilter(team)}
+                  className={`rounded-lg border-2 px-6 py-2 font-medium transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? "scale-105 border-gray-700 bg-gray-700 text-white shadow-lg"
+                      : "border-gray-300 bg-gray-100 text-gray-600 hover:border-gray-400 hover:bg-gray-200"
+                  }`}
+                >
+                  {team}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -190,16 +289,10 @@ export default function MembersSection({ members }: { members: Member[] }) {
       )}
 
       {/* Present Members */}
-  {(activeFilters.includes("all") || activeFilters.includes("active") || allTeams.some(team => activeFilters.includes(team))) && presentMembers.length > 0 && (
+      {showPresentSection && (
         <>
           <SectionTitle accentClass="bg-[#332a67]">Current Team Members</SectionTitle>
-          {Object.keys(presentGroups).length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4"><Search className="w-24 h-24 mx-auto text-gray-400" /></div>
-              <p className="text-gray-500 text-lg">No current members found matching your criteria.</p>
-            </div>
-          )}
-          {orderedPresentTeamKeys.map(team => {
+          {orderedPresentTeamKeys.map((team) => {
             const group = presentGroups[team];
             if (!group) return null;
             const groupKey = `present:${team}`;
@@ -215,7 +308,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
                   </h3>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center">
-                  {(isExpanded ? group : group.slice(0, MAX_CARDS)).map(member => (
+                  {(isExpanded ? group : group.slice(0, MAX_CARDS)).map((member) => (
                     <MemberCard key={member.id} member={member} />
                   ))}
                 </div>
@@ -223,7 +316,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
                   <div className="text-center mt-8">
                     <button
                       onClick={() =>
-                        setExpandedGroups(prev => ({ ...prev, [groupKey]: true }))
+                        setExpandedGroups((prev) => ({ ...prev, [groupKey]: true }))
                       }
                       className="btn-base bg-gray-700 text-white hover:bg-gray-600"
                     >
@@ -238,17 +331,23 @@ export default function MembersSection({ members }: { members: Member[] }) {
       )}
 
       {/* Past Members */}
-  {(activeFilters.includes("all") || activeFilters.includes("inactive")) && pastMembers.length > 0 && (
+      {showPastSection && (
         <>
           <SectionTitle>Past Members</SectionTitle>
-          {Object.keys(pastGroups).length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4"><Search className="w-24 h-24 mx-auto text-gray-400" /></div>
-              <p className="text-gray-500 text-lg">No past members found matching your criteria.</p>
-            </div>
-          )}
           {Object.entries(pastGroups)
-            .sort((a, b) => Number(b[0]) - Number(a[0])) // Descending by year
+            .sort(([yearA], [yearB]) => {
+              const numA = Number(yearA);
+              const numB = Number(yearB);
+              const isNumA = !Number.isNaN(numA);
+              const isNumB = !Number.isNaN(numB);
+
+              if (isNumA && isNumB) {
+                return numB - numA; // Descending by year
+              }
+              if (isNumA) return -1; // Valid years before "Unknown"
+              if (isNumB) return 1;
+              return yearA.localeCompare(yearB);
+            })
             .map(([year, group]) => {
               const groupKey = `past:${year}`;
               const isExpanded = !!expandedGroups[groupKey];
@@ -258,14 +357,14 @@ export default function MembersSection({ members }: { members: Member[] }) {
                   <div className="flex items-center justify-between mb-8">
                     <h3 className="text-2xl font-bold text-primary flex items-center gap-3">
                       <GraduationCap className="w-8 h-8 text-blue-600" />
-                      Team of {year}
+                      {year === "Unknown" ? "Former Members" : `Team of ${year}`}
                       <span className="ml-2 px-3 py-1 bg-purple-100 text-purple-800 text-sm font-medium rounded-full">
                         {group.length} {group.length === 1 ? 'past member' : 'past members'}
                       </span>
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center">
-                    {(isExpanded ? group : group.slice(0, MAX_CARDS)).map(member => (
+                    {(isExpanded ? group : group.slice(0, MAX_CARDS)).map((member) => (
                       <MemberCard key={member.id} member={member} />
                     ))}
                   </div>
@@ -273,7 +372,7 @@ export default function MembersSection({ members }: { members: Member[] }) {
                     <div className="text-center mt-8">
                       <button
                         onClick={() =>
-                          setExpandedGroups(prev => ({ ...prev, [groupKey]: true }))
+                          setExpandedGroups((prev) => ({ ...prev, [groupKey]: true }))
                         }
                         className="btn-base bg-gray-700 text-white hover:bg-gray-600"
                       >
