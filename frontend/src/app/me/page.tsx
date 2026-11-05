@@ -1,22 +1,36 @@
 "use client";
 
 import { useAuth } from "@/components/loginNlognout/first";
-import { login } from "@/utils/loginNlogout";
+import { login, logout } from "@/utils/loginNlogout";
+import VolunteerProfileCard from "@/components/profile/VolunteerProfileCard";
 
 export default function MeProfile() {
   const { user, loading } = useAuth();
 
-  if (loading) return <main className="p-12 text-center">Loading profile...</main>;
+  if (loading) {
+    return (
+      <section className="p-12 text-center">
+        Loading profile...
+      </section>
+    );
+  }
+
   if (!user) {
-    return <main className="p-12 text-center"><button onClick={login}>Login</button></main>;
+    return (
+      <section className="p-12 text-center">
+        <button type="button" onClick={login}>
+          Login
+        </button>
+      </section>
+    );
   }
 
   return (
-    <main className="min-h-screen p-12">
-      <h1 className="text-3xl font-bold">Your account</h1>
-      <p className="mt-4">UID: {user.uid}</p>
-      <p>Email: {user.email}</p>
-      <p>Role: {user.role}</p>
-    </main>
+    <section className="flex min-h-screen items-center justify-center px-4 py-10">
+      <VolunteerProfileCard
+        user={user}
+        onLogout={logout}
+      />
+    </section>
   );
 }
