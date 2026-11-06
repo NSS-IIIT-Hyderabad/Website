@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -82,15 +83,13 @@ const Carousel: React.FC<CarouselProps> = ({ images, interval = 5000, children }
           </h1>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a 
-              href="https://app.notion.com/p/Volunteer-Registration-Guide-1b591e66b9f180b1be3ce9dd741ba508"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/volunteer-registration"
               className="group flex cursor-pointer items-center gap-3 rounded-full border-2 border-white px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-blue-800 hover:shadow-2xl"
             >
               <span>Join Our Mission</span>
               <div className="w-2 h-2 bg-white rounded-full group-hover:bg-blue-800 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
             
             <button 
               type="button"
